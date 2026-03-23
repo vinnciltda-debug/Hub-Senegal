@@ -110,16 +110,71 @@
     var isAdmin = document.body.classList.contains('admin-view');
     var currentSlideIndex = 0;
     var slideElements = [];
-    var slideElements = [];
     var collageAnimStarted = false;
+
+    /* ─── GOLDEN CIRCLE DATA ─── */
+    var GOLDEN_CIRCLE = {
+        why: {
+            keyword: 'Porquê',
+            title: 'Acreditamos na cultura',
+            text: 'Porque a cultura africana merece ser conhecida, respeitada e celebrada globalmente. O Senegal é mais do que o que o mundo enxerga.'
+        },
+        how: {
+            keyword: 'Como',
+            title: 'Pesquisa + Imersão Visual',
+            text: 'Através de pesquisa multidisciplinar (A-F) e uma apresentação visual impactante que conecta dados a emoções.'
+        },
+        what: {
+            keyword: 'O Quê',
+            title: 'Uma campanha que subverte',
+            text: 'Uma campanha que desfaz estereótipos sobre o Senegal mostrando sua riqueza cultural, social, tecnológica e ambiental.'
+        }
+    };
+
+    /* ─── PROBLEM DATA ─── */
+    var PROBLEM_DATA = {
+        tag: 'Problema Identificado',
+        title: 'O mundo enxerga o Senegal com lentes estreitas',
+        text: 'A percepção global sobre o Senegal é frequentemente reduzida a estereótipos de pobreza e subdesenvolvimento. A mídia internacional raramente mostra a vibração cultural, os avanços tecnológicos ou a riqueza social de um país jovem e em transformação acelerada. Essa visão limitada apaga a identidade real de uma nação que é berço da Négritude e da Teraanga.',
+        missionTag: 'Nossa Missão',
+        mission: 'Subverter essa narrativa. Apresentar o Senegal real através de dados concretos, cultura viva e um olhar que respeite a complexidade do país — provando que desenvolvimento começa e termina na cultura.'
+    };
+
+    /* ─── INSIGHTS DATA ─── */
+    var INSIGHTS_DATA = {
+        quote: {
+            text: 'A cultura está no início e no fim de todo desenvolvimento.',
+            author: 'Léopold Sédar Senghor — Poeta, intelectual e primeiro presidente do Senegal'
+        },
+        cards: [
+            { icon: '🎶', title: 'Cultura como Motor', text: 'O Mbalax e a Teraanga não são folclore — são a base de uma identidade que impulsiona a modernização do país.' },
+            { icon: '🚀', title: 'Tecnologia com Raízes', text: 'O GAINDESAT-1A e o New Deal Technologique nascem de um povo que valoriza o progresso sem esquecer suas origens.' },
+            { icon: '🌿', title: 'Sustentabilidade Cultural', text: 'O reflorestamento de manguezais reflete a mesma filosofia Teraanga: cuidar do coletivo para garantir o futuro.' },
+            { icon: '⚽', title: 'Esporte como Expressão', text: 'Da luta Laamb ao futebol, o esporte senegalês carrega misticismo e orgulho nacional em cada movimento.' }
+        ]
+    };
+
+    /* ─── CREATIVE PROCESS DATA ─── */
+    var PROCESS_STEPS = [
+        { num: '01', title: 'Pesquisa', desc: 'Levantamento de dados demográficos, culturais, sociais, ambientais e tecnológicos' },
+        { num: '02', title: 'Imersão Cultural', desc: 'Estudo aprofundado da cultura senegalesa, Teraanga e Négritude' },
+        { num: '03', title: 'Ideação', desc: 'Conexão de insights com a palavra-chave de Senghor para construir a narrativa' },
+        { num: '04', title: 'Conceito', desc: 'Definição da campanha: subverter estereótipos mostrando a riqueza real' },
+        { num: '05', title: 'Campanha', desc: 'Produção de peças visuais e apresentação baseadas no moodboard' }
+    ];
 
     /* ═══════════════════════════════════
        INIT
        ═══════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', function () {
         loadSavedData();
-        renderMoodboardCollage();
+        renderTeamPresentation();
         renderTopics();
+        renderGoldenCircle();
+        renderProblem();
+        renderMoodboardCollage();
+        renderInsights();
+        renderCreativeProcess();
         renderResearch();
         renderPDFs();
         renderRefs();
@@ -131,6 +186,7 @@
         initBackToTop();
         initScrollHint();
         init3DStars();
+        initPDFDownload();
 
         if (typeof AOS !== 'undefined') {
             AOS.init({ duration: 700, easing: 'ease-out-cubic', once: true, offset: 80 });
@@ -142,7 +198,7 @@
             initEditable();
         }
 
-        console.log('🌍 Senegal v4' + (isAdmin ? ' [Admin]' : ''));
+        console.log('🌍 Senegal v5' + (isAdmin ? ' [Admin]' : ''));
     });
 
     /* ═══════════════════════════════════
@@ -257,6 +313,111 @@
         });
 
         if (typeof AOS !== 'undefined') AOS.refresh();
+    }
+
+    /* ─── TEAM PRESENTATION (Tab 1) ─── */
+    function renderTeamPresentation() {
+        var grid = document.getElementById('team-presentation-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        var team = getTeam();
+        team.forEach(function (m, i) {
+            var el = document.createElement('div');
+            el.className = 'team-pres-card';
+            el.setAttribute('data-aos', 'zoom-in');
+            el.setAttribute('data-aos-delay', (i * 100));
+            el.innerHTML =
+                '<div class="team-pres-avatar">' + m.name.charAt(0).toUpperCase() + '</div>' +
+                '<div class="team-pres-name">' + esc(m.name) + '</div>' +
+                '<div class="team-pres-role">' + esc(m.role) + '</div>';
+            grid.appendChild(el);
+        });
+    }
+
+    /* ─── GOLDEN CIRCLE ─── */
+    function renderGoldenCircle() {
+        var container = document.getElementById('golden-circle-container');
+        if (!container) return;
+        container.innerHTML = '';
+        var keys = ['why', 'how', 'what'];
+        keys.forEach(function (key, i) {
+            var data = GOLDEN_CIRCLE[key];
+            var el = document.createElement('div');
+            el.className = 'gc-ring gc-ring--' + key;
+            el.setAttribute('data-aos', 'zoom-in');
+            el.setAttribute('data-aos-delay', (i * 150));
+            el.innerHTML =
+                '<div class="gc-ring__keyword">' + esc(data.keyword) + '</div>' +
+                '<div class="gc-ring__title">' + esc(data.title) + '</div>' +
+                '<div class="gc-ring__text">' + esc(data.text) + '</div>';
+            container.appendChild(el);
+        });
+    }
+
+    /* ─── PROBLEM ─── */
+    function renderProblem() {
+        var container = document.getElementById('problem-block');
+        if (!container) return;
+        container.innerHTML =
+            '<div class="problem-card" data-aos="fade-up">' +
+                '<div class="problem-card__tag">' + esc(PROBLEM_DATA.tag) + '</div>' +
+                '<h2 class="problem-card__title">' + esc(PROBLEM_DATA.title) + '</h2>' +
+                '<p class="problem-card__text">' + esc(PROBLEM_DATA.text) + '</p>' +
+                '<div class="problem-mission">' +
+                    '<div class="problem-mission__tag">' + esc(PROBLEM_DATA.missionTag) + '</div>' +
+                    '<p class="problem-mission__text">' + esc(PROBLEM_DATA.mission) + '</p>' +
+                '</div>' +
+            '</div>';
+    }
+
+    /* ─── INSIGHTS ─── */
+    function renderInsights() {
+        var container = document.getElementById('insights-container');
+        if (!container) return;
+
+        var quoteHtml =
+            '<div class="insights-quote" data-aos="fade-up">' +
+                '<div class="insights-quote__text">' + esc(INSIGHTS_DATA.quote.text) + '</div>' +
+                '<div class="insights-quote__author">— ' + esc(INSIGHTS_DATA.quote.author) + '</div>' +
+            '</div>';
+
+        var cardsHtml = '<div class="insights-grid">';
+        INSIGHTS_DATA.cards.forEach(function (card, i) {
+            cardsHtml +=
+                '<div class="insight-card" data-aos="fade-up" data-aos-delay="' + (i * 100) + '">' +
+                    '<div class="insight-card__icon">' + card.icon + '</div>' +
+                    '<div class="insight-card__title">' + esc(card.title) + '</div>' +
+                    '<div class="insight-card__text">' + esc(card.text) + '</div>' +
+                '</div>';
+        });
+        cardsHtml += '</div>';
+
+        container.innerHTML = quoteHtml + cardsHtml;
+    }
+
+    /* ─── CREATIVE PROCESS ─── */
+    function renderCreativeProcess() {
+        var container = document.getElementById('creative-process-container');
+        if (!container) return;
+
+        var html = '<div class="text-center mb-4" data-aos="fade-up">' +
+            '<h2 class="pres-title">Nosso Processo</h2>' +
+            '<p class="pres-subtitle">As etapas que guiam a construção da campanha criativa</p>' +
+            '</div>' +
+            '<div class="process-timeline">';
+
+        PROCESS_STEPS.forEach(function (step, i) {
+            html +=
+                '<div class="process-step" data-aos="fade-up" data-aos-delay="' + (i * 120) + '">' +
+                    '<div class="process-step__number">' + step.num + '</div>' +
+                    (i < PROCESS_STEPS.length - 1 ? '<div class="process-step__connector"></div>' : '') +
+                    '<div class="process-step__title">' + esc(step.title) + '</div>' +
+                    '<div class="process-step__desc">' + esc(step.desc) + '</div>' +
+                '</div>';
+        });
+        html += '</div>';
+
+        container.innerHTML = html;
     }
 
     function hexToRgba(hex, alpha) {
@@ -487,8 +648,12 @@
         var nav = document.getElementById('side-nav');
         if (!nav) return;
         nav.innerHTML = '';
-        var sections = ['hero', 'moodboard-section'].concat(TOPICS.map(function (t) { return t.id; }));
-        var labels = ['Início', 'Moodboard'].concat(TOPICS.map(function (t) { return t.letter + '. ' + t.tag; }));
+        var sections = ['hero', 'section-team']
+            .concat(TOPICS.map(function (t) { return t.id; }))
+            .concat(['section-golden-circle', 'section-problem', 'moodboard-section', 'section-insights', 'section-creative-process']);
+        var labels = ['Início', 'Equipe']
+            .concat(TOPICS.map(function (t) { return t.letter + '. ' + t.tag; }))
+            .concat(['Metodologia', 'Problema', 'Moodboard', 'Insights', 'Processo']);
         sections.forEach(function (id, idx) {
             var dot = document.createElement('a');
             dot.href = '#' + id;
@@ -497,7 +662,8 @@
             dot.title = labels[idx];
             dot.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                var el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
             });
             nav.appendChild(dot);
         });
@@ -515,8 +681,16 @@
         if (prevSm) prevSm.addEventListener('click', function() { prev.click(); });
         if (nextSm) nextSm.addEventListener('click', function() { next.click(); });
 
-        slideElements = [document.getElementById('hero'), document.getElementById('moodboard-section')]
-            .concat(Array.from(document.querySelectorAll('.topic-section')));
+        slideElements = [
+            document.getElementById('hero'),
+            document.getElementById('section-team')
+        ].concat(Array.from(document.querySelectorAll('.topic-section'))).concat([
+            document.getElementById('section-golden-circle'),
+            document.getElementById('section-problem'),
+            document.getElementById('moodboard-section'),
+            document.getElementById('section-insights'),
+            document.getElementById('section-creative-process')
+        ]).filter(function(el) { return el !== null; });
 
         window.addEventListener('scroll', function () {
             var activeBtn = document.querySelector('.tab-btn.active');
@@ -678,8 +852,206 @@
     }
 
     /* ═══════════════════════════════════
-       ADMIN HELPERS
+       PDF EXPORT (ABNT)
        ═══════════════════════════════════ */
+    function initPDFDownload() {
+        var btn = document.getElementById('btn-download-pdf');
+        if (!btn) return;
+        btn.addEventListener('click', generateABNTPDF);
+    }
+
+    function generateABNTPDF() {
+        if (typeof window.jspdf === 'undefined') { alert('Aguarde o carregamento do gerador de PDF.'); return; }
+        var jsPDF = window.jspdf.jsPDF;
+        var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        var pageW = 210, pageH = 297;
+        var mL = 30, mR = 20, mT = 30, mB = 20;
+        var contentW = pageW - mL - mR;
+        var y = mT;
+        var lineH = 6;
+        var team = getTeam();
+        var refs = getRefs();
+
+        function checkPage(needed) {
+            if (y + needed > pageH - mB) { doc.addPage(); y = mT; }
+        }
+
+        function addTitle(text, size) {
+            checkPage(20);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(size || 14);
+            doc.text(text.toUpperCase(), mL, y);
+            y += lineH + 4;
+        }
+
+        function addText(text) {
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12);
+            var lines = doc.splitTextToSize(text, contentW);
+            lines.forEach(function (line) {
+                checkPage(lineH);
+                doc.text(line, mL, y);
+                y += lineH;
+            });
+            y += 4;
+        }
+
+        function addSpacing(px) { y += px || 8; }
+
+        // === CAPA ===
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.text('PROJETO ACADÊMICO', pageW / 2, 80, { align: 'center' });
+        doc.setFontSize(24);
+        doc.text('SENEGAL', pageW / 2, 100, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(12);
+        doc.text('Análise Multidisciplinar', pageW / 2, 112, { align: 'center' });
+        addSpacing(20);
+
+        // Equipe na capa
+        doc.setFontSize(12);
+        var teamY = 150;
+        team.forEach(function (m) {
+            doc.text(m.name + ' — ' + m.role, pageW / 2, teamY, { align: 'center' });
+            teamY += 8;
+        });
+
+        doc.text(new Date().getFullYear().toString(), pageW / 2, 270, { align: 'center' });
+
+        // === SUMÁRIO ===
+        doc.addPage(); y = mT;
+        addTitle('SUMÁRIO', 16);
+        addSpacing(4);
+        var sumario = [
+            '1. Equipe',
+            '2. Aspectos Pesquisados (A-F)',
+            '3. Metodologia — Círculo de Ouro',
+            '4. Problema Identificado',
+            '5. Moodboard',
+            '6. Insights Criativos',
+            '7. Processo Criativo',
+            '8. Referências'
+        ];
+        sumario.forEach(function (item) {
+            addText(item);
+        });
+
+        // === 1. EQUIPE ===
+        doc.addPage(); y = mT;
+        addTitle('1. EQUIPE');
+        team.forEach(function (m) {
+            addText(m.name + ': ' + m.role);
+        });
+
+        // === 2. TÓPICOS A-F ===
+        addSpacing(8);
+        addTitle('2. ASPECTOS PESQUISADOS');
+        TOPICS.forEach(function (topic) {
+            checkPage(40);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.text(topic.letter + '. ' + topic.tag + ' — ' + topic.title, mL, y);
+            y += lineH + 2;
+            addText(topic.text);
+            if (topic.stats && topic.stats.length) {
+                var statsLine = topic.stats.map(function (s) { return s.label + ': ' + s.value; }).join(' | ');
+                doc.setFont('helvetica', 'italic');
+                doc.setFontSize(10);
+                checkPage(lineH);
+                doc.text(statsLine, mL, y);
+                y += lineH;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(12);
+            }
+            addSpacing(6);
+        });
+
+        // === 3. METODOLOGIA ===
+        doc.addPage(); y = mT;
+        addTitle('3. METODOLOGIA — CÍRCULO DE OURO (SIMON SINEK)');
+        addText('Baseamos nossa abordagem no modelo do Círculo de Ouro proposto por Simon Sinek em "Start With Why", que organiza a comunicação em três níveis:');
+        addSpacing(4);
+        ['why', 'how', 'what'].forEach(function (key) {
+            var data = GOLDEN_CIRCLE[key];
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            checkPage(lineH);
+            doc.text(data.keyword.toUpperCase() + ': ' + data.title, mL, y);
+            y += lineH + 2;
+            addText(data.text);
+        });
+
+        // === 4. PROBLEMA ===
+        addSpacing(6);
+        addTitle('4. PROBLEMA IDENTIFICADO');
+        addText(PROBLEM_DATA.title);
+        addText(PROBLEM_DATA.text);
+        addSpacing(4);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        checkPage(lineH);
+        doc.text('MISSÃO:', mL, y);
+        y += lineH + 2;
+        addText(PROBLEM_DATA.mission);
+
+        // === 5. MOODBOARD ===
+        doc.addPage(); y = mT;
+        addTitle('5. MOODBOARD');
+        addText('O moodboard visual foi construído como uma collage que conecta os elementos pesquisados — cultura, sociedade, tecnologia, meio ambiente — em uma composição visual coesa que serve como referência estética para a campanha.');
+
+        // === 6. INSIGHTS ===
+        addSpacing(6);
+        addTitle('6. INSIGHTS CRIATIVOS');
+        addSpacing(2);
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(12);
+        var quoteLines = doc.splitTextToSize('"' + INSIGHTS_DATA.quote.text + '"', contentW);
+        quoteLines.forEach(function (line) {
+            checkPage(lineH);
+            doc.text(line, mL, y);
+            y += lineH;
+        });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        checkPage(lineH);
+        doc.text('— ' + INSIGHTS_DATA.quote.author, mL, y);
+        y += lineH + 6;
+        doc.setFontSize(12);
+
+        INSIGHTS_DATA.cards.forEach(function (card) {
+            doc.setFont('helvetica', 'bold');
+            checkPage(lineH);
+            doc.text(card.title, mL, y);
+            y += lineH + 1;
+            addText(card.text);
+        });
+
+        // === 7. PROCESSO CRIATIVO ===
+        doc.addPage(); y = mT;
+        addTitle('7. PROCESSO CRIATIVO');
+        PROCESS_STEPS.forEach(function (step) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            checkPage(lineH);
+            doc.text('Etapa ' + step.num + ': ' + step.title, mL, y);
+            y += lineH + 1;
+            addText(step.desc);
+        });
+
+        // === 8. REFERÊNCIAS (ABNT) ===
+        addSpacing(10);
+        addTitle('8. REFERÊNCIAS');
+        refs.forEach(function (ref) {
+            addText('Disponível em: <' + ref + '>. Acesso em: ' + new Date().toLocaleDateString('pt-BR') + '.');
+        });
+
+        doc.save('Senegal_Projeto_Academico_ABNT.pdf');
+    }
+
+    /* ──── UTILS ──── */
+    function esc(text) { if (!text) return ''; var d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
+
     function removeTile(idx) { if (!confirm('Remover este bloco?')) return; MOODBOARD_TILES.splice(idx, 1); saveTiles(); renderMoodboardCollage(); }
     function addTile() { MOODBOARD_TILES.unshift({ src: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400', tag: 'Novo Bloco', label: 'Descrição', size: 'md', topic: 'a' }); saveTiles(); renderMoodboardCollage(); }
     function removeRef(idx) { var refs = getRefs(); refs.splice(idx, 1); saveRefs(refs); renderRefs(); }
@@ -687,9 +1059,6 @@
     function removeMember(idx) { if (!confirm('Remover?')) return; var team = getTeam(); team.splice(idx, 1); saveTeam(team); renderTeam(); if (typeof lucide !== 'undefined') lucide.createIcons(); }
     function addMember() { var n = prompt('Nome:'); if (!n) return; var r = prompt('Função:') || 'Membro'; var team = getTeam(); team.push({ name: n, role: r }); saveTeam(team); renderTeam(); if (typeof lucide !== 'undefined') lucide.createIcons(); }
     function resetAll() { if (!confirm('Resetar TODOS os dados?')) return; localStorage.clear(); window.location.reload(); }
-
-    /* ──── UTILS ──── */
-    function esc(text) { if (!text) return ''; var d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
 
     /* ──── PUBLIC API ──── */
     window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, resetAll: resetAll };
