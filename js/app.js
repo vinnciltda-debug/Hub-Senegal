@@ -333,13 +333,8 @@
                     '<div class="moodboard-item__label">' + esc(tile.label) + '</div>' +
                 '</div>';
 
-            el.addEventListener('click', function () {
-                var idx = 'abcdef'.indexOf(tile.topic);
-                if (idx >= 0) {
-                    var t = document.getElementById('topic-' + 'abcdef'[idx]);
-                    if (t) t.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+            // Removed click-to-scroll per user request
+            // el.addEventListener('click', function () { ... });
 
             container.appendChild(el);
         });
