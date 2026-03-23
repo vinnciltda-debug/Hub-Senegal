@@ -454,44 +454,60 @@
 /* ─── QR CODE AREA (Highlight) ─── */
 .qr-area {
   margin-top: var(--space-xl);
-  padding: var(--space-lg) var(--space-xl);
+  padding: var(--space-xl);
   border-radius: var(--radius-lg);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
+  background: rgba(10, 15, 10, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 133, 63, 0.2);
   display: flex;
   align-items: center;
   gap: var(--space-xl);
-  max-width: 500px;
+  max-width: 540px;
   position: relative;
   overflow: hidden;
-  animation: pulse-glow 4s ease-in-out infinite;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
 
 .qr-area::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(0,133,63,0.06) 0%, transparent 70%);
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(0,133,63,0.12) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.three-canvas-wrap {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 150px;
+  height: 150px;
+  opacity: 0.4;
+  z-index: 1;
   pointer-events: none;
 }
 
 .qr-area__code {
   flex-shrink: 0;
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   background: #fff;
   border-radius: var(--radius-md);
-  padding: 8px;
-  box-shadow: 0 0 25px rgba(0,133,63,0.2);
-  transition: transform var(--transition-base);
+  padding: 10px;
+  box-shadow: 0 8px 30px rgba(0,133,63,0.3);
+  transition: all 0.4s var(--transition-base);
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .qr-area__code:hover {
-  transform: scale(1.06);
+  transform: scale(1.08) rotate(2deg);
+  box-shadow: 0 12px 40px rgba(0,133,63,0.5);
 }
 
 .qr-area__code img {
@@ -502,23 +518,43 @@
 
 .qr-area__info {
   flex: 1;
-  z-index: 1;
+  z-index: 2;
 }
 
 .qr-area__label {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--sn-green);
-  margin-bottom: 4px;
+  background: linear-gradient(to right, var(--sn-green), var(--sn-yellow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
 }
 
 .qr-area__desc {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
+  font-size: 0.88rem;
+  color: #e0e0e0;
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 280px;
+}
+
+@media (max-width: 576px) {
+  .qr-area {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-lg);
+    gap: var(--space-md);
+  }
+  .qr-area__desc {
+    max-width: 100%;
+  }
+  .three-canvas-wrap {
+    display: none;
+  }
 }
 
 /* ─── RESEARCH TAB ─── */
