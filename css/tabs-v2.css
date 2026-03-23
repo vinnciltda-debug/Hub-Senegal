@@ -1,0 +1,198 @@
+/* ================================
+   TABS-V2.CSS — Navigation Tabs & Additional Panels
+   ================================ */
+
+.main-tabs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 15, 10, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--senegal-green);
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.tabs-container {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: var(--radius-xl);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--senegal-green), var(--senegal-yellow), var(--senegal-red));
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.tab-btn:hover {
+  color: var(--senegal-yellow);
+}
+
+.tab-btn.active {
+  color: var(--senegal-yellow);
+  text-shadow: 0 0 10px rgba(253, 239, 66, 0.3);
+}
+
+.tab-btn.active::after {
+  width: 80%;
+}
+
+/* Panel visibility */
+.tab-panel {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.tab-panel.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Panel content */
+.content-container {
+  max-width: 1200px;
+  margin: 100px auto auto;
+  padding: 0 var(--space-lg) 100px;
+}
+
+.panel-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  background: linear-gradient(135deg, var(--gold), var(--terracotta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Research Grid */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-xl);
+}
+
+.research-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: all 0.3s ease;
+}
+
+.research-card:hover {
+  border-color: var(--gold-dark);
+}
+
+.research-card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 10px;
+}
+
+.research-card-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* References */
+.references-list {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+}
+
+.ref-item {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.ref-item::before {
+  content: '[' counter(ref) ']';
+  counter-increment: ref;
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Team */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-xl);
+}
+
+.team-member {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.member-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--terracotta));
+  margin: 0 auto var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.member-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.member-role {
+  font-size: 0.8rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
