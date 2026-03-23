@@ -99,9 +99,11 @@
     ];
 
     var DEFAULT_TEAM = [
-        { name: 'Integrante 1', role: 'Design & UX' },
-        { name: 'Integrante 2', role: 'Pesquisa & Dados' },
-        { name: 'Integrante 3', role: 'Desenvolvimento' }
+        { name: 'Vinicius', role: 'Pesquisa Básica e Estruturação' },
+        { name: 'Luana Bauler', role: 'Pesquisa: Tamanho da População' },
+        { name: 'Juliana Da Costa', role: 'Pesquisa: Aspectos Ambientais' },
+        { name: 'Isabella Archela', role: 'Pesquisa: Demografia e Tecnologia' },
+        { name: 'Gabriel Ortega', role: 'Pesquisa: Cultura e Sociedade' }
     ];
 
     /* ─── STATE ─── */
