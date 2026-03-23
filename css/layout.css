@@ -1,0 +1,243 @@
+/* ================================
+   LAYOUT.CSS — Grid, Tabs, Responsive
+   ================================ */
+
+/* ------- Header ------- */
+#app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.logo-icon {
+    font-size: 1.6rem;
+}
+
+.logo h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold), var(--terracotta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo-subtitle {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    padding-left: var(--space-sm);
+    border-left: 1px solid var(--border-subtle);
+    display: none;
+}
+
+/* ------- Tab Navigation ------- */
+#tab-nav {
+    position: fixed;
+    top: 62px;
+    left: 0;
+    right: 0;
+    z-index: var(--z-tabs);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.tab-bar {
+    display: flex;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    position: relative;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    white-space: nowrap;
+}
+
+.tab-btn svg {
+    opacity: 0.5;
+    transition: opacity var(--transition-base);
+}
+
+.tab-btn:hover {
+    color: var(--text-secondary);
+}
+
+.tab-btn:hover svg {
+    opacity: 0.7;
+}
+
+.tab-btn.active {
+    color: var(--gold-light);
+}
+
+.tab-btn.active svg {
+    opacity: 1;
+}
+
+.tab-indicator {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--terracotta));
+    border-radius: 1px;
+    transition: all var(--transition-base);
+}
+
+/* ------- Main Content ------- */
+#main-content {
+    margin-top: 120px;
+    padding: var(--space-lg);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: var(--z-content);
+    min-height: calc(100vh - 120px);
+}
+
+/* Tab panels */
+.tab-panel {
+    display: none;
+    animation: fadeIn var(--transition-base);
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* Panel header */
+.panel-header {
+    margin-bottom: var(--space-xl);
+}
+
+.panel-header h2 {
+    margin-bottom: var(--space-xs);
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.panel-description {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+}
+
+.panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+/* ------- RESPONSIVE ------- */
+
+/* Mobile first — small screens */
+@media (max-width: 639px) {
+    .header-content {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .logo h1 {
+        font-size: 1.1rem;
+    }
+
+    .tab-btn span {
+        display: none;
+    }
+
+    .tab-btn {
+        padding: var(--space-md);
+        justify-content: center;
+        flex: 1;
+    }
+
+    #main-content {
+        padding: var(--space-md);
+        margin-top: 108px;
+    }
+
+    #tab-nav {
+        top: 50px;
+    }
+
+    .panel-actions {
+        gap: var(--space-xs);
+    }
+
+    .panel-actions .btn {
+        padding: 8px 12px;
+        font-size: 0.78rem;
+    }
+
+    .toast-container {
+        top: auto;
+        bottom: var(--space-md);
+        right: var(--space-md);
+        left: var(--space-md);
+    }
+}
+
+/* Tablets */
+@media (min-width: 640px) {
+    .logo-subtitle {
+        display: block;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    #main-content {
+        padding: var(--space-xl);
+    }
+
+    .panel-header h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1440px) {
+    #main-content {
+        max-width: 1600px;
+    }
+}
