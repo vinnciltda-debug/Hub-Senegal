@@ -226,6 +226,35 @@
   border-color: var(--sn-green);
 }
 
+.moodboard-item::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 25px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transform-origin: center;
+  rotate: var(--rotation, 2deg);
+  opacity: 0.6;
+}
+
+.moodboard-item:nth-child(even)::after {
+  background: rgba(0, 133, 63, 0.1);
+  rotate: calc(var(--rotation, 2deg) * -1.5);
+}
+
+.moodboard-item:hover::after {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
 .moodboard-item img {
   width: 100%;
   height: 100%;
