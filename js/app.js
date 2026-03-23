@@ -108,16 +108,15 @@
     var isAdmin = document.body.classList.contains('admin-view');
     var currentSlideIndex = 0;
     var slideElements = [];
-    var graphNodes = [];  // force simulation nodes
-    var graphAnimId = null;
-    var highlightTimer = null;
+    var slideElements = [];
+    var collageAnimStarted = false;
 
     /* ═══════════════════════════════════
        INIT
        ═══════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', function () {
         loadSavedData();
-        renderNodeGraph();
+        renderMoodboardCollage();
         renderTopics();
         renderResearch();
         renderPDFs();
@@ -213,62 +212,36 @@
     function getTeam() { try { var t = localStorage.getItem('sn3_team'); return t ? JSON.parse(t) : DEFAULT_TEAM.slice(); } catch (e) { return DEFAULT_TEAM.slice(); } }
     function saveTeam(team) { localStorage.setItem('sn3_team', JSON.stringify(team)); }
 
-    /* ═══════════════════════════════════
-       NODE GRAPH MOODBOARD (Force-Directed)
-       ═══════════════════════════════════ */
-    function renderNodeGraph() {
-        var container = document.getElementById('node-graph-container');
-        var canvas = document.getElementById('node-graph-canvas');
-        var nodesDiv = document.getElementById('node-graph-nodes');
-        if (!container || !canvas || !nodesDiv) return;
+    /* ─── MOODBOARD COLLAGE ─── */
+    function renderMoodboardCollage() {
+        var container = document.getElementById('moodboard-collage');
+        if (!container) return;
 
-        var ctx = canvas.getContext('2d');
-        var W = container.offsetWidth;
-        var H = container.offsetHeight;
-        canvas.width = W;
-        canvas.height = H;
+        container.innerHTML = '';
 
-        nodesDiv.innerHTML = '';
-        graphNodes = [];
-
-        var topicKeys = 'abcdef'.split('');
-        var topicColors = { a: '#00853F', b: '#00a34d', c: '#FDEF42', d: '#ffe76a', e: '#E31B23', f: '#ff4d55' };
-        var sizeMap = { lg: 95, md: 75, sm: 60 };
-
-        // Attractor points (one for each topic)
-        var attractors = topicKeys.map(function(k, idx) {
-            var ang = (idx / topicKeys.length) * Math.PI * 2;
-            return { x: W/2 + Math.cos(ang) * (W*0.25), y: H/2 + Math.sin(ang) * (H*0.25) };
-        });
-
-        // Create nodes
         MOODBOARD_TILES.forEach(function (tile, i) {
-            var r = sizeMap[tile.size] || 75;
-            var tIdx = topicKeys.indexOf(tile.topic);
-            var att = attractors[tIdx] || { x: W/2, y: H/2 };
-            
-            var nx = att.x + (Math.random() - 0.5) * 100;
-            var ny = att.y + (Math.random() - 0.5) * 100;
-
-            var node = {
-                x: nx, y: ny,
-                vx: 0, vy: 0,
-                r: r / 2,
-                topic: tile.topic,
-                tIdx: tIdx,
-                color: topicColors[tile.topic] || '#00853F',
-                idx: i
-            };
-            graphNodes.push(node);
-
             var el = document.createElement('div');
-            el.className = 'graph-node';
-            el.style.width = r + 'px';
-            el.style.height = r + 'px';
-            el.id = 'gnode-' + i;
-            el.innerHTML =
+            el.className = 'moodboard-item';
+            
+            // Assign size classes based on tile.size
+            if (tile.size === 'lg') el.classList.add('moodboard-item--lg');
+            else if (tile.size === 'md') el.classList.add('moodboard-item--md');
+            else if (tile.size === 'sm' && Math.random() > 0.5) el.classList.add('moodboard-item--wide');
+
+            // Add organic rotation
+            var rot = (Math.random() * 6 - 3).toFixed(2);
+            el.style.setProperty('--rotation', rot + 'deg');
+            
+            // AOS animation
+            el.setAttribute('data-aos', 'fade-up');
+            el.setAttribute('data-aos-delay', (i * 50));
+
+            el.innerHTML = 
                 '<img src="' + tile.src + '" alt="' + esc(tile.label) + '" loading="lazy" />' +
-                '<span class="graph-node__label">' + esc(tile.tag) + '</span>';
+                '<div class="moodboard-item__overlay">' +
+                    '<div class="moodboard-item__tag">' + esc(tile.tag) + '</div>' +
+                    '<div class="moodboard-item__label">' + esc(tile.label) + '</div>' +
+                '</div>';
 
             el.addEventListener('click', function () {
                 var idx = 'abcdef'.indexOf(tile.topic);
@@ -278,109 +251,10 @@
                 }
             });
 
-            nodesDiv.appendChild(el);
+            container.appendChild(el);
         });
 
-        // Build edges:
-        // 1. All nodes in same topic are cluster-connected
-        // 2. Sequential connection between topic "A" cluster and "B" cluster (meaningful flow)
-        var edges = [];
-        for (var i = 0; i < graphNodes.length; i++) {
-            for (var j = i + 1; j < graphNodes.length; j++) {
-                var a = graphNodes[i], b = graphNodes[j];
-                // Direct topic connection
-                if (a.topic === b.topic) {
-                    edges.push({ from: i, to: j, type: 'same' });
-                } else if (Math.abs(a.tIdx - b.tIdx) === 1) {
-                    // Sequential bridge (but only 1 connection per pair of clusters to keep it clean)
-                    if (Math.random() < 0.1) edges.push({ from: i, to: j, type: 'bridge' });
-                }
-            }
-        }
-
-        var dragNode = null, dragOffX = 0, dragOffY = 0;
-        nodesDiv.addEventListener('pointerdown', function (e) {
-            var nEl = e.target.closest('.graph-node'); if (!nEl) return;
-            var idx = parseInt(nEl.id.replace('gnode-', ''));
-            dragNode = graphNodes[idx];
-            var rect = container.getBoundingClientRect();
-            dragOffX = e.clientX - rect.left - dragNode.x;
-            dragOffY = e.clientY - rect.top - dragNode.y;
-            nEl.setPointerCapture(e.pointerId);
-            e.preventDefault();
-        });
-        nodesDiv.addEventListener('pointermove', function (e) { if (!dragNode) return; var rect = container.getBoundingClientRect(); dragNode.x = e.clientX - rect.left - dragOffX; dragNode.y = e.clientY - rect.top - dragOffY; dragNode.vx = 0; dragNode.vy = 0; });
-        nodesDiv.addEventListener('pointerup', function () { dragNode = null; });
-
-        function simulate() {
-            var damping = 0.94;
-            var repulsion = 2200;
-            var springK = 0.006;
-            var clusterPull = 0.008;
-
-            for (var i = 0; i < graphNodes.length; i++) {
-                for (var j = i + 1; j < graphNodes.length; j++) {
-                    var a = graphNodes[i], b = graphNodes[j];
-                    var dx = b.x - a.x, dy = b.y - a.y;
-                    var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                    var minDist = a.r + b.r + 30;
-                    if (dist < minDist) {
-                        var f = repulsion / (dist * dist);
-                        a.vx -= (dx / dist) * f; a.vy -= (dy / dist) * f;
-                        b.vx += (dx / dist) * f; b.vy += (dy / dist) * f;
-                    }
-                }
-            }
-
-            edges.forEach(function(e) {
-                var a = graphNodes[e.from], b = graphNodes[e.to];
-                var dx = b.x - a.x, dy = b.y - a.y;
-                var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                var sLen = e.type === 'same' ? 120 : 250;
-                var diff = dist - sLen;
-                var f = diff * (e.type === 'same' ? springK : springK * 0.4);
-                a.vx += (dx / dist) * f; a.vy += (dy / dist) * f;
-                b.vx -= (dx / dist) * f; b.vy -= (dy / dist) * f;
-            });
-
-            graphNodes.forEach(function (n) {
-                if (n === dragNode) return;
-                var att = attractors[n.tIdx];
-                n.vx += (att.x - n.x) * clusterPull;
-                n.vy += (att.y - n.y) * clusterPull;
-                n.vx *= damping; n.vy *= damping;
-                n.x += n.vx; n.y += n.vy;
-                n.x = Math.max(n.r, Math.min(W - n.r, n.x));
-                n.y = Math.max(n.r, Math.min(H - n.r, n.y));
-            });
-
-            ctx.clearRect(0, 0, W, H);
-            edges.forEach(function(e) {
-                var a = graphNodes[e.from], b = graphNodes[e.to];
-                ctx.beginPath();
-                ctx.moveTo(a.x, a.y);
-                ctx.lineTo(b.x, b.y);
-                ctx.lineWidth = e.type === 'same' ? 2 : 1;
-                ctx.setLineDash(e.type === 'same' ? [] : [5, 5]);
-                ctx.strokeStyle = hexToRgba(a.color, e.type === 'same' ? 0.2 : 0.08);
-                ctx.stroke();
-            });
-
-            graphNodes.forEach(function (n) {
-                var el = document.getElementById('gnode-' + n.idx);
-                if (el) { el.style.left = (n.x - n.r) + 'px'; el.style.top = (n.y - n.r) + 'px'; }
-            });
-            graphAnimId = requestAnimationFrame(simulate);
-        }
-        simulate();
-
-        var hlIdx = 0;
-        if (highlightTimer) clearInterval(highlightTimer);
-        highlightTimer = setInterval(function () {
-            var prevEl = document.querySelector('.graph-node.highlighted'); if (prevEl) prevEl.classList.remove('highlighted');
-            var el = document.getElementById('gnode-' + hlIdx); if (el) el.classList.add('highlighted');
-            hlIdx = (hlIdx + 1) % graphNodes.length;
-        }, 3000);
+        if (typeof AOS !== 'undefined') AOS.refresh();
     }
 
     function hexToRgba(hex, alpha) {
@@ -804,8 +678,8 @@
     /* ═══════════════════════════════════
        ADMIN HELPERS
        ═══════════════════════════════════ */
-    function removeTile(idx) { if (!confirm('Remover este bloco?')) return; MOODBOARD_TILES.splice(idx, 1); saveTiles(); renderNodeGraph(); }
-    function addTile() { MOODBOARD_TILES.unshift({ src: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400', tag: 'Novo Bloco', label: 'Descrição', size: 'md', topic: 'a' }); saveTiles(); renderNodeGraph(); }
+    function removeTile(idx) { if (!confirm('Remover este bloco?')) return; MOODBOARD_TILES.splice(idx, 1); saveTiles(); renderMoodboardCollage(); }
+    function addTile() { MOODBOARD_TILES.unshift({ src: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400', tag: 'Novo Bloco', label: 'Descrição', size: 'md', topic: 'a' }); saveTiles(); renderMoodboardCollage(); }
     function removeRef(idx) { var refs = getRefs(); refs.splice(idx, 1); saveRefs(refs); renderRefs(); }
     function addRef() { var t = prompt('Nova referência:'); if (!t) return; var refs = getRefs(); refs.push(t); saveRefs(refs); renderRefs(); }
     function removeMember(idx) { if (!confirm('Remover?')) return; var team = getTeam(); team.splice(idx, 1); saveTeam(team); renderTeam(); if (typeof lucide !== 'undefined') lucide.createIcons(); }

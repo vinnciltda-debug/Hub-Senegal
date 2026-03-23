@@ -183,103 +183,113 @@
   color: var(--text-muted);
 }
 
-/* ─── NODE GRAPH MOODBOARD ─── */
+/* ─── MOODBOARD COLLAGE ─── */
 .moodboard-section {
-  padding: var(--space-2xl) 0 var(--space-xl);
-  overflow: hidden;
-}
-
-.node-graph-container {
+  padding: var(--space-2xl) 0;
   position: relative;
-  width: 100%;
-  height: 80vh;
-  min-height: 500px;
-  max-height: 900px;
   overflow: hidden;
 }
 
-#node-graph-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
+.moodboard-collage {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 150px;
+  grid-auto-flow: dense;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  position: relative;
+  perspective: 1000px;
 }
 
-#node-graph-nodes {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-}
-
-.graph-node {
-  position: absolute;
-  border-radius: 50%;
+.moodboard-item {
+  position: relative;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  cursor: grab;
-  border: 2px solid var(--glass-border);
   background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-md);
-  transition: border-color 0.4s, box-shadow 0.4s;
-  will-change: transform;
-  user-select: none;
+  transition: all 0.6s var(--ease-out);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px) rotate(var(--rotation, 0deg));
 }
 
-.graph-node:active {
-  cursor: grabbing;
+.moodboard-item.aos-animate {
+  opacity: 1;
+  transform: translateY(0) rotate(var(--rotation, 0deg));
 }
 
-.graph-node img {
+.moodboard-item:hover {
+  z-index: 10;
+  transform: scale(1.1) rotate(0deg) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,133,63,0.3);
+  border-color: var(--sn-green);
+}
+
+.moodboard-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 50%;
-  pointer-events: none;
+  transition: transform 1.2s var(--ease-out);
 }
 
-.graph-node__label {
+.moodboard-item:hover img {
+  transform: scale(1.15);
+}
+
+/* Sizes */
+.moodboard-item--lg {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.moodboard-item--md {
+  grid-row: span 2;
+}
+
+.moodboard-item--wide {
+  grid-column: span 2;
+}
+
+/* Overlays */
+.moodboard-item__overlay {
   position: absolute;
-  bottom: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-md);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.moodboard-item:hover .moodboard-item__overlay {
+  opacity: 1;
+}
+
+.moodboard-item__tag {
   font-family: 'Outfit', sans-serif;
   font-size: 0.6rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
+  color: var(--sn-yellow);
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
 }
 
-.graph-node:hover {
-  border-color: var(--sn-green);
-  z-index: 50; /* Ensure hovered node is on top */
-  transform: scale(1.4) !important; /* Make it BIG on hover */
-  box-shadow: 0 0 30px rgba(0,133,63,0.4);
-  cursor: pointer;
+.moodboard-item__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
 }
 
-.graph-node:hover .graph-node__label {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-5px);
-}
-
-.graph-node.highlighted {
-  border-color: var(--sn-yellow);
-  box-shadow: 0 0 30px rgba(253,239,66,0.4), 0 0 60px rgba(0,133,63,0.2);
-  z-index: 25;
-  animation: node-pulse 1.5s ease-in-out;
-}
-
-@keyframes node-pulse {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+@media (max-width: 768px) {
+  .moodboard-collage {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 120px;
+  }
 }
 
 /* ─── TOPIC SECTIONS ─── */
