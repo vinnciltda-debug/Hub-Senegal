@@ -339,6 +339,9 @@
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.7s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .topic-content.aos-animate,
@@ -438,11 +441,18 @@
 }
 
 /* Topic Image */
+.topic-image-column, .topic-image-col {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 .topic-image-wrapper {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  margin-top: auto;
 }
 
 .topic-image-wrapper img {
@@ -453,7 +463,7 @@
 
 /* ─── QR CODE AREA (Highlight) ─── */
 .qr-area {
-  margin-top: var(--space-xl);
+  margin-top: auto;
   padding: var(--space-xl);
   border-radius: var(--radius-xl);
   background: linear-gradient(135deg, rgba(6, 12, 6, 0.9), rgba(0, 40, 20, 0.4));

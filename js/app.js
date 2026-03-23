@@ -307,7 +307,7 @@
 
             section.innerHTML =
                 '<div class="container h-100 d-flex align-items-center py-5">' +
-                  '<div class="row w-100 g-5 align-items-center' + reverse + '">' +
+                  '<div class="row w-100 g-5 align-items-stretch' + reverse + '">' +
                     '<div class="col-12 col-lg-6 topic-content" data-aos="fade-right" data-aos-delay="100">' +
                       '<div style="position:relative;">' +
                         '<span class="topic-letter">' + topic.letter + '</span>' +
@@ -319,7 +319,7 @@
                       '<div class="topic-source"><b>📎 Fonte:</b> <span ' + (isAdmin ? 'contenteditable="true"' : '') + ' data-topic="' + i + '" data-field="pdfSource">' + esc(topic.pdfSource) + '</span></div>' +
                       qrHtml +
                     '</div>' +
-                    '<div class="col-12 col-lg-6" data-aos="fade-left" data-aos-delay="200">' +
+                    '<div class="col-12 col-lg-6 topic-image-col" data-aos="fade-left" data-aos-delay="200">' +
                       '<div class="topic-image-wrapper">' +
                         '<img src="' + topic.image + '" alt="' + esc(topic.tag) + '" class="img-fluid" id="img-topic-' + i + '" />' +
                         (isAdmin ? '<button class="edit-image-btn" data-topic="' + i + '" title="Trocar Imagem"><i data-lucide="image" style="width:16px;height:16px;"></i></button>' : '') +
