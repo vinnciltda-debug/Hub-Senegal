@@ -1,0 +1,260 @@
+/* ================================
+   BASE.CSS — Senegal Project
+   Clean foundation: variables, reset, parallax, glassmorphism
+   ================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─── Design Tokens ─── */
+:root {
+  /* Senegal Flag */
+  --sn-green: #00853F;
+  --sn-yellow: #FDEF42;
+  --sn-red: #E31B23;
+
+  /* Derived */
+  --green-soft: #00a34d;
+  --green-dark: #005a2a;
+  --yellow-soft: #ffe76a;
+  --red-soft: #ff4d55;
+
+  /* Dark Theme */
+  --bg-deep: #060a06;
+  --bg-primary: #0a0e0a;
+  --bg-secondary: #0f150f;
+  --bg-tertiary: #151d15;
+  --bg-card: rgba(15, 21, 15, 0.55);
+
+  /* Glass */
+  --glass-bg: rgba(15, 21, 15, 0.45);
+  --glass-border: rgba(0, 133, 63, 0.12);
+  --glass-blur: 16px;
+  --glass-highlight: rgba(253, 239, 66, 0.04);
+
+  /* Text */
+  --text-primary: #f2f7f2;
+  --text-secondary: #b0c4b0;
+  --text-muted: #6a8a6a;
+
+  /* Borders */
+  --border-subtle: rgba(0, 133, 63, 0.1);
+  --border-active: rgba(253, 239, 66, 0.25);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.6);
+  --shadow-glow-green: 0 0 20px rgba(0, 133, 63, 0.25);
+  --shadow-glow-yellow: 0 0 15px rgba(253, 239, 66, 0.15);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: 150ms var(--ease-out);
+  --transition-base: 300ms var(--ease-out);
+  --transition-slow: 500ms var(--ease-out);
+
+  /* Z layers */
+  --z-bg: -1;
+  --z-content: 1;
+  --z-sticky: 50;
+  --z-nav: 100;
+  --z-overlay: 500;
+  --z-modal: 1000;
+}
+
+/* ─── Base ─── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Parallax Background Layers ─── */
+.parallax-bg {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.parallax-layer {
+  position: absolute;
+  inset: -20%;
+  transition: transform 0.1s linear;
+}
+
+.parallax-layer--green {
+  background: radial-gradient(ellipse at 15% 25%, rgba(0,133,63,0.12) 0%, transparent 55%);
+}
+
+.parallax-layer--yellow {
+  background: radial-gradient(ellipse at 85% 15%, rgba(253,239,66,0.06) 0%, transparent 50%);
+}
+
+.parallax-layer--red {
+  background: radial-gradient(ellipse at 50% 85%, rgba(227,27,35,0.06) 0%, transparent 50%);
+}
+
+.parallax-layer--dots {
+  background-image: radial-gradient(circle, rgba(0,133,63,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ─── Glassmorphism Utility ─── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-light {
+  background: rgba(15, 21, 15, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,133,63,0.08);
+}
+
+/* ─── Typography ─── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+a {
+  color: var(--sn-green);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--green-soft);
+}
+
+/* ─── Selection & Scrollbar ─── */
+::selection {
+  background: rgba(0, 133, 63, 0.3);
+  color: var(--text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 133, 63, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 133, 63, 0.45);
+}
+
+/* ─── Utility ─── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--sn-green), var(--sn-yellow), var(--sn-red));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-green { color: var(--sn-green) !important; }
+.text-yellow { color: var(--sn-yellow) !important; }
+.text-red { color: var(--sn-red) !important; }
+
+.border-flag {
+  border-image: linear-gradient(to right, var(--sn-green), var(--sn-yellow), var(--sn-red)) 1;
+}
+
+/* ─── Keyframes ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,133,63,0.2); }
+  50% { box-shadow: 0 0 35px rgba(0,133,63,0.4); }
+}
+
+@keyframes rotate3d {
+  0% { transform: rotateY(0deg) rotateX(5deg); }
+  100% { transform: rotateY(360deg) rotateX(5deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Bootstrap Overrides (dark theme) ─── */
+.card { background: var(--glass-bg); border-color: var(--glass-border); }
+.btn-success { background-color: var(--sn-green); border-color: var(--sn-green); }
+.btn-outline-success { color: var(--sn-green); border-color: var(--sn-green); }
+.btn-outline-success:hover { background-color: var(--sn-green); color: #fff; }
+.btn-warning { background-color: var(--sn-yellow); border-color: var(--sn-yellow); color: #000; }
+.btn-danger { background-color: var(--sn-red); border-color: var(--sn-red); }
+.bg-dark { background-color: var(--bg-tertiary) !important; }
+.border-success { border-color: var(--sn-green) !important; }
+.text-success { color: var(--sn-green) !important; }
+.badge.bg-success { background-color: var(--sn-green) !important; }
