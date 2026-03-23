@@ -112,6 +112,9 @@
     var slideElements = [];
     var collageAnimStarted = false;
 
+    /* ─── CUSTOM SECTIONS ─── */
+    var CUSTOM_SECTIONS = [];
+
     /* ─── GOLDEN CIRCLE DATA ─── */
     var GOLDEN_CIRCLE = {
         why: {
@@ -175,10 +178,12 @@
         renderMoodboardCollage();
         renderInsights();
         renderCreativeProcess();
+        renderCustomSections();
         renderResearch();
         renderPDFs();
         renderRefs();
         renderTeam();
+        restoreSectionOrder();
         initTabs();
         initSideNav();
         initPresentationControls();
@@ -257,11 +262,34 @@
     }
 
     /* ═══════════════════════════════════
+       SCROLL ANIMATIONS & ORDER
+       ═══════════════════════════════════ */
+    function restoreSectionOrder() {
+        var order = localStorage.getItem('sn3_section_order');
+        if (!order) return;
+        try {
+            var ids = JSON.parse(order);
+            var container = document.getElementById('panel-presentation');
+            if (!container) return;
+            ids.forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && el.parentElement === container) {
+                    container.appendChild(el);
+                }
+            });
+        } catch (e) {}
+    }
+
+    /* ═══════════════════════════════════
        PERSISTENCE
        ═══════════════════════════════════ */
     function loadSavedData() {
         try { var t = localStorage.getItem('sn3_topics'); if (t) TOPICS = JSON.parse(t); } catch (e) {}
         try { var m = localStorage.getItem('sn3_tiles'); if (m) MOODBOARD_TILES = JSON.parse(m); } catch (e) {}
+        GOLDEN_CIRCLE = getGC();
+        PROBLEM_DATA = getProblem();
+        INSIGHTS_DATA = getInsights();
+        PROCESS_STEPS = getProcess();
     }
     function saveTopics() { localStorage.setItem('sn3_topics', JSON.stringify(TOPICS)); }
     function saveTiles() { localStorage.setItem('sn3_tiles', JSON.stringify(MOODBOARD_TILES)); }
@@ -269,6 +297,17 @@
     function saveRefs(refs) { localStorage.setItem('sn3_refs', JSON.stringify(refs)); }
     function getTeam() { try { var t = localStorage.getItem('sn3_team'); return t ? JSON.parse(t) : DEFAULT_TEAM.slice(); } catch (e) { return DEFAULT_TEAM.slice(); } }
     function saveTeam(team) { localStorage.setItem('sn3_team', JSON.stringify(team)); }
+    
+    function getGC() { try { var d = localStorage.getItem('sn3_gc'); return d ? JSON.parse(d) : GOLDEN_CIRCLE; } catch (e) { return GOLDEN_CIRCLE; } }
+    function saveGC() { localStorage.setItem('sn3_gc', JSON.stringify(GOLDEN_CIRCLE)); }
+    function getProblem() { try { var d = localStorage.getItem('sn3_problem'); return d ? JSON.parse(d) : PROBLEM_DATA; } catch (e) { return PROBLEM_DATA; } }
+    function saveProblem() { localStorage.setItem('sn3_problem', JSON.stringify(PROBLEM_DATA)); }
+    function getInsights() { try { var d = localStorage.getItem('sn3_insights'); return d ? JSON.parse(d) : INSIGHTS_DATA; } catch (e) { return INSIGHTS_DATA; } }
+    function saveInsights() { localStorage.setItem('sn3_insights', JSON.stringify(INSIGHTS_DATA)); }
+    function getProcess() { try { var d = localStorage.getItem('sn3_process'); return d ? JSON.parse(d) : PROCESS_STEPS; } catch (e) { return PROCESS_STEPS; } }
+    function saveProcess() { localStorage.setItem('sn3_process', JSON.stringify(PROCESS_STEPS)); }
+    function getCustomSections() { try { var d = localStorage.getItem('sn3_custom_sec'); return d ? JSON.parse(d) : []; } catch (e) { return []; } }
+    function saveCustomSections() { localStorage.setItem('sn3_custom_sec', JSON.stringify(CUSTOM_SECTIONS)); }
 
     /* ─── MOODBOARD COLLAGE ─── */
     function renderMoodboardCollage() {
@@ -347,9 +386,9 @@
             el.setAttribute('data-aos', 'zoom-in');
             el.setAttribute('data-aos-delay', (i * 150));
             el.innerHTML =
-                '<div class="gc-ring__keyword">' + esc(data.keyword) + '</div>' +
-                '<div class="gc-ring__title">' + esc(data.title) + '</div>' +
-                '<div class="gc-ring__text">' + esc(data.text) + '</div>';
+                '<div class="gc-ring__keyword" ' + (isAdmin ? 'contenteditable="true" data-gc="' + key + '" data-field="keyword"' : '') + '>' + esc(data.keyword) + '</div>' +
+                '<div class="gc-ring__title" ' + (isAdmin ? 'contenteditable="true" data-gc="' + key + '" data-field="title"' : '') + '>' + esc(data.title) + '</div>' +
+                '<div class="gc-ring__text" ' + (isAdmin ? 'contenteditable="true" data-gc="' + key + '" data-field="text"' : '') + '>' + esc(data.text) + '</div>';
             container.appendChild(el);
         });
     }
@@ -360,12 +399,12 @@
         if (!container) return;
         container.innerHTML =
             '<div class="problem-card" data-aos="fade-up">' +
-                '<div class="problem-card__tag">' + esc(PROBLEM_DATA.tag) + '</div>' +
-                '<h2 class="problem-card__title">' + esc(PROBLEM_DATA.title) + '</h2>' +
-                '<p class="problem-card__text">' + esc(PROBLEM_DATA.text) + '</p>' +
+                '<div class="problem-card__tag" ' + (isAdmin ? 'contenteditable="true" data-problem="tag"' : '') + '>' + esc(PROBLEM_DATA.tag) + '</div>' +
+                '<h2 class="problem-card__title" ' + (isAdmin ? 'contenteditable="true" data-problem="title"' : '') + '>' + esc(PROBLEM_DATA.title) + '</h2>' +
+                '<p class="problem-card__text" ' + (isAdmin ? 'contenteditable="true" data-problem="text"' : '') + '>' + esc(PROBLEM_DATA.text) + '</p>' +
                 '<div class="problem-mission">' +
-                    '<div class="problem-mission__tag">' + esc(PROBLEM_DATA.missionTag) + '</div>' +
-                    '<p class="problem-mission__text">' + esc(PROBLEM_DATA.mission) + '</p>' +
+                    '<div class="problem-mission__tag" ' + (isAdmin ? 'contenteditable="true" data-problem="missionTag"' : '') + '>' + esc(PROBLEM_DATA.missionTag) + '</div>' +
+                    '<p class="problem-mission__text" ' + (isAdmin ? 'contenteditable="true" data-problem="mission"' : '') + '>' + esc(PROBLEM_DATA.mission) + '</p>' +
                 '</div>' +
             '</div>';
     }
@@ -377,17 +416,17 @@
 
         var quoteHtml =
             '<div class="insights-quote" data-aos="fade-up">' +
-                '<div class="insights-quote__text">' + esc(INSIGHTS_DATA.quote.text) + '</div>' +
-                '<div class="insights-quote__author">— ' + esc(INSIGHTS_DATA.quote.author) + '</div>' +
+                '<div class="insights-quote__text" ' + (isAdmin ? 'contenteditable="true" data-insight="quote" data-field="text"' : '') + '>' + esc(INSIGHTS_DATA.quote.text) + '</div>' +
+                '<div class="insights-quote__author" ' + (isAdmin ? 'contenteditable="true" data-insight="quote" data-field="author"' : '') + '>&mdash; ' + esc(INSIGHTS_DATA.quote.author).replace(/^—\s*/, '') + '</div>' +
             '</div>';
 
         var cardsHtml = '<div class="insights-grid">';
         INSIGHTS_DATA.cards.forEach(function (card, i) {
             cardsHtml +=
                 '<div class="insight-card" data-aos="fade-up" data-aos-delay="' + (i * 100) + '">' +
-                    '<div class="insight-card__icon">' + card.icon + '</div>' +
-                    '<div class="insight-card__title">' + esc(card.title) + '</div>' +
-                    '<div class="insight-card__text">' + esc(card.text) + '</div>' +
+                    '<div class="insight-card__icon" ' + (isAdmin ? 'contenteditable="true" data-insight="' + i + '" data-field="icon"' : '') + '>' + card.icon + '</div>' +
+                    '<div class="insight-card__title" ' + (isAdmin ? 'contenteditable="true" data-insight="' + i + '" data-field="title"' : '') + '>' + esc(card.title) + '</div>' +
+                    '<div class="insight-card__text" ' + (isAdmin ? 'contenteditable="true" data-insight="' + i + '" data-field="text"' : '') + '>' + esc(card.text) + '</div>' +
                 '</div>';
         });
         cardsHtml += '</div>';
@@ -409,10 +448,10 @@
         PROCESS_STEPS.forEach(function (step, i) {
             html +=
                 '<div class="process-step" data-aos="fade-up" data-aos-delay="' + (i * 120) + '">' +
-                    '<div class="process-step__number">' + step.num + '</div>' +
+                    '<div class="process-step__number" ' + (isAdmin ? 'contenteditable="true" data-process="' + i + '" data-field="num"' : '') + '>' + step.num + '</div>' +
                     (i < PROCESS_STEPS.length - 1 ? '<div class="process-step__connector"></div>' : '') +
-                    '<div class="process-step__title">' + esc(step.title) + '</div>' +
-                    '<div class="process-step__desc">' + esc(step.desc) + '</div>' +
+                    '<div class="process-step__title" ' + (isAdmin ? 'contenteditable="true" data-process="' + i + '" data-field="title"' : '') + '>' + esc(step.title) + '</div>' +
+                    '<div class="process-step__desc" ' + (isAdmin ? 'contenteditable="true" data-process="' + i + '" data-field="desc"' : '') + '>' + esc(step.desc) + '</div>' +
                 '</div>';
         });
         html += '</div>';
@@ -805,6 +844,81 @@
             });
         });
 
+        // Golden Circle Edits
+        document.querySelectorAll('[data-gc][data-field]').forEach(function (el) {
+            el.addEventListener('blur', function () {
+                var key = el.dataset.gc;
+                var field = el.dataset.field;
+                if (GOLDEN_CIRCLE[key]) { GOLDEN_CIRCLE[key][field] = el.innerText; saveGC(); }
+            });
+        });
+
+        // Problem Edits
+        document.querySelectorAll('[data-problem]').forEach(function (el) {
+            el.addEventListener('blur', function () {
+                var field = el.dataset.problem;
+                if (PROBLEM_DATA[field] !== undefined) { PROBLEM_DATA[field] = el.innerText; saveProblem(); }
+            });
+        });
+
+        // Insights Edits
+        document.querySelectorAll('[data-insight][data-field]').forEach(function (el) {
+            el.addEventListener('blur', function () {
+                var key = el.dataset.insight;
+                var field = el.dataset.field;
+                if (key === 'quote') {
+                    INSIGHTS_DATA.quote[field] = el.innerText;
+                } else {
+                    var idx = parseInt(key);
+                    if (!isNaN(idx) && INSIGHTS_DATA.cards[idx]) { INSIGHTS_DATA.cards[idx][field] = el.innerText; }
+                }
+                saveInsights();
+            });
+        });
+
+        // Creative Process Edits
+        document.querySelectorAll('[data-process][data-field]').forEach(function (el) {
+            el.addEventListener('blur', function () {
+                var idx = parseInt(el.dataset.process);
+                var field = el.dataset.field;
+                if (!isNaN(idx) && PROCESS_STEPS[idx]) { PROCESS_STEPS[idx][field] = el.innerText; saveProcess(); }
+            });
+        });
+
+        // Setup SortableJS for Drag-and-Drop section reordering
+        if (typeof Sortable !== 'undefined') {
+            var presContainer = document.getElementById('panel-presentation');
+            if (presContainer) {
+                Sortable.create(presContainer, {
+                    animation: 150,
+                    filter: '#hero, #section-download',
+                    preventOnFilter: false,
+                    onEnd: function () {
+                        var ids = [];
+                        Array.from(presContainer.children).forEach(function (child) {
+                            if (child.id) ids.push(child.id);
+                        });
+                        localStorage.setItem('sn3_section_order', JSON.stringify(ids));
+                        
+                        // Fix for AOS animations breaking on DOM reorder
+                        if (typeof AOS !== 'undefined') {
+                           setTimeout(function() { AOS.refresh(); }, 100);
+                        }
+                    }
+                });
+            }
+        }
+
+
+        // Custom Section Edits
+        document.querySelectorAll('[data-custom][data-field]').forEach(function (el) {
+            el.addEventListener('blur', function () {
+                var idx = parseInt(el.dataset.custom);
+                var field = el.dataset.field;
+                if (!isNaN(idx) && CUSTOM_SECTIONS[idx]) { CUSTOM_SECTIONS[idx][field] = el.innerText; saveCustomSections(); }
+            });
+        });
+
         ['hero-title', 'hero-subtitle'].forEach(function (id) {
             var el = document.getElementById(id);
             if (!el) return;
@@ -1039,6 +1153,21 @@
             addText(step.desc);
         });
 
+        // === SEÇÕES CUSTOMIZADAS ===
+        if (CUSTOM_SECTIONS.length > 0) {
+            doc.addPage(); y = mT;
+            addTitle('SEÇÕES ADICIONAIS');
+            CUSTOM_SECTIONS.forEach(function (sec) {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                checkPage(lineH);
+                doc.text(sec.title.toUpperCase(), mL, y);
+                y += lineH + 2;
+                addText(sec.text);
+                addSpacing(4);
+            });
+        }
+
         // === 8. REFERÊNCIAS (ABNT) ===
         addSpacing(10);
         addTitle('8. REFERÊNCIAS');
@@ -1060,7 +1189,22 @@
     function addMember() { var n = prompt('Nome:'); if (!n) return; var r = prompt('Função:') || 'Membro'; var team = getTeam(); team.push({ name: n, role: r }); saveTeam(team); renderTeam(); if (typeof lucide !== 'undefined') lucide.createIcons(); }
     function resetAll() { if (!confirm('Resetar TODOS os dados?')) return; localStorage.clear(); window.location.reload(); }
 
+    function removeCustomSection(idx) {
+        if (!confirm('Remover esta seção customizada?')) return;
+        CUSTOM_SECTIONS.splice(idx, 1);
+        saveCustomSections();
+        window.location.reload(); 
+    }
+    
+    function addCustomSection() {
+        var t = prompt('Título da Seção Customizada:'); if (!t) return;
+        var txt = prompt('Texto da Seção:'); if (!txt) return;
+        CUSTOM_SECTIONS.push({ title: t, text: txt });
+        saveCustomSections();
+        window.location.reload(); 
+    }
+
     /* ──── PUBLIC API ──── */
-    window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, resetAll: resetAll };
+    window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, resetAll: resetAll, addCustomSection: addCustomSection, removeCustomSection: removeCustomSection };
 
 })();

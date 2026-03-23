@@ -49,12 +49,17 @@
 
     function initControls() {
         var addTileBtn = document.getElementById('add-tile-btn');
+        var addSectionBtn = document.getElementById('add-section-btn');
         var addRefBtn = document.getElementById('add-ref-btn');
         var addMemberBtn = document.getElementById('add-member-btn');
         var resetBtn = document.getElementById('reset-data-btn');
 
         if (addTileBtn) addTileBtn.addEventListener('click', function () {
             if (window.SenegalApp) window.SenegalApp.addTile();
+        });
+
+        if (addSectionBtn) addSectionBtn.addEventListener('click', function () {
+            if (window.SenegalApp) window.SenegalApp.addCustomSection();
         });
 
         if (addRefBtn) addRefBtn.addEventListener('click', function () {
