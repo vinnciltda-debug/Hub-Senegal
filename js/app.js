@@ -112,9 +112,6 @@
     var slideElements = [];
     var collageAnimStarted = false;
 
-    /* ─── CUSTOM SECTIONS ─── */
-    var CUSTOM_SECTIONS = [];
-
     /* ─── GOLDEN CIRCLE DATA ─── */
     var GOLDEN_CIRCLE = {
         why: {
@@ -166,11 +163,14 @@
         { num: '05', title: 'Campanha', desc: 'Produção de peças visuais e apresentação baseadas no moodboard' }
     ];
 
+    var CUSTOM_SECTIONS = [];
+
     /* ═══════════════════════════════════
        INIT
        ═══════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', function () {
-        loadSavedData();
+        loadSavedData(); // Loads data variables, but doesn't apply order yet because elements aren't rendered
+
         renderTeamPresentation();
         renderTopics();
         renderGoldenCircle();
@@ -183,7 +183,13 @@
         renderPDFs();
         renderRefs();
         renderTeam();
-        restoreSectionOrder();
+
+        // APPLY ORDER NOW THAT ELEMENTS ARE IN DOM
+        try {
+            var so = localStorage.getItem('sn3_order');
+            if (so) applySectionOrder(JSON.parse(so));
+        } catch(e) {}
+
         initTabs();
         initSideNav();
         initPresentationControls();
@@ -262,52 +268,39 @@
     }
 
     /* ═══════════════════════════════════
-       SCROLL ANIMATIONS & ORDER
-       ═══════════════════════════════════ */
-    function restoreSectionOrder() {
-        var order = localStorage.getItem('sn3_section_order');
-        if (!order) return;
-        try {
-            var ids = JSON.parse(order);
-            var container = document.getElementById('panel-presentation');
-            if (!container) return;
-            ids.forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el && el.parentElement === container) {
-                    container.appendChild(el);
-                }
-            });
-        } catch (e) {}
-    }
-
-    /* ═══════════════════════════════════
        PERSISTENCE
        ═══════════════════════════════════ */
     function loadSavedData() {
         try { var t = localStorage.getItem('sn3_topics'); if (t) TOPICS = JSON.parse(t); } catch (e) {}
         try { var m = localStorage.getItem('sn3_tiles'); if (m) MOODBOARD_TILES = JSON.parse(m); } catch (e) {}
-        GOLDEN_CIRCLE = getGC();
-        PROBLEM_DATA = getProblem();
-        INSIGHTS_DATA = getInsights();
-        PROCESS_STEPS = getProcess();
+        try { var gc = localStorage.getItem('sn3_gc'); if (gc) GOLDEN_CIRCLE = JSON.parse(gc); } catch (e) {}
+        try { var pr = localStorage.getItem('sn3_prob'); if (pr) PROBLEM_DATA = JSON.parse(pr); } catch (e) {}
+        try { var ins = localStorage.getItem('sn3_ins'); if (ins) INSIGHTS_DATA = JSON.parse(ins); } catch (e) {}
+        try { var ps = localStorage.getItem('sn3_proc'); if (ps) PROCESS_STEPS = JSON.parse(ps); } catch (e) {}
+        try { var cs = localStorage.getItem('sn3_custom'); if (cs) CUSTOM_SECTIONS = JSON.parse(cs); } catch (e) {}
     }
     function saveTopics() { localStorage.setItem('sn3_topics', JSON.stringify(TOPICS)); }
     function saveTiles() { localStorage.setItem('sn3_tiles', JSON.stringify(MOODBOARD_TILES)); }
+    function saveGC() { localStorage.setItem('sn3_gc', JSON.stringify(GOLDEN_CIRCLE)); }
+    function saveProb() { localStorage.setItem('sn3_prob', JSON.stringify(PROBLEM_DATA)); }
+    function saveIns() { localStorage.setItem('sn3_ins', JSON.stringify(INSIGHTS_DATA)); }
+    function saveProc() { localStorage.setItem('sn3_proc', JSON.stringify(PROCESS_STEPS)); }
+    function saveCustom() { localStorage.setItem('sn3_custom', JSON.stringify(CUSTOM_SECTIONS)); }
+    function saveOrder(order) { localStorage.setItem('sn3_order', JSON.stringify(order)); }
+
+    function applySectionOrder(order) {
+        var container = document.getElementById('panel-presentation');
+        if (!container || !order || !order.length) return;
+        order.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) container.appendChild(el);
+        });
+    }
+
     function getRefs() { try { var r = localStorage.getItem('sn3_refs'); return r ? JSON.parse(r) : DEFAULT_REFS.slice(); } catch (e) { return DEFAULT_REFS.slice(); } }
     function saveRefs(refs) { localStorage.setItem('sn3_refs', JSON.stringify(refs)); }
     function getTeam() { try { var t = localStorage.getItem('sn3_team'); return t ? JSON.parse(t) : DEFAULT_TEAM.slice(); } catch (e) { return DEFAULT_TEAM.slice(); } }
     function saveTeam(team) { localStorage.setItem('sn3_team', JSON.stringify(team)); }
-    
-    function getGC() { try { var d = localStorage.getItem('sn3_gc'); return d ? JSON.parse(d) : GOLDEN_CIRCLE; } catch (e) { return GOLDEN_CIRCLE; } }
-    function saveGC() { localStorage.setItem('sn3_gc', JSON.stringify(GOLDEN_CIRCLE)); }
-    function getProblem() { try { var d = localStorage.getItem('sn3_problem'); return d ? JSON.parse(d) : PROBLEM_DATA; } catch (e) { return PROBLEM_DATA; } }
-    function saveProblem() { localStorage.setItem('sn3_problem', JSON.stringify(PROBLEM_DATA)); }
-    function getInsights() { try { var d = localStorage.getItem('sn3_insights'); return d ? JSON.parse(d) : INSIGHTS_DATA; } catch (e) { return INSIGHTS_DATA; } }
-    function saveInsights() { localStorage.setItem('sn3_insights', JSON.stringify(INSIGHTS_DATA)); }
-    function getProcess() { try { var d = localStorage.getItem('sn3_process'); return d ? JSON.parse(d) : PROCESS_STEPS; } catch (e) { return PROCESS_STEPS; } }
-    function saveProcess() { localStorage.setItem('sn3_process', JSON.stringify(PROCESS_STEPS)); }
-    function getCustomSections() { try { var d = localStorage.getItem('sn3_custom_sec'); return d ? JSON.parse(d) : []; } catch (e) { return []; } }
-    function saveCustomSections() { localStorage.setItem('sn3_custom_sec', JSON.stringify(CUSTOM_SECTIONS)); }
 
     /* ─── MOODBOARD COLLAGE ─── */
     function renderMoodboardCollage() {
@@ -367,8 +360,8 @@
             el.setAttribute('data-aos-delay', (i * 100));
             el.innerHTML =
                 '<div class="team-pres-avatar">' + m.name.charAt(0).toUpperCase() + '</div>' +
-                '<div class="team-pres-name">' + esc(m.name) + '</div>' +
-                '<div class="team-pres-role">' + esc(m.role) + '</div>';
+                '<div class="team-pres-name" ' + (isAdmin ? 'contenteditable="true" data-member="' + i + '" data-field="name"' : '') + '>' + esc(m.name) + '</div>' +
+                '<div class="team-pres-role" ' + (isAdmin ? 'contenteditable="true" data-member="' + i + '" data-field="role"' : '') + '>' + esc(m.role) + '</div>';
             grid.appendChild(el);
         });
     }
@@ -386,6 +379,7 @@
             el.setAttribute('data-aos', 'zoom-in');
             el.setAttribute('data-aos-delay', (i * 150));
             el.innerHTML =
+            el.innerHTML =
                 '<div class="gc-ring__keyword" ' + (isAdmin ? 'contenteditable="true" data-gc="' + key + '" data-field="keyword"' : '') + '>' + esc(data.keyword) + '</div>' +
                 '<div class="gc-ring__title" ' + (isAdmin ? 'contenteditable="true" data-gc="' + key + '" data-field="title"' : '') + '>' + esc(data.title) + '</div>' +
                 '<div class="gc-ring__text" ' + (isAdmin ? 'contenteditable="true" data-gc="' + key + '" data-field="text"' : '') + '>' + esc(data.text) + '</div>';
@@ -399,12 +393,12 @@
         if (!container) return;
         container.innerHTML =
             '<div class="problem-card" data-aos="fade-up">' +
-                '<div class="problem-card__tag" ' + (isAdmin ? 'contenteditable="true" data-problem="tag"' : '') + '>' + esc(PROBLEM_DATA.tag) + '</div>' +
-                '<h2 class="problem-card__title" ' + (isAdmin ? 'contenteditable="true" data-problem="title"' : '') + '>' + esc(PROBLEM_DATA.title) + '</h2>' +
-                '<p class="problem-card__text" ' + (isAdmin ? 'contenteditable="true" data-problem="text"' : '') + '>' + esc(PROBLEM_DATA.text) + '</p>' +
+                '<div class="problem-card__tag" ' + (isAdmin ? 'contenteditable="true" data-prob="tag"' : '') + '>' + esc(PROBLEM_DATA.tag) + '</div>' +
+                '<h2 class="problem-card__title" ' + (isAdmin ? 'contenteditable="true" data-prob="title"' : '') + '>' + esc(PROBLEM_DATA.title) + '</h2>' +
+                '<p class="problem-card__text" ' + (isAdmin ? 'contenteditable="true" data-prob="text"' : '') + '>' + esc(PROBLEM_DATA.text) + '</p>' +
                 '<div class="problem-mission">' +
-                    '<div class="problem-mission__tag" ' + (isAdmin ? 'contenteditable="true" data-problem="missionTag"' : '') + '>' + esc(PROBLEM_DATA.missionTag) + '</div>' +
-                    '<p class="problem-mission__text" ' + (isAdmin ? 'contenteditable="true" data-problem="mission"' : '') + '>' + esc(PROBLEM_DATA.mission) + '</p>' +
+                    '<div class="problem-mission__tag" ' + (isAdmin ? 'contenteditable="true" data-prob="missionTag"' : '') + '>' + esc(PROBLEM_DATA.missionTag) + '</div>' +
+                    '<p class="problem-mission__text" ' + (isAdmin ? 'contenteditable="true" data-prob="mission"' : '') + '>' + esc(PROBLEM_DATA.mission) + '</p>' +
                 '</div>' +
             '</div>';
     }
@@ -416,17 +410,17 @@
 
         var quoteHtml =
             '<div class="insights-quote" data-aos="fade-up">' +
-                '<div class="insights-quote__text" ' + (isAdmin ? 'contenteditable="true" data-insight="quote" data-field="text"' : '') + '>' + esc(INSIGHTS_DATA.quote.text) + '</div>' +
-                '<div class="insights-quote__author" ' + (isAdmin ? 'contenteditable="true" data-insight="quote" data-field="author"' : '') + '>&mdash; ' + esc(INSIGHTS_DATA.quote.author).replace(/^—\s*/, '') + '</div>' +
+                '<div class="insights-quote__text" ' + (isAdmin ? 'contenteditable="true" data-ins="quote" data-field="text"' : '') + '>' + esc(INSIGHTS_DATA.quote.text) + '</div>' +
+                '<div class="insights-quote__author" ' + (isAdmin ? 'contenteditable="true" data-ins="quote" data-field="author"' : '') + '>— ' + esc(INSIGHTS_DATA.quote.author) + '</div>' +
             '</div>';
 
         var cardsHtml = '<div class="insights-grid">';
         INSIGHTS_DATA.cards.forEach(function (card, i) {
             cardsHtml +=
                 '<div class="insight-card" data-aos="fade-up" data-aos-delay="' + (i * 100) + '">' +
-                    '<div class="insight-card__icon" ' + (isAdmin ? 'contenteditable="true" data-insight="' + i + '" data-field="icon"' : '') + '>' + card.icon + '</div>' +
-                    '<div class="insight-card__title" ' + (isAdmin ? 'contenteditable="true" data-insight="' + i + '" data-field="title"' : '') + '>' + esc(card.title) + '</div>' +
-                    '<div class="insight-card__text" ' + (isAdmin ? 'contenteditable="true" data-insight="' + i + '" data-field="text"' : '') + '>' + esc(card.text) + '</div>' +
+                    '<div class="insight-card__icon" ' + (isAdmin ? 'contenteditable="true" data-ins-card="' + i + '" data-field="icon"' : '') + '>' + card.icon + '</div>' +
+                    '<div class="insight-card__title" ' + (isAdmin ? 'contenteditable="true" data-ins-card="' + i + '" data-field="title"' : '') + '>' + esc(card.title) + '</div>' +
+                    '<div class="insight-card__text" ' + (isAdmin ? 'contenteditable="true" data-ins-card="' + i + '" data-field="text"' : '') + '>' + esc(card.text) + '</div>' +
                 '</div>';
         });
         cardsHtml += '</div>';
@@ -448,15 +442,43 @@
         PROCESS_STEPS.forEach(function (step, i) {
             html +=
                 '<div class="process-step" data-aos="fade-up" data-aos-delay="' + (i * 120) + '">' +
-                    '<div class="process-step__number" ' + (isAdmin ? 'contenteditable="true" data-process="' + i + '" data-field="num"' : '') + '>' + step.num + '</div>' +
+                    '<div class="process-step__number" ' + (isAdmin ? 'contenteditable="true" data-proc="' + i + '" data-field="num"' : '') + '>' + step.num + '</div>' +
                     (i < PROCESS_STEPS.length - 1 ? '<div class="process-step__connector"></div>' : '') +
-                    '<div class="process-step__title" ' + (isAdmin ? 'contenteditable="true" data-process="' + i + '" data-field="title"' : '') + '>' + esc(step.title) + '</div>' +
-                    '<div class="process-step__desc" ' + (isAdmin ? 'contenteditable="true" data-process="' + i + '" data-field="desc"' : '') + '>' + esc(step.desc) + '</div>' +
+                    '<div class="process-step__title" ' + (isAdmin ? 'contenteditable="true" data-proc="' + i + '" data-field="title"' : '') + '>' + esc(step.title) + '</div>' +
+                    '<div class="process-step__desc" ' + (isAdmin ? 'contenteditable="true" data-proc="' + i + '" data-field="desc"' : '') + '>' + esc(step.desc) + '</div>' +
                 '</div>';
         });
         html += '</div>';
 
         container.innerHTML = html;
+    }
+
+    /* ─── CUSTOM SECTIONS ─── */
+    function renderCustomSections() {
+        var container = document.getElementById('custom-sections');
+        if (!container) return;
+        container.innerHTML = '';
+        CUSTOM_SECTIONS.forEach(function (sec, i) {
+            var el = document.createElement('section');
+            el.className = 'pres-section custom-section';
+            el.id = 'custom-sec-' + i;
+            el.innerHTML =
+                '<div class="container">' +
+                    '<div class="section-label">' +
+                        '<span class="label-line"></span>' +
+                        '<span class="label-text" ' + (isAdmin ? 'contenteditable="true" data-custom="' + i + '" data-field="label"' : '') + '>' + esc(sec.label) + '</span>' +
+                        '<span class="label-line"></span>' +
+                    '</div>' +
+                    '<div class="text-center mb-4">' +
+                        '<h2 class="pres-title" ' + (isAdmin ? 'contenteditable="true" data-custom="' + i + '" data-field="title"' : '') + '>' + esc(sec.title) + '</h2>' +
+                    '</div>' +
+                    '<div class="custom-content-box" style="max-width:800px;margin:0 auto;color:var(--text-secondary);line-height:1.8;font-size:1.1rem;text-align:center;" ' + (isAdmin ? 'contenteditable="true" data-custom="' + i + '" data-field="content"' : '') + '>' +
+                        esc(sec.content) +
+                    '</div>' +
+                    (isAdmin ? '<div class="text-center mt-3"><button class="btn btn-sm btn-outline-danger" onclick="SenegalApp.removeCustom(' + i + ')">Remover Seção</button></div>' : '') +
+                '</div>';
+            container.appendChild(el);
+        });
     }
 
     function hexToRgba(hex, alpha) {
@@ -478,7 +500,7 @@
 
         TOPICS.forEach(function (topic, i) {
             var section = document.createElement('section');
-            section.className = 'topic-section';
+            section.className = 'topic-section pres-section';
             section.id = topic.id;
 
             var statsHtml = '<div class="topic-stats">';
@@ -844,81 +866,6 @@
             });
         });
 
-        // Golden Circle Edits
-        document.querySelectorAll('[data-gc][data-field]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var key = el.dataset.gc;
-                var field = el.dataset.field;
-                if (GOLDEN_CIRCLE[key]) { GOLDEN_CIRCLE[key][field] = el.innerText; saveGC(); }
-            });
-        });
-
-        // Problem Edits
-        document.querySelectorAll('[data-problem]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var field = el.dataset.problem;
-                if (PROBLEM_DATA[field] !== undefined) { PROBLEM_DATA[field] = el.innerText; saveProblem(); }
-            });
-        });
-
-        // Insights Edits
-        document.querySelectorAll('[data-insight][data-field]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var key = el.dataset.insight;
-                var field = el.dataset.field;
-                if (key === 'quote') {
-                    INSIGHTS_DATA.quote[field] = el.innerText;
-                } else {
-                    var idx = parseInt(key);
-                    if (!isNaN(idx) && INSIGHTS_DATA.cards[idx]) { INSIGHTS_DATA.cards[idx][field] = el.innerText; }
-                }
-                saveInsights();
-            });
-        });
-
-        // Creative Process Edits
-        document.querySelectorAll('[data-process][data-field]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var idx = parseInt(el.dataset.process);
-                var field = el.dataset.field;
-                if (!isNaN(idx) && PROCESS_STEPS[idx]) { PROCESS_STEPS[idx][field] = el.innerText; saveProcess(); }
-            });
-        });
-
-        // Setup SortableJS for Drag-and-Drop section reordering
-        if (typeof Sortable !== 'undefined') {
-            var presContainer = document.getElementById('panel-presentation');
-            if (presContainer) {
-                Sortable.create(presContainer, {
-                    animation: 150,
-                    filter: '#hero, #section-download',
-                    preventOnFilter: false,
-                    onEnd: function () {
-                        var ids = [];
-                        Array.from(presContainer.children).forEach(function (child) {
-                            if (child.id) ids.push(child.id);
-                        });
-                        localStorage.setItem('sn3_section_order', JSON.stringify(ids));
-                        
-                        // Fix for AOS animations breaking on DOM reorder
-                        if (typeof AOS !== 'undefined') {
-                           setTimeout(function() { AOS.refresh(); }, 100);
-                        }
-                    }
-                });
-            }
-        }
-
-
-        // Custom Section Edits
-        document.querySelectorAll('[data-custom][data-field]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var idx = parseInt(el.dataset.custom);
-                var field = el.dataset.field;
-                if (!isNaN(idx) && CUSTOM_SECTIONS[idx]) { CUSTOM_SECTIONS[idx][field] = el.innerText; saveCustomSections(); }
-            });
-        });
-
         ['hero-title', 'hero-subtitle'].forEach(function (id) {
             var el = document.getElementById(id);
             if (!el) return;
@@ -926,6 +873,58 @@
             var saved = localStorage.getItem('sn3_' + id);
             if (saved) el.innerText = saved;
         });
+
+        // New editable handlers
+        document.querySelectorAll('[data-gc]').forEach(function(el) {
+            el.addEventListener('blur', function() {
+                var key = el.dataset.gc;
+                var field = el.dataset.field;
+                if (GOLDEN_CIRCLE[key]) { GOLDEN_CIRCLE[key][field] = el.innerText; saveGC(); }
+            });
+        });
+
+        document.querySelectorAll('[data-prob]').forEach(function(el) {
+            el.addEventListener('blur', function() {
+                var field = el.dataset.prob;
+                PROBLEM_DATA[field] = el.innerText;
+                saveProb();
+            });
+        });
+
+        document.querySelectorAll('[data-ins]').forEach(function(el) {
+            el.addEventListener('blur', function() {
+                var field = el.dataset.field;
+                INSIGHTS_DATA.quote[field] = el.innerText;
+                saveIns();
+            });
+        });
+
+        document.querySelectorAll('[data-ins-card]').forEach(function(el) {
+            el.addEventListener('blur', function() {
+                var idx = parseInt(el.dataset.insCard);
+                var field = el.dataset.field;
+                if (INSIGHTS_DATA.cards[idx]) { INSIGHTS_DATA.cards[idx][field] = el.innerText; saveIns(); }
+            });
+        });
+
+        document.querySelectorAll('[data-proc]').forEach(function(el) {
+            el.addEventListener('blur', function() {
+                var idx = parseInt(el.dataset.proc);
+                var field = el.dataset.field;
+                if (PROCESS_STEPS[idx]) { PROCESS_STEPS[idx][field] = el.innerText; saveProc(); }
+            });
+        });
+
+        document.querySelectorAll('[data-custom]').forEach(function(el) {
+            el.addEventListener('blur', function() {
+                var idx = parseInt(el.dataset.custom);
+                var field = el.dataset.field;
+                if (CUSTOM_SECTIONS[idx]) { CUSTOM_SECTIONS[idx][field] = el.innerText; saveCustom(); }
+            });
+        });
+
+        // Section Sorting
+        initSectionSorting();
 
         var fileInput = document.getElementById('admin-file-input') || createFileInput();
         var targetTopic = -1, targetTile = -1;
@@ -955,6 +954,25 @@
                 fileInput.value = '';
             };
             reader.readAsDataURL(fileInput.files[0]);
+        });
+    }
+
+    function initSectionSorting() {
+        if (!isAdmin || typeof Sortable === 'undefined') return;
+        var container = document.getElementById('panel-presentation');
+        if (!container) return;
+
+        Sortable.create(container, {
+            animation: 150,
+            draggable: '.pres-section',
+            onEnd: function() {
+                var order = Array.from(container.children)
+                    .filter(function(el) { return el.id; })
+                    .map(function(el) { return el.id; });
+                saveOrder(order);
+                initSideNav(); // Refresh dot labels/order
+                initPresentationControls(); // Refresh slides
+            }
         });
     }
 
@@ -1153,21 +1171,6 @@
             addText(step.desc);
         });
 
-        // === SEÇÕES CUSTOMIZADAS ===
-        if (CUSTOM_SECTIONS.length > 0) {
-            doc.addPage(); y = mT;
-            addTitle('SEÇÕES ADICIONAIS');
-            CUSTOM_SECTIONS.forEach(function (sec) {
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(12);
-                checkPage(lineH);
-                doc.text(sec.title.toUpperCase(), mL, y);
-                y += lineH + 2;
-                addText(sec.text);
-                addSpacing(4);
-            });
-        }
-
         // === 8. REFERÊNCIAS (ABNT) ===
         addSpacing(10);
         addTitle('8. REFERÊNCIAS');
@@ -1187,24 +1190,11 @@
     function addRef() { var t = prompt('Nova referência:'); if (!t) return; var refs = getRefs(); refs.push(t); saveRefs(refs); renderRefs(); }
     function removeMember(idx) { if (!confirm('Remover?')) return; var team = getTeam(); team.splice(idx, 1); saveTeam(team); renderTeam(); if (typeof lucide !== 'undefined') lucide.createIcons(); }
     function addMember() { var n = prompt('Nome:'); if (!n) return; var r = prompt('Função:') || 'Membro'; var team = getTeam(); team.push({ name: n, role: r }); saveTeam(team); renderTeam(); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+    function addCustom() { CUSTOM_SECTIONS.push({ label: 'Nova Seção', title: 'Título da Seção', content: 'Conteúdo da seção...' }); saveCustom(); renderCustomSections(); initEditable(); }
+    function removeCustom(idx) { if (!confirm('Remover esta seção?')) return; CUSTOM_SECTIONS.splice(idx, 1); saveCustom(); renderCustomSections(); }
     function resetAll() { if (!confirm('Resetar TODOS os dados?')) return; localStorage.clear(); window.location.reload(); }
 
-    function removeCustomSection(idx) {
-        if (!confirm('Remover esta seção customizada?')) return;
-        CUSTOM_SECTIONS.splice(idx, 1);
-        saveCustomSections();
-        window.location.reload(); 
-    }
-    
-    function addCustomSection() {
-        var t = prompt('Título da Seção Customizada:'); if (!t) return;
-        var txt = prompt('Texto da Seção:'); if (!txt) return;
-        CUSTOM_SECTIONS.push({ title: t, text: txt });
-        saveCustomSections();
-        window.location.reload(); 
-    }
-
     /* ──── PUBLIC API ──── */
-    window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, resetAll: resetAll, addCustomSection: addCustomSection, removeCustomSection: removeCustomSection };
+    window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, addCustom: addCustom, removeCustom: removeCustom, resetAll: resetAll };
 
 })();
