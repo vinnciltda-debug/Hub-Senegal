@@ -48,10 +48,6 @@
         document.body.classList.remove('locked');
         document.body.classList.add('unlocked');
         sessionStorage.setItem('sn_admin', '1');
-        // Set GitHub token for cloud publishing
-        if (window.SenegalApp && window.SenegalApp.GitSync) {
-            window.SenegalApp.GitSync.setToken(_tp.join(''));
-        }
     }
 
     function initControls() {
@@ -63,18 +59,18 @@
         var resetBtn = document.getElementById('reset-data-btn');
 
         if (syncBtn) syncBtn.addEventListener('click', function () {
-            if (window.SenegalApp && window.SenegalApp.GitSync) {
-                syncBtn.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width:14px;height:14px;"></i> Publicando...';
+            if (window.SenegalApp && window.SenegalApp.CloudSync) {
+                syncBtn.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width:14px;height:14px;"></i> Publicando no Firebase...';
                 if (typeof lucide !== 'undefined') lucide.createIcons();
                 
                 // Collect current state from app.js (updated TOPICS etc)
                 var data = window.SenegalApp.collectCurrentState();
                 
-                window.SenegalApp.GitSync.save(data).then(function(ok) {
+                window.SenegalApp.CloudSync.save(data).then(function(ok) {
                     if (ok) {
                         syncBtn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Publicado!';
                     } else {
-                        syncBtn.innerHTML = '<i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Erro ao Publicar';
+                        syncBtn.innerHTML = '<i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Erro no Firebase';
                         syncBtn.classList.remove('btn-success');
                         syncBtn.classList.add('btn-danger');
                     }
