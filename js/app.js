@@ -836,8 +836,8 @@
         var hint = document.getElementById('scroll-hint');
         if (!hint) return;
         hint.addEventListener('click', function () {
-            var mb = document.getElementById('moodboard-section');
-            if (mb) mb.scrollIntoView({ behavior: 'smooth' });
+            var target = document.getElementById('section-team');
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
         });
     }
 
