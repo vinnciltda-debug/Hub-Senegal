@@ -770,6 +770,20 @@
             document.getElementById('section-creative-process')
         ]).filter(function(el) { return el !== null; });
 
+        // Create pagination dots
+        var pag = document.getElementById('slide-pagination');
+        if (pag) {
+            pag.innerHTML = '';
+            slideElements.forEach(function(_, i) {
+                var dot = document.createElement('div');
+                dot.className = 'pagination-dot';
+                dot.addEventListener('click', function() {
+                    slideElements[i].scrollIntoView({ behavior: 'smooth' });
+                });
+                pag.appendChild(dot);
+            });
+        }
+
         window.addEventListener('scroll', function () {
             var activeBtn = document.querySelector('.tab-btn.active');
             if (!activeBtn || activeBtn.dataset.tab !== 'presentation') return;
@@ -791,6 +805,9 @@
 
             // Sync dots
             document.querySelectorAll('.nav-dot').forEach(function (dot, idx) {
+                dot.classList.toggle('active', idx === closest);
+            });
+            document.querySelectorAll('.pagination-dot').forEach(function (dot, idx) {
                 dot.classList.toggle('active', idx === closest);
             });
         }, { passive: true });
