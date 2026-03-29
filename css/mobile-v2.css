@@ -202,21 +202,38 @@ html, body {
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: auto !important;
-    max-width: 130px !important;
-    padding: 3px 10px !important;
-    background: rgba(0, 0, 0, 0.6) !important;
+    max-width: 90vw !important; /* Allow more space for dots */
+    padding: 8px 12px !important;
+    background: rgba(0, 0, 0, 0.75) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 20px !important;
-    gap: 8px !important;
+    gap: 12px !important;
     z-index: 1000 !important;
     display: flex !important;
     align-items: center !important;
+    justify-content: center !important;
+}
+
+.slide-indicator-wrapper {
+    gap: 4px !important;
+}
+
+.slide-pagination {
+    gap: 5px !important;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pagination-dot {
+    width: 5px;
+    height: 5px;
 }
 
 .slide-indicator {
     font-size: 0.65rem !important;
     letter-spacing: 1px !important;
-    color: var(--sn-yellow) !important;
+    color: var(--text-muted) !important;
+    margin-bottom: 2px;
 }
 
 .nav-btn-sm {
