@@ -181,10 +181,9 @@
         initTabs();
         initSideNav();
         initPresentationControls();
-        initParallax();
+        initPresentationControls();
         initBackToTop();
         initScrollHint();
-        init3DStars();
         initPDFDownload();
 
         if (typeof AOS !== 'undefined') {
@@ -236,20 +235,7 @@
         });
     }
 
-    /* ═══════════════════════════════════
-       PARALLAX
-       ═══════════════════════════════════ */
-    function initParallax() {
-        var layers = document.querySelectorAll('.parallax-layer');
-        if (!layers.length) return;
-        var speeds = [0.02, 0.015, 0.01, 0.005];
-        window.addEventListener('scroll', function () {
-            var scrollY = window.scrollY;
-            layers.forEach(function (layer, i) {
-                layer.style.transform = 'translateY(' + (scrollY * (speeds[i] || 0.01) * -1) + 'px)';
-            });
-        }, { passive: true });
-    }
+
 
     /* ═══════════════════════════════════
        PERSISTENCE
@@ -533,7 +519,6 @@
             var qrUrl = topic.qrLink || (window.location.href.split('#')[0] + '#' + topic.id);
             var qrHtml =
                 '<div class="qr-area" onclick="window.open(\'' + qrUrl + '\', \'_blank\')">' +
-                  '<div class="three-canvas-wrap" id="star-canvas-' + i + '"></div>' +
                   '<div class="qr-area__code">' +
                     '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(qrUrl) + '&color=00853F" alt="QR" id="qr-img-' + i + '" />' +
                   '</div>' +
@@ -575,74 +560,7 @@
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    /* ═══════════════════════════════════
-       3D STAR (Three.js)
-       ═══════════════════════════════════ */
-    function init3DStars() {
-        if (typeof THREE === 'undefined') return;
 
-        TOPICS.forEach(function (topic, i) {
-            var wrap = document.getElementById('star-canvas-' + i);
-            if (!wrap) return;
-
-            var w = 100, h = 100;
-            var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-            camera.position.z = 3;
-
-            var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(w, h);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.setClearColor(0x000000, 0);
-            wrap.appendChild(renderer.domElement);
-
-            // Star shape using ExtrudeGeometry
-            var shape = new THREE.Shape();
-            var outerR = 1, innerR = 0.4, points = 5;
-            for (var p = 0; p < points * 2; p++) {
-                var angle = (p * Math.PI) / points - Math.PI / 2;
-                var r = p % 2 === 0 ? outerR : innerR;
-                var sx = Math.cos(angle) * r;
-                var sy = Math.sin(angle) * r;
-                if (p === 0) shape.moveTo(sx, sy);
-                else shape.lineTo(sx, sy);
-            }
-            shape.closePath();
-
-            var extrudeSettings = { depth: 0.15, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3 };
-            var geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-            geometry.center();
-
-            var material = new THREE.MeshPhongMaterial({
-                color: 0x00853F,
-                emissive: 0x003318,
-                shininess: 100,
-                specular: 0xFDEF42
-            });
-
-            var mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-
-            // Lights
-            var light1 = new THREE.DirectionalLight(0xffffff, 1.2);
-            light1.position.set(2, 2, 3);
-            scene.add(light1);
-
-            var light2 = new THREE.PointLight(0xFDEF42, 0.5, 10);
-            light2.position.set(-2, -1, 2);
-            scene.add(light2);
-
-            scene.add(new THREE.AmbientLight(0x333333, 0.5));
-
-            function animate() {
-                requestAnimationFrame(animate);
-                mesh.rotation.y += 0.012;
-                mesh.rotation.x = Math.sin(Date.now() * 0.001) * 0.15;
-                renderer.render(scene, camera);
-            }
-            animate();
-        });
-    }
 
     /* ═══════════════════════════════════
        TAB 2: RESEARCH, PDFS, REFS, TEAM
@@ -749,15 +667,9 @@
 
     function initPresentationControls() {
         var ctrl = document.getElementById('presentation-controls');
-        var prev = document.getElementById('prev-slide');
-        var next = document.getElementById('next-slide');
         var indicator = document.getElementById('slide-number');
         var prevSm = document.getElementById('prev-slide-sm');
         var nextSm = document.getElementById('next-slide-sm');
-        if (!prev || !next) return;
-
-        if (prevSm) prevSm.addEventListener('click', function() { prev.click(); });
-        if (nextSm) nextSm.addEventListener('click', function() { next.click(); });
 
         slideElements = [
             document.getElementById('hero'),
@@ -812,22 +724,26 @@
             });
         }, { passive: true });
 
-        next.addEventListener('click', function () {
-            if (currentSlideIndex < slideElements.length - 1)
-                slideElements[currentSlideIndex + 1].scrollIntoView({ behavior: 'smooth' });
-        });
+        if (nextSm) {
+            nextSm.addEventListener('click', function () {
+                if (currentSlideIndex < slideElements.length - 1)
+                    slideElements[currentSlideIndex + 1].scrollIntoView({ behavior: 'smooth' });
+            });
+        }
 
-        prev.addEventListener('click', function () {
-            if (currentSlideIndex > 0)
-                slideElements[currentSlideIndex - 1].scrollIntoView({ behavior: 'smooth' });
-        });
+        if (prevSm) {
+            prevSm.addEventListener('click', function () {
+                if (currentSlideIndex > 0)
+                    slideElements[currentSlideIndex - 1].scrollIntoView({ behavior: 'smooth' });
+            });
+        }
 
         document.addEventListener('keydown', function (e) {
             var activeBtn = document.querySelector('.tab-btn.active');
             if (!activeBtn || activeBtn.dataset.tab !== 'presentation') return;
             if (e.target.contentEditable === 'true' || e.target.tagName === 'INPUT') return;
-            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next.click(); }
-            else if (e.key === 'ArrowLeft') { prev.click(); }
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (nextSm) nextSm.click(); }
+            else if (e.key === 'ArrowLeft') { if (prevSm) prevSm.click(); }
         });
     }
 
