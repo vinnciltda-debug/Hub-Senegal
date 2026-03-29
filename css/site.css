@@ -853,6 +853,38 @@
   color: var(--sn-yellow);
 }
 
+.slide-indicator-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.slide-pagination {
+  display: flex;
+  gap: 8px;
+}
+
+.pagination-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.4s var(--ease-out);
+  cursor: pointer;
+}
+
+.pagination-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.4);
+}
+
+.pagination-dot.active {
+  background: var(--sn-yellow);
+  transform: scale(1.6);
+  box-shadow: 0 0 10px rgba(253, 239, 66, 0.4);
+}
+
 .slide-indicator {
   font-family: 'Outfit', sans-serif;
   font-size: 0.75rem;
@@ -862,6 +894,7 @@
   min-width: 50px;
   text-align: center;
   user-select: none;
+  line-height: 1;
 }
 
 /* ─── SIDE NAV DOTS ─── */
