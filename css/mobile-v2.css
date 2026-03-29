@@ -77,43 +77,66 @@ html, body {
 }
 
 /* ─── TOPICS (A-F) ─── */
+/* ─── TOPICS (A-F) ─── */
+.topic-section .row {
+    display: flex !important;
+    flex-direction: column-reverse !important; /* Forces Image to visually appear ABOVE text on mobile since markup is text first */
+    align-items: center !important;
+}
+
 .topic-image-col {
-    margin-top: 30px !important; /* Move image down naturally using margin since Bootstrap handles stacking */
-    margin-bottom: 20px !important;
+    margin-bottom: 30px !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
 }
 
 .topic-content {
-    text-align: left !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 0 var(--mobile-padding) !important;
+    width: 100% !important;
 }
 
 .topic-letter {
     font-size: 4rem !important;
-    top: -30px !important;
-    left: -10px !important;
-    transform: none !important;
+    top: -25px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     opacity: 0.1 !important;
+    text-align: center !important;
 }
 
 .topic-title {
     font-size: 1.8rem !important;
     margin-bottom: 15px !important;
     margin-top: 10px !important;
+    text-align: center !important;
 }
 
 .topic-text {
     font-size: 0.95rem !important;
     line-height: 1.6 !important;
     margin-bottom: 25px !important;
+    text-align: center !important;
 }
 
 .topic-stats {
     width: 100%;
     margin-bottom: 30px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
 }
 
 .stat-item {
     padding: 12px 10px !important;
-    min-width: 0 !important;
+    min-width: unset !important;
+    flex: 1 1 auto !important;
+    text-align: center !important;
 }
 
 .stat-value {
