@@ -169,20 +169,8 @@
        INIT
        ═══════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', function () {
-        loadSavedData(); // Loads data variables, but doesn't apply order yet because elements aren't rendered
-
-        renderTeamPresentation();
-        renderTopics();
-        renderGoldenCircle();
-        renderProblem();
-        renderMoodboardCollage();
-        renderInsights();
-        renderCreativeProcess();
-        renderCustomSections();
-        renderResearch();
-        renderPDFs();
-        renderRefs();
-        renderTeam();
+        loadSavedData();
+        renderAll();
 
         // APPLY ORDER NOW THAT ELEMENTS ARE IN DOM
         try {
@@ -271,6 +259,28 @@
        PERSISTENCE
        ═══════════════════════════════════ */
     function loadSavedData() {
+        // First try to load from Cloud if GitSync is available
+        if (window.SenegalApp && window.SenegalApp.GitSync) {
+            window.SenegalApp.GitSync.load().then(cloudData => {
+                if (cloudData) {
+                    console.log('🔄 Data from GitHub applied.');
+                    if (cloudData.TOPICS) TOPICS = cloudData.TOPICS;
+                    if (cloudData.MOODBOARD_TILES) MOODBOARD_TILES = cloudData.MOODBOARD_TILES;
+                    if (cloudData.GOLDEN_CIRCLE) GOLDEN_CIRCLE = cloudData.GOLDEN_CIRCLE;
+                    if (cloudData.PROBLEM_DATA) PROBLEM_DATA = cloudData.PROBLEM_DATA;
+                    if (cloudData.INSIGHTS_DATA) INSIGHTS_DATA = cloudData.INSIGHTS_DATA;
+                    if (cloudData.PROCESS_STEPS) PROCESS_STEPS = cloudData.PROCESS_STEPS;
+                    if (cloudData.TEAM) DEFAULT_TEAM = cloudData.TEAM;
+                    if (cloudData.REFS) DEFAULT_REFS = cloudData.REFS;
+                    if (cloudData.CUSTOM_SECTIONS) CUSTOM_SECTIONS = cloudData.CUSTOM_SECTIONS;
+                    
+                    // Rerender after cloud load
+                    renderAll();
+                }
+            });
+        }
+
+        // Local storage fallback (instant)
         try { var t = localStorage.getItem('sn3_topics'); if (t) TOPICS = JSON.parse(t); } catch (e) {}
         try { var m = localStorage.getItem('sn3_tiles'); if (m) MOODBOARD_TILES = JSON.parse(m); } catch (e) {}
         try { var gc = localStorage.getItem('sn3_gc'); if (gc) GOLDEN_CIRCLE = JSON.parse(gc); } catch (e) {}
@@ -278,6 +288,22 @@
         try { var ins = localStorage.getItem('sn3_ins'); if (ins) INSIGHTS_DATA = JSON.parse(ins); } catch (e) {}
         try { var ps = localStorage.getItem('sn3_proc'); if (ps) PROCESS_STEPS = JSON.parse(ps); } catch (e) {}
         try { var cs = localStorage.getItem('sn3_custom'); if (cs) CUSTOM_SECTIONS = JSON.parse(cs); } catch (e) {}
+    }
+
+    function renderAll() {
+        renderTeamPresentation();
+        renderTopics();
+        renderGoldenCircle();
+        renderProblem();
+        renderMoodboardCollage();
+        renderInsights();
+        renderCreativeProcess();
+        renderCustomSections();
+        renderResearch();
+        renderPDFs();
+        renderRefs();
+        renderTeam();
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
     function saveTopics() { localStorage.setItem('sn3_topics', JSON.stringify(TOPICS)); }
     function saveTiles() { localStorage.setItem('sn3_tiles', JSON.stringify(MOODBOARD_TILES)); }
@@ -510,15 +536,15 @@
 
             var qrUrl = topic.qrLink || (window.location.href.split('#')[0] + '#' + topic.id);
             var qrHtml =
-                '<div class="qr-area">' +
+                '<div class="qr-area" onclick="window.open(\'' + qrUrl + '\', \'_blank\')">' +
                   '<div class="three-canvas-wrap" id="star-canvas-' + i + '"></div>' +
                   '<div class="qr-area__code">' +
                     '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(qrUrl) + '&color=00853F" alt="QR" id="qr-img-' + i + '" />' +
                   '</div>' +
                   '<div class="qr-area__info">' +
-                    '<div class="qr-area__label">Escaneie o QR Code</div>' +
+                    '<div class="qr-area__label">Escaneie ou Clique aqui</div>' +
                     '<div class="qr-area__desc">Acesse o conteúdo interativo sobre ' + esc(topic.tag) + '</div>' +
-                    (isAdmin ? '<input type="text" class="form-control form-control-sm mt-2 bg-dark text-white border-secondary" placeholder="URL customizada do QR" value="' + esc(topic.qrLink || '') + '" data-topic="' + i + '" data-field="qrLink" />' : '') +
+                    (isAdmin ? '<div class="mt-2" onclick="event.stopPropagation()"><input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="URL customizada do QR" value="' + esc(topic.qrLink || '') + '" data-topic="' + i + '" data-field="qrLink" /></div>' : '') +
                   '</div>' +
                 '</div>';
 
@@ -1191,5 +1217,19 @@
 
     /* ──── PUBLIC API ──── */
     window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, addCustom: addCustom, removeCustom: removeCustom, resetAll: resetAll };
+
+    window.SenegalApp.collectCurrentState = function() {
+        return {
+            TOPICS: TOPICS,
+            MOODBOARD_TILES: MOODBOARD_TILES,
+            GOLDEN_CIRCLE: GOLDEN_CIRCLE,
+            PROBLEM_DATA: PROBLEM_DATA,
+            INSIGHTS_DATA: INSIGHTS_DATA,
+            PROCESS_STEPS: PROCESS_STEPS,
+            TEAM: getTeam(),
+            REFS: getRefs(),
+            CUSTOM_SECTIONS: CUSTOM_SECTIONS
+        };
+    };
 
 })();
