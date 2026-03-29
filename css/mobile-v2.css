@@ -23,25 +23,14 @@ html, body {
 
 /* ─── IMPROVED SCROLL SYSTEM (Snap) ─── */
 @media (max-width: 991px) {
-    html {
-        scroll-snap-type: y proximity;
-    }
-
-    body.public-view #panel-presentation {
-        scroll-snap-type: y mandatory;
-    }
-
+    /* Remove snap that breaks tall content on mobile */
     body.public-view .topic-section,
     body.public-view .hero,
     body.public-view .pres-section {
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding-top: 80px !important; /* Account for fixed nav */
-        padding-bottom: 40px !important;
+        min-height: auto;
+        padding-top: 100px !important;
+        padding-bottom: 130px !important; /* Enough room for the indicator bar */
+        display: block;
     }
 }
 
@@ -88,56 +77,42 @@ html, body {
 }
 
 /* ─── TOPICS (A-F) ─── */
-.topic-section .row {
-    flex-direction: column-reverse !important; /* Image above text on mobile usually looks cleaner or text above image */
-}
-
-/* Actually, let's put Image AT THE TOP of the content on mobile */
-.topic-section .row {
-    display: flex !important;
-    flex-direction: column !important;
-}
-
 .topic-image-col {
-    order: -1 !important; /* Image first */
-    margin-bottom: 30px !important;
+    margin-top: 30px !important; /* Move image down naturally using margin since Bootstrap handles stacking */
+    margin-bottom: 20px !important;
 }
 
 .topic-content {
-    text-align: center !important;
-    align-items: center !important;
-    padding: 0 var(--mobile-padding) !important;
+    text-align: left !important;
 }
 
 .topic-letter {
-    font-size: 3rem !important;
-    top: -25px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    opacity: 0.15 !important;
+    font-size: 4rem !important;
+    top: -30px !important;
+    left: -10px !important;
+    transform: none !important;
+    opacity: 0.1 !important;
 }
 
 .topic-title {
-    font-size: 1.6rem !important;
+    font-size: 1.8rem !important;
     margin-bottom: 15px !important;
+    margin-top: 10px !important;
 }
 
 .topic-text {
-    font-size: 0.88rem !important;
-    line-height: 1.7 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
     margin-bottom: 25px !important;
 }
 
 .topic-stats {
     width: 100%;
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px !important;
     margin-bottom: 30px !important;
 }
 
 .stat-item {
-    padding: 12px 5px !important;
+    padding: 12px 10px !important;
     min-width: 0 !important;
 }
 
