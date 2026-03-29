@@ -1,0 +1,169 @@
+{
+  "TOPICS": [
+    {
+      "id": "topic-a",
+      "letter": "A",
+      "tag": "Dados Demográficos",
+      "title": "Perfil de um País Jovem e em Crescimento",
+      "text": "Senegal é marcado por uma estrutura etária predominantemente jovem, com apenas um quarto da população acima de 30 anos. A idade mediana é de aproximadamente 23,6 anos (dados de 2025). Com uma taxa de crescimento de 2,28% ao ano, a população urbana representa cerca de 48-50%, liderada pelo polo de Dakar e grandes centros como Touba e M'bour.",
+      "stats": [
+        { "value": "23,6", "label": "Idade Mediana" },
+        { "value": "2,28%", "label": "Crescimento Anual" },
+        { "value": "102", "label": "Hab/km²" }
+      ],
+      "image": "assets/senegal_demographics_1774208781562.png",
+      "pdfSource": "parte a e e.pdf",
+      "qrLink": ""
+    },
+    {
+      "id": "topic-b",
+      "letter": "B",
+      "tag": "Tamanho da População",
+      "title": "Uma Nação de 18 Milhões de Almas",
+      "text": "Em 2023, o Senegal atingiu a marca de 18.077.573 habitantes. Globalmente, posiciona-se como o 69º país mais populoso. Para efeito de comparação, sua densidade demográfica de 91,68 hab/km² reflete uma ocupação territorial significativa, embora concentrada em polos urbanos em expansão acelerada.",
+      "stats": [
+        { "value": "18.1M", "label": "População 2023" },
+        { "value": "69º", "label": "Ranking IBGE" },
+        { "value": "91,68", "label": "Densidade" }
+      ],
+      "image": "assets/senegal_population_crowd_1774208799106.png",
+      "pdfSource": "parte b.pdf",
+      "qrLink": ""
+    },
+    {
+      "id": "topic-c",
+      "letter": "C",
+      "tag": "Aspectos Culturais",
+      "title": "Terra da Teraanga e da Négritude",
+      "text": "A cultura senegalesa é definida pela \"Teraanga\" — generosidade de espírito e acolhimento. A língua Wolof domina o cotidiano, resistindo à imposição histórica do francês. Na música, o Mbalax funde Jazz, Soul e ritmos ancestrais. Dakar destaca-se como centro global de arte, abrigando a Bienal Dak'Art e o imponente Museu das Civilizações Negras.",
+      "stats": [
+        { "value": "Wolof", "label": "Língua Nativa" },
+        { "value": "Mbalax", "label": "Ritmo Nacional" },
+        { "value": "Dak'Art", "label": "Bienal de Arte" }
+      ],
+      "image": "assets/senegal_culture_mbalax_1774208814214.png",
+      "pdfSource": "parte c e d.pdf",
+      "qrLink": ""
+    },
+    {
+      "id": "topic-d",
+      "letter": "D",
+      "tag": "Aspectos Sociais",
+      "title": "Tradição, Fé e Paixão pelo Esporte",
+      "text": "A sociedade é 95% muçulmana, vivendo sob um Estado Laico com alta tolerância religiosa. O esporte é uma paixão nacional inequívoca: da luta tradicional \"Laamb\", carregada de misticismo, à Seleção de Futebol (Leões de Teranga). Desafios como a desigualdade urbana e a precariedade de infraestrutura básica convivem com um forte senso de cuidado coletivo.",
+      "stats": [
+        { "value": "95%", "label": "Muçulmanos" },
+        { "value": "Laamb", "label": "Luta Tradicional" },
+        { "value": "Teranga", "label": "Valores Sociais" }
+      ],
+      "image": "assets/senegal_social_teranga_1774208829208.png",
+      "pdfSource": "parte c e d.pdf",
+      "qrLink": ""
+    },
+    {
+      "id": "topic-e",
+      "letter": "E",
+      "tag": "Aspectos Tecnológicos",
+      "title": "Horizon 2034: A Soberania Digital",
+      "text": "Com o lançamento do satélite GAINDESAT-1A em 2024, o Senegal iniciou uma nova era tecnológica. O \"New Deal Technologique\" visa digitalizar 90% dos serviços públicos até 2034, transformando o país em um hub regional com forte foco em infraestrutura de dados, cibersegurança e fomento a mais de 500 startups de tecnologia.",
+      "stats": [
+        { "value": "GAINDESAT", "label": "Primeiro Satélite" },
+        { "value": "90%", "label": "Digitalização" },
+        { "value": "15%", "label": "PIB Digital" }
+      ],
+      "image": "assets/senegal_technology_satellite_1774208879529.png",
+      "pdfSource": "parte a e e.pdf",
+      "qrLink": ""
+    },
+    {
+      "id": "topic-f",
+      "letter": "F",
+      "tag": "Aspectos Ambientais",
+      "title": "Economia Verde no Plano Senegal Emergente",
+      "text": "O cenário ambiental apresenta contrastes entre o norte árido e o sul úmido. Enfrentando a desertificação e a perda de manguezais, o país destaca-se pelo programa de reflorestamento costeiro — um dos maiores do mundo. O Plano Senegal Emergente (PSE) reconhece a economia verde como motor essencial para o desenvolvimento sustentável.",
+      "stats": [
+        { "value": "200M", "label": "Mudas de Mangue" },
+        { "value": "PSE", "label": "Visão Estratégica" },
+        { "value": "46%", "label": "Solo Semiárido" }
+      ],
+      "image": "assets/senegal_environment_mangroves_1774208904701.png",
+      "pdfSource": "parte f.pdf",
+      "qrLink": ""
+    }
+  ],
+  "MOODBOARD_TILES": [
+    { "src": "assets/senegal_demographics_1774208781562.png", "tag": "A. Demografia", "label": "Juventude e energia do futuro", "size": "lg", "topic": "a" },
+    { "src": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&q=80", "tag": "População", "label": "Multidão em Dakar", "size": "sm", "topic": "b" },
+    { "src": "assets/senegal_population_crowd_1774208799106.png", "tag": "B. População", "label": "Crescimento urbano acelerado", "size": "md", "topic": "b" },
+    { "src": "https://images.unsplash.com/photo-1590845947676-fa25d3941556?w=400&q=80", "tag": "Sociedade", "label": "Cenas do cotidiano", "size": "sm", "topic": "b" },
+    { "src": "assets/senegal_culture_mbalax_1774208814214.png", "tag": "C. Cultura", "label": "Ritmo vibrante do Mbalax", "size": "lg", "topic": "c" },
+    { "src": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400&q=80", "tag": "Arte", "label": "Cores africanas", "size": "md", "topic": "c" },
+    { "src": "https://images.unsplash.com/photo-1582213713374-4b5f4be8d32f?w=400&q=80", "tag": "Monumentos", "label": "Renascença Africana", "size": "md", "topic": "c" },
+    { "src": "assets/senegal_social_teranga_1774208829208.png", "tag": "D. Social", "label": "Teraanga: A alma do Senegal", "size": "md", "topic": "d" },
+    { "src": "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=400&q=80", "tag": "Fé", "label": "Respeito e Tradição", "size": "lg", "topic": "d" },
+    { "src": "https://images.unsplash.com/photo-1489749798305-4fea3ae63f28?w=400&q=80", "tag": "Esporte", "label": "Paixão pelo Futebol", "size": "sm", "topic": "d" },
+    { "src": "assets/senegal_technology_satellite_1774208879529.png", "tag": "E. Tecnologia", "label": "GAINDESAT-1A em órbita", "size": "lg", "topic": "e" },
+    { "src": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=80", "tag": "Digital", "label": "Horizonte 2034", "size": "md", "topic": "e" },
+    { "src": "assets/senegal_environment_mangroves_1774208904701.png", "tag": "F. Ambiental", "label": "Restauração de Manguezais", "size": "lg", "topic": "f" },
+    { "src": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&q=80", "tag": "Natureza", "label": "Ecossistemas do Saara ao Sul", "size": "md", "topic": "f" },
+    { "src": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80", "tag": "Savana", "label": "Biodiversidade preservada", "size": "sm", "topic": "f" }
+  ],
+  "TEAM": [
+    { "name": "Vinicius", "role": "Pesquisa Básica e Estruturação" },
+    { "name": "Luana Bauler", "role": "Pesquisa: Tamanho da População" },
+    { "name": "Juliana Da Costa", "role": "Pesquisa: Aspectos Ambientais" },
+    { "name": "Isabella Archela", "role": "Pesquisa: Demografia e Tecnologia" },
+    { "name": "Gabriel Ortega", "role": "Pesquisa: Cultura e Sociedade" }
+  ],
+  "GOLDEN_CIRCLE": {
+    "why": {
+      "keyword": "Porquê",
+      "title": "Acreditamos na cultura",
+      "text": "Porque a cultura africana merece ser conhecida, respeitada e celebrada globalmente. O Senegal é mais do que o que o mundo enxerga."
+    },
+    "how": {
+      "keyword": "Como",
+      "title": "Pesquisa + Imersão Visual",
+      "text": "Através de pesquisa multidisciplinar (A-F) e uma apresentação visual impactante que conecta dados a emoções."
+    },
+    "what": {
+      "keyword": "O Quê",
+      "title": "Uma campanha que subverte",
+      "text": "Uma campanha que desfaz estereótipos sobre o Senegal mostrando sua riqueza cultural, social, tecnológica e ambiental."
+    }
+  },
+  "PROBLEM_DATA": {
+    "tag": "Problema Identificado",
+    "title": "O mundo enxerga o Senegal com lentes estreitas",
+    "text": "A percepção global sobre o Senegal é frequentemente reduzida a estereótipos de pobreza e subdesenvolvimento. A mídia internacional raramente mostra a vibração cultural, os avanços tecnológicos ou a riqueza social de um país jovem e em transformação acelerada. Essa visão limitada apaga a identidade real de uma nação que é berço da Négritude e da Teraanga.",
+    "missionTag": "Nossa Missão",
+    "mission": "Subverter essa narrativa. Apresentar o Senegal real através de dados concretos, cultura viva e um olhar que respeite a complexidade do país — provando que desenvolvimento começa e termina na cultura."
+  },
+  "INSIGHTS_DATA": {
+    "quote": {
+      "text": "A cultura está no início e no fim de todo desenvolvimento.",
+      "author": "Léopold Sédar Senghor — Poeta, intelectual e primeiro presidente do Senegal"
+    },
+    "cards": [
+      { "icon": "🎶", "title": "Cultura como Motor", "text": "O Mbalax e a Teraanga não são folclore — são a base de uma identidade que impulsiona a modernização do país." },
+      { "icon": "🚀", "title": "Tecnologia com Raízes", "text": "O GAINDESAT-1A e o New Deal Technologique nascem de um povo que valoriza o progresso sem esquecer suas origens." },
+      { "icon": "🌿", "title": "Sustentabilidade Cultural", "text": "O reflorestamento de manguezais reflete a mesma filosofia Teraanga: cuidar do coletivo para garantir o futuro." },
+      { "icon": "⚽", "title": "Esporte como Expressão", "text": "Da luta Laamb ao futebol, o esporte senegalês carrega misticismo e orgulho nacional em cada movimento." }
+    ]
+  },
+  "PROCESS_STEPS": [
+    { "num": "01", "title": "Pesquisa", "desc": "Levantamento de dados demográficos, culturais, sociais, ambientais e tecnológicos" },
+    { "num": "02", "title": "Imersão Cultural", "desc": "Estudo aprofundado da cultura senegalesa, Teraanga e Négritude" },
+    { "num": "03", "title": "Ideação", "desc": "Conexão de insights com a palavra-chave de Senghor para construir a narrativa" },
+    { "num": "04", "title": "Conceito", "desc": "Definição da campanha: subverter estereótipos mostrando a riqueza real" },
+    { "num": "05", "title": "Campanha", "desc": "Produção de peças visuais e apresentação baseadas no moodboard" }
+  ],
+  "REFS": [
+    "brasilescola.uol.com.br/geografia/senegal.htm",
+    "www.unfpa.org/data/world-population/SN",
+    "www.populationpyramid.net/pt/senegal/2025/",
+    "datareportal.com/reports/digital-2025-senegal",
+    "unep.org/pt-br/node/19395"
+  ],
+  "CUSTOM_SECTIONS": []
+}
