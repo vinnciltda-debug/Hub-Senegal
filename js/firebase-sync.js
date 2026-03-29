@@ -70,11 +70,29 @@
         return null;
     }
 
+    /**
+     * Escuta por mudanças em tempo real no Firestore.
+     */
+    function subscribeToCloud(callback) {
+        if (!initialized || !db) return;
+
+        console.log('📡 Inscrito para atualizações em tempo real...');
+        db.collection('senegal_data').doc('global_state').onSnapshot((doc) => {
+            if (doc.exists) {
+                console.log('⚡ Atualização em tempo real recebida!');
+                callback(doc.data());
+            }
+        }, (err) => {
+            console.warn('⚠️ Erro no listener em tempo real:', err);
+        });
+    }
+
     // Expor para o namespace global do SenegalApp
     window.SenegalApp = window.SenegalApp || {};
     window.SenegalApp.CloudSync = {
         save: saveToCloud,
         load: loadFromCloud,
+        subscribe: subscribeToCloud,
         isReady: initialized
     };
 
