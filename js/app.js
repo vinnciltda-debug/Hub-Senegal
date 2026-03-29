@@ -1143,7 +1143,7 @@
     function resetAll() { if (!confirm('Resetar TODOS os dados?')) return; localStorage.clear(); window.location.reload(); }
 
     /* ──── PUBLIC API ──── */
-    window.SenegalApp = { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, addCustom: addCustom, removeCustom: removeCustom, resetAll: resetAll };
+    window.SenegalApp = Object.assign(window.SenegalApp || {}, { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, addCustom: addCustom, removeCustom: removeCustom, resetAll: resetAll });
 
     window.SenegalApp.collectCurrentState = function() {
         return {
