@@ -52,7 +52,35 @@
         var addRefBtn = document.getElementById('add-ref-btn');
         var addMemberBtn = document.getElementById('add-member-btn');
         var addSectionBtn = document.getElementById('add-section-btn');
+        var syncBtn = document.getElementById('sync-cloud-btn');
         var resetBtn = document.getElementById('reset-data-btn');
+
+        if (syncBtn) syncBtn.addEventListener('click', function () {
+            if (window.SenegalApp && window.SenegalApp.GitSync) {
+                syncBtn.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width:14px;height:14px;"></i> Publicando...';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                
+                // Collect current state from app.js (updated TOPICS etc)
+                const data = window.SenegalApp.collectCurrentState();
+                
+                window.SenegalApp.GitSync.save(data).then(ok => {
+                    if (ok) {
+                        syncBtn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Publicado!';
+                    } else {
+                        syncBtn.innerHTML = '<i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Erro ao Publicar';
+                        syncBtn.classList.remove('btn-success');
+                        syncBtn.classList.add('btn-danger');
+                    }
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                    setTimeout(() => {
+                        syncBtn.innerHTML = '<i data-lucide="cloud-upload" style="width:14px;height:14px;"></i> Publicar Alterações';
+                        syncBtn.classList.remove('btn-danger');
+                        syncBtn.classList.add('btn-success');
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }, 3000);
+                });
+            }
+        });
 
         if (addTileBtn) addTileBtn.addEventListener('click', function () {
             if (window.SenegalApp) window.SenegalApp.addTile();
