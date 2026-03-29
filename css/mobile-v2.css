@@ -1,196 +1,110 @@
 /* ==========================================
-   MOBILE-V2.CSS — Ultra-Aligned Experience
-   v2.1 — Refined Spacing & Balance
+   MOBILE-V2.CSS — Clean Mobile Overrides
+   Minimal approach: Let Bootstrap handle stacking.
+   Only override what Bootstrap doesn't do.
    ========================================== */
 
-/* ─── GLOBAL MOBILE FIXES ─── */
-:root {
-    --mobile-padding: 20px;
-    --mobile-section-py: 60px;
-}
-
-*, *::before, *::after {
-    box-sizing: border-box !important;
-}
-
+/* ─── GLOBAL ─── */
 html, body {
-    width: 100vw;
-    max-width: 100%;
     overflow-x: hidden;
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
 }
 
-/* ─── IMPROVED SCROLL SYSTEM (Snap) ─── */
-@media (max-width: 991px) {
-    /* Remove snap that breaks tall content on mobile */
-    body.public-view .topic-section,
-    body.public-view .hero,
-    body.public-view .pres-section {
-        min-height: auto;
-        padding-top: 100px !important;
-        padding-bottom: 130px !important; /* Enough room for the indicator bar */
-        display: block;
-    }
-}
-
-/* ─── NAVIGATION (TABS) ─── */
+/* ─── NAV TABS ─── */
 .main-tabs {
     background: rgba(8, 12, 8, 0.98) !important;
-    backdrop-filter: blur(25px) !important;
-    height: auto !important;
-    padding-top: env(safe-area-inset-top);
-}
-
-.tabs-container {
-    padding: 0 15px !important;
-    justify-content: flex-start !important;
+    backdrop-filter: blur(20px) !important;
 }
 
 .tab-btn {
-    padding: 15px 12px !important;
+    padding: 14px 12px !important;
     font-size: 0.65rem !important;
     letter-spacing: 1px !important;
 }
 
 /* ─── HERO ─── */
 .hero {
-    padding-top: 120px !important;
+    padding-top: 110px !important;
+    min-height: 80vh !important;
     text-align: center;
 }
 
-.hero-inner {
-    max-width: 100% !important;
-    padding: 0 var(--mobile-padding);
-}
-
 .hero-title {
-    font-size: 3.5rem !important;
+    font-size: 3rem !important;
     letter-spacing: -2px !important;
-    margin-bottom: 20px !important;
 }
 
 .hero-subtitle {
     font-size: 0.9rem !important;
-    line-height: 1.5;
-    opacity: 0.8;
 }
 
-/* ─── TOPICS (A-F) ─── */
-/* ─── TOPICS (A-F) ─── */
+/* ─── ALL SECTIONS ─── */
+.pres-section {
+    padding: 60px 0 80px !important;
+}
+
+.container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+/* ─── TOPICS (A-F) — Let Bootstrap stack columns naturally ─── */
 .topic-section .container {
-    height: auto !important; /* Prevents h-100 from causing huge empty gaps */
-    padding-top: 20px !important;
-}
-
-.topic-section .row {
-    display: flex !important;
-    flex-direction: column-reverse !important; /* Image on top */
-    align-items: center !important;
-    gap: 0 !important; /* Remove g-5 gap */
-}
-
-.topic-image-col {
-    margin-bottom: 20px !important;
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
+    height: auto !important;
 }
 
 .topic-content {
     text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    padding: 0 var(--mobile-padding) !important;
-    width: 100% !important;
-    margin-top: 20px !important;
+    padding: 0 10px !important;
 }
 
 .topic-letter {
     font-size: 3rem !important;
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    opacity: 0.1 !important;
-    margin-bottom: -15px !important;
-    text-align: center !important;
-    display: block !important;
 }
 
 .topic-title {
-    font-size: 1.6rem !important;
-    margin-bottom: 15px !important;
-    margin-top: 5px !important;
+    font-size: 1.5rem !important;
     text-align: center !important;
 }
 
 .topic-text {
-    font-size: 0.95rem !important;
-    line-height: 1.6 !important;
-    margin-bottom: 20px !important;
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
     text-align: center !important;
 }
 
-.topic-stats {
-    width: 100%;
+.topic-image-col img {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px !important;
     margin-bottom: 20px !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
+}
+
+.topic-stats {
     justify-content: center !important;
     gap: 8px !important;
 }
 
 .stat-item {
-    padding: 12px 10px !important;
+    padding: 10px 8px !important;
     min-width: unset !important;
-    flex: 1 1 auto !important;
-    text-align: center !important;
 }
 
 .stat-value {
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
 }
 
 .stat-label {
     font-size: 0.55rem !important;
 }
 
-/* ─── MOODBOARD ─── */
-.moodboard-collage {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: 150px !important;
-    gap: 10px !important;
-    padding: 0 10px !important;
-}
-
-/* ─── QR AREA ─── */
-.qr-area {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 20px 0 !important;
-    padding: 25px 15px !important;
-    flex-direction: column !important;
-    gap: 15px !important;
-}
-
-.qr-area__code {
-    width: 120px !important;
-    height: 120px !important;
-}
-
-.qr-area__info {
-    text-align: center !important;
-}
-
-.qr-area__desc {
-    font-size: 0.85rem !important;
+/* ─── QR LINK BUTTON ─── */
+.qr-link-btn {
+    margin: 15px auto 0 !important;
+    display: inline-flex !important;
 }
 
 /* ─── GOLDEN CIRCLE ─── */
 .golden-circle-container {
-    display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     gap: 20px !important;
@@ -201,65 +115,13 @@ html, body {
     max-width: 280px !important;
     height: 280px !important;
     margin: 0 auto !important;
-    padding: 30px !important;
 }
 
-/* ─── SLIDE INDICATORS ─── */
-.slide-indicator-bar {
-    bottom: 25px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: auto !important;
-    max-width: 90vw !important; /* Allow more space for dots */
-    padding: 8px 12px !important;
-    background: rgba(0, 0, 0, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 20px !important;
-    gap: 12px !important;
-    z-index: 1000 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.slide-indicator-wrapper {
-    gap: 4px !important;
-}
-
-.slide-pagination {
-    gap: 5px !important;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.pagination-dot {
-    width: 5px;
-    height: 5px;
-}
-
-.slide-indicator {
-    font-size: 0.65rem !important;
-    letter-spacing: 1px !important;
-    color: var(--text-muted) !important;
-    margin-bottom: 2px;
-}
-
-.nav-btn-sm {
-    width: 24px !important;
-    height: 24px !important;
-}
-
-.nav-btn-sm svg {
-    width: 14px !important;
-    height: 14px !important;
-}
-
-/* ─── BACK TO TOP (Mobile) ─── */
-.back-to-top {
-    right: 15px !important;
-    bottom: 80px !important; /* Above indicator if needed */
-    width: 44px !important;
-    height: 44px !important;
+/* ─── MOODBOARD ─── */
+.moodboard-collage {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: 150px !important;
+    gap: 8px !important;
 }
 
 /* ─── INSIGHTS ─── */
@@ -268,28 +130,15 @@ html, body {
     gap: 15px !important;
 }
 
-.insight-card {
-    padding: 20px !important;
-}
-
 /* ─── PROCESS ─── */
 .process-timeline {
     flex-direction: column !important;
-    gap: 40px !important;
-    padding-left: 20px !important;
+    gap: 30px !important;
 }
 
 .process-step {
     width: 100% !important;
-    flex-direction: row !important;
-    text-align: left !important;
-    align-items: flex-start !important;
-    gap: 20px !important;
-}
-
-.process-step__number {
-    margin: 0 !important;
-    flex-shrink: 0 !important;
+    text-align: center !important;
 }
 
 .process-step__connector {
@@ -298,9 +147,8 @@ html, body {
 
 /* ─── TEAM ─── */
 .team-presentation {
-    display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 15px !important;
+    gap: 12px !important;
 }
 
 @media (max-width: 480px) {
@@ -311,47 +159,49 @@ html, body {
 
 .team-pres-card {
     text-align: center !important;
-    flex-direction: column !important;
-    padding: 20px !important;
+    padding: 15px !important;
 }
 
-/* ─── RESEARCH TAB ─── */
-#panel-research .row {
-    margin-top: 0 !important;
+/* ─── SLIDE INDICATOR BAR ─── */
+.slide-indicator-bar {
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    max-width: 85vw !important;
+    padding: 8px 14px !important;
+    gap: 10px !important;
 }
 
-.research-card {
-    margin-bottom: 15px !important;
+.slide-pagination {
+    gap: 5px !important;
 }
 
-/* ─── FOOTER ─── */
-.site-footer {
-    padding: 40px 20px !important;
+.pagination-dot {
+    width: 5px;
+    height: 5px;
 }
 
-/* ─── UTILS ─── */
-.container {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+/* ─── BACK TO TOP ─── */
+.back-to-top {
+    right: 15px !important;
+    bottom: 75px !important;
+    width: 42px !important;
+    height: 42px !important;
 }
 
+/* ─── TITLES ─── */
 .pres-title {
-    font-size: 1.5rem !important;
+    font-size: 1.4rem !important;
 }
 
 .pres-subtitle {
     font-size: 0.85rem !important;
-    margin-bottom: 30px !important;
 }
 
-/* Center all AOS elements on mobile */
+/* ─── DISABLE AOS ANIMATIONS ON MOBILE ─── */
 [data-aos] {
     transform: none !important;
     opacity: 1 !important;
-    transition-duration: 0s !important; /* Disable AOS animations on mobile if they cause jumping */
-}
-
-/* Re-enable them but cleaner */
-.aos-animate {
-    transition-duration: 0.6s !important;
+    transition-duration: 0s !important;
 }
