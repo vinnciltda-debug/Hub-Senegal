@@ -255,11 +255,11 @@
        PERSISTENCE
        ═══════════════════════════════════ */
     function loadSavedData() {
-        // First try to load from Cloud if GitSync is available
-        if (window.SenegalApp && window.SenegalApp.GitSync) {
-            window.SenegalApp.GitSync.load().then(cloudData => {
+        // First try to load from Cloud if CloudSync (Firebase) is available
+        if (window.SenegalApp && window.SenegalApp.CloudSync) {
+            window.SenegalApp.CloudSync.load().then(cloudData => {
                 if (cloudData) {
-                    console.log('🔄 Data from GitHub applied.');
+                    console.log('🔥 Data from Firebase Cloud applied.');
                     if (cloudData.TOPICS) TOPICS = cloudData.TOPICS;
                     if (cloudData.MOODBOARD_TILES) MOODBOARD_TILES = cloudData.MOODBOARD_TILES;
                     if (cloudData.GOLDEN_CIRCLE) GOLDEN_CIRCLE = cloudData.GOLDEN_CIRCLE;
