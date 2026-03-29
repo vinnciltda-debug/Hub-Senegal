@@ -224,13 +224,9 @@
                     if (side) { side.style.opacity = '1'; side.style.pointerEvents = 'all'; }
                     if (window.scrollY > 200) {
                         if (ctrl) ctrl.classList.add('visible');
-                        if (prevArr) prevArr.classList.add('visible');
-                        if (nextArr) nextArr.classList.add('visible');
                     }
                 } else {
                     if (ctrl) ctrl.classList.remove('visible');
-                    if (prevArr) prevArr.classList.remove('visible');
-                    if (nextArr) nextArr.classList.remove('visible');
                     if (side) { side.style.opacity = '0'; side.style.pointerEvents = 'none'; }
                     window.scrollTo({ top: 0, behavior: 'instant' });
                 }
@@ -792,8 +788,6 @@
 
             var show = window.scrollY > 200;
             if (ctrl) ctrl.classList.toggle('visible', show);
-            prev.classList.toggle('visible', show);
-            next.classList.toggle('visible', show);
 
             // Sync dots
             document.querySelectorAll('.nav-dot').forEach(function (dot, idx) {
