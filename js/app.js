@@ -241,11 +241,11 @@
        PERSISTENCE
        ═══════════════════════════════════ */
     function loadSavedData() {
-        // First try to load from Cloud if CloudSync (Firebase) is available
+        // Load dynamically from Firebase with real-time listening
         if (window.SenegalApp && window.SenegalApp.CloudSync) {
-            window.SenegalApp.CloudSync.load().then(cloudData => {
+            window.SenegalApp.CloudSync.subscribe(cloudData => {
                 if (cloudData) {
-                    console.log('🔥 Data from Firebase Cloud applied.');
+                    console.log('🔥 Dados recebidos em tempo real do Firebase.');
                     if (cloudData.TOPICS) TOPICS = cloudData.TOPICS;
                     if (cloudData.MOODBOARD_TILES) MOODBOARD_TILES = cloudData.MOODBOARD_TILES;
                     if (cloudData.GOLDEN_CIRCLE) GOLDEN_CIRCLE = cloudData.GOLDEN_CIRCLE;
@@ -256,7 +256,7 @@
                     if (cloudData.REFS) DEFAULT_REFS = cloudData.REFS;
                     if (cloudData.CUSTOM_SECTIONS) CUSTOM_SECTIONS = cloudData.CUSTOM_SECTIONS;
                     
-                    // Rerender after cloud load
+                    // Rerender exactly what changed instantly
                     renderAll();
                 }
             });
