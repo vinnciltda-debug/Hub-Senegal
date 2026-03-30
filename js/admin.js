@@ -58,31 +58,31 @@
         var resetBtn = document.getElementById('reset-data-btn');
 
         if (syncBtn) syncBtn.addEventListener('click', function () {
-            // Força a saída do campo atual para garantir que o texto editado foi salvo nas variáveis
+            // Garante que o texto sendo editado seja processado antes de salvar
             if (document.activeElement && document.activeElement.blur) {
                 document.activeElement.blur();
             }
 
+            syncBtn.disabled = true;
+            syncBtn.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width:14px;height:14px;"></i> Publicando...';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
             if (window.SenegalApp && window.SenegalApp.CloudSync) {
-                syncBtn.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width:14px;height:14px;"></i> Publicando no Firebase...';
-                if (typeof lucide !== 'undefined') lucide.createIcons();
-                
-                // Collect current state from app.js (updated TOPICS etc)
                 var data = window.SenegalApp.collectCurrentState();
                 
                 window.SenegalApp.CloudSync.save(data).then(function(ok) {
                     if (ok) {
-                        syncBtn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Publicado!';
+                        syncBtn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Alterações Publicadas!';
+                        syncBtn.classList.replace('btn-success', 'btn-primary');
                     } else {
-                        syncBtn.innerHTML = '<i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Erro no Firebase';
-                        syncBtn.classList.remove('btn-success');
-                        syncBtn.classList.add('btn-danger');
+                        syncBtn.innerHTML = '<i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Erro ao Publicar';
                     }
                     if (typeof lucide !== 'undefined') lucide.createIcons();
+                    
                     setTimeout(function() {
+                        syncBtn.disabled = false;
                         syncBtn.innerHTML = '<i data-lucide="cloud-upload" style="width:14px;height:14px;"></i> Publicar Alterações';
-                        syncBtn.classList.remove('btn-danger');
-                        syncBtn.classList.add('btn-success');
+                        syncBtn.classList.replace('btn-primary', 'btn-success');
                         if (typeof lucide !== 'undefined') lucide.createIcons();
                     }, 3000);
                 });

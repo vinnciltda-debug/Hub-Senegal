@@ -179,7 +179,6 @@
         } catch(e) {}
 
         initTabs();
-        initTabs();
         initPresentationControls();
         initBackToTop();
         initScrollHint();
@@ -240,35 +239,70 @@
        PERSISTENCE
        ═══════════════════════════════════ */
     function loadSavedData() {
-        // Load dynamically from Firebase with real-time listening
         if (window.SenegalApp && window.SenegalApp.CloudSync) {
-            window.SenegalApp.CloudSync.subscribe(cloudData => {
-                if (cloudData) {
-                    console.log('🔥 Dados recebidos em tempo real do Firebase.');
-                    if (cloudData.TOPICS) TOPICS = cloudData.TOPICS;
-                    if (cloudData.MOODBOARD_TILES) MOODBOARD_TILES = cloudData.MOODBOARD_TILES;
-                    if (cloudData.GOLDEN_CIRCLE) GOLDEN_CIRCLE = cloudData.GOLDEN_CIRCLE;
-                    if (cloudData.PROBLEM_DATA) PROBLEM_DATA = cloudData.PROBLEM_DATA;
-                    if (cloudData.INSIGHTS_DATA) INSIGHTS_DATA = cloudData.INSIGHTS_DATA;
-                    if (cloudData.PROCESS_STEPS) PROCESS_STEPS = cloudData.PROCESS_STEPS;
-                    if (cloudData.TEAM) DEFAULT_TEAM = cloudData.TEAM;
-                    if (cloudData.REFS) DEFAULT_REFS = cloudData.REFS;
-                    if (cloudData.CUSTOM_SECTIONS) CUSTOM_SECTIONS = cloudData.CUSTOM_SECTIONS;
-                    
-                    // Rerender exactly what changed instantly
-                    renderAll();
-                }
-            });
+            if (!isAdmin) {
+                // SITE PÚBLICO: escuta Firebase em tempo real (única fonte de verdade)
+                window.SenegalApp.CloudSync.subscribe(function(cloudData) {
+                    if (cloudData) {
+                        syncLocalVariables(cloudData);
+                        renderAll();
+                    }
+                });
+            } else {
+                // ADMIN: carrega do Firebase uma vez, depois usa localStorage como rascunho
+                loadLocalDraft();
+                window.SenegalApp.CloudSync.load().then(function(cloudData) {
+                    if (cloudData) {
+                        syncLocalVariables(cloudData);
+                        renderAll();
+                    }
+                });
+            }
+        } else if (isAdmin) {
+            // Fallback se Firebase não carregar
+            loadLocalDraft();
+        }
+    }
+
+    function loadLocalDraft() {
+        try {
+            var t = localStorage.getItem('sn3_topics'); if (t) TOPICS = JSON.parse(t);
+            var m = localStorage.getItem('sn3_tiles'); if (m) MOODBOARD_TILES = JSON.parse(m);
+            var gc = localStorage.getItem('sn3_gc'); if (gc) GOLDEN_CIRCLE = JSON.parse(gc);
+            var pr = localStorage.getItem('sn3_prob'); if (pr) PROBLEM_DATA = JSON.parse(pr);
+            var ins = localStorage.getItem('sn3_ins'); if (ins) INSIGHTS_DATA = JSON.parse(ins);
+            var ps = localStorage.getItem('sn3_proc'); if (ps) PROCESS_STEPS = JSON.parse(ps);
+            var cs = localStorage.getItem('sn3_custom'); if (cs) CUSTOM_SECTIONS = JSON.parse(cs);
+        } catch (e) {}
+    }
+
+    function syncLocalVariables(cloudData) {
+        if (!cloudData) return;
+        if (cloudData.TOPICS) TOPICS = cloudData.TOPICS;
+        if (cloudData.MOODBOARD_TILES) MOODBOARD_TILES = cloudData.MOODBOARD_TILES;
+        if (cloudData.GOLDEN_CIRCLE) GOLDEN_CIRCLE = cloudData.GOLDEN_CIRCLE;
+        if (cloudData.PROBLEM_DATA) PROBLEM_DATA = cloudData.PROBLEM_DATA;
+        if (cloudData.INSIGHTS_DATA) INSIGHTS_DATA = cloudData.INSIGHTS_DATA;
+        if (cloudData.PROCESS_STEPS) PROCESS_STEPS = cloudData.PROCESS_STEPS;
+        if (cloudData.TEAM) DEFAULT_TEAM = cloudData.TEAM;
+        if (cloudData.REFS) DEFAULT_REFS = cloudData.REFS;
+        if (cloudData.CUSTOM_SECTIONS) CUSTOM_SECTIONS = cloudData.CUSTOM_SECTIONS;
+        
+        // Aplica a ordem das seções se vier do Cloud
+        if (cloudData.SECTION_ORDER) {
+            localStorage.setItem('sn3_order', JSON.stringify(cloudData.SECTION_ORDER));
+            applySectionOrder(cloudData.SECTION_ORDER);
         }
 
-        // Local storage fallback (instant)
-        try { var t = localStorage.getItem('sn3_topics'); if (t) TOPICS = JSON.parse(t); } catch (e) {}
-        try { var m = localStorage.getItem('sn3_tiles'); if (m) MOODBOARD_TILES = JSON.parse(m); } catch (e) {}
-        try { var gc = localStorage.getItem('sn3_gc'); if (gc) GOLDEN_CIRCLE = JSON.parse(gc); } catch (e) {}
-        try { var pr = localStorage.getItem('sn3_prob'); if (pr) PROBLEM_DATA = JSON.parse(pr); } catch (e) {}
-        try { var ins = localStorage.getItem('sn3_ins'); if (ins) INSIGHTS_DATA = JSON.parse(ins); } catch (e) {}
-        try { var ps = localStorage.getItem('sn3_proc'); if (ps) PROCESS_STEPS = JSON.parse(ps); } catch (e) {}
-        try { var cs = localStorage.getItem('sn3_custom'); if (cs) CUSTOM_SECTIONS = JSON.parse(cs); } catch (e) {}
+        // Aplica hero title/subtitle do Cloud
+        if (cloudData.HERO_TITLE) {
+            var ht = document.getElementById('hero-title');
+            if (ht) ht.innerText = cloudData.HERO_TITLE;
+        }
+        if (cloudData.HERO_SUBTITLE) {
+            var hs = document.getElementById('hero-subtitle');
+            if (hs) hs.innerText = cloudData.HERO_SUBTITLE;
+        }
     }
 
     function renderAll() {
@@ -806,10 +840,34 @@
                     }
                 });
             } else {
-                el.addEventListener('blur', function () {
+                // Para campos de texto livre (contenteditable)
+                el.addEventListener('input', function () {
                     var idx = parseInt(el.dataset.topic);
                     var field = el.dataset.field;
-                    if (!isNaN(idx) && TOPICS[idx]) { TOPICS[idx][field] = el.innerText; saveTopics(); }
+                    if (!isNaN(idx) && TOPICS[idx]) { 
+                        TOPICS[idx][field] = el.innerText; 
+                        saveTopics(); 
+                    }
+                    
+                    // Outros campos genéricos
+                    var gc = el.dataset.gc;
+                    if (gc && GOLDEN_CIRCLE[gc]) {
+                        GOLDEN_CIRCLE[gc][el.dataset.field] = el.innerText;
+                        saveGC();
+                    }
+
+                    var prob = el.dataset.prob;
+                    if (prob) {
+                        PROBLEM_DATA[prob] = el.innerText;
+                        saveProb();
+                    }
+                });
+                
+                el.addEventListener('blur', function () {
+                    // Backup extra no blur
+                    saveTopics();
+                    saveGC();
+                    saveProb();
                 });
             }
         });
@@ -835,7 +893,9 @@
         ['hero-title', 'hero-subtitle'].forEach(function (id) {
             var el = document.getElementById(id);
             if (!el) return;
-            el.addEventListener('blur', function () { localStorage.setItem('sn3_' + id, el.innerText); });
+            el.addEventListener('blur', function () {
+                localStorage.setItem('sn3_' + id, el.innerText);
+            });
             var saved = localStorage.getItem('sn3_' + id);
             if (saved) el.innerText = saved;
         });
@@ -1163,6 +1223,18 @@
     window.SenegalApp = Object.assign(window.SenegalApp || {}, { removeTile: removeTile, addTile: addTile, removeRef: removeRef, addRef: addRef, removeMember: removeMember, addMember: addMember, addCustom: addCustom, removeCustom: removeCustom, resetAll: resetAll });
 
     window.SenegalApp.collectCurrentState = function() {
+        var container = document.getElementById('panel-presentation');
+        var order = [];
+        if (container) {
+            order = Array.from(container.children)
+                .filter(function(el) { return el.id; })
+                .map(function(el) { return el.id; });
+        }
+
+        // Captura hero title/subtitle do DOM
+        var heroTitle = document.getElementById('hero-title');
+        var heroSub = document.getElementById('hero-subtitle');
+
         return {
             TOPICS: TOPICS,
             MOODBOARD_TILES: MOODBOARD_TILES,
@@ -1172,7 +1244,10 @@
             PROCESS_STEPS: PROCESS_STEPS,
             TEAM: getTeam(),
             REFS: getRefs(),
-            CUSTOM_SECTIONS: CUSTOM_SECTIONS
+            CUSTOM_SECTIONS: CUSTOM_SECTIONS,
+            SECTION_ORDER: order,
+            HERO_TITLE: heroTitle ? heroTitle.innerText : 'Senegal',
+            HERO_SUBTITLE: heroSub ? heroSub.innerText : 'Projeto Acadêmico — Análise Multidisciplinar'
         };
     };
 
