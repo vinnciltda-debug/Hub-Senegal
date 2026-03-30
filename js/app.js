@@ -824,72 +824,6 @@
        EDITABLE (Admin Only)
        ═══════════════════════════════════ */
     function initEditable() {
-        document.querySelectorAll('[data-topic][data-field]').forEach(function (el) {
-            if (el.tagName === 'INPUT') {
-                el.addEventListener('input', function () {
-                    var idx = parseInt(el.dataset.topic);
-                    var field = el.dataset.field;
-                    if (!isNaN(idx) && TOPICS[idx]) {
-                        TOPICS[idx][field] = el.value;
-                        saveTopics();
-                        if (field === 'qrLink') {
-                            var qrImg = document.getElementById('qr-img-' + idx);
-                            var url = el.value || (window.location.href.split('#')[0] + '#' + TOPICS[idx].id);
-                            if (qrImg) qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url) + '&color=00853F';
-                        }
-                    }
-                });
-            } else {
-                // Para campos de texto livre (contenteditable)
-                el.addEventListener('input', function () {
-                    var idx = parseInt(el.dataset.topic);
-                    var field = el.dataset.field;
-                    if (!isNaN(idx) && TOPICS[idx]) { 
-                        TOPICS[idx][field] = el.innerText; 
-                        saveTopics(); 
-                    }
-                    
-                    // Outros campos genéricos
-                    var gc = el.dataset.gc;
-                    if (gc && GOLDEN_CIRCLE[gc]) {
-                        GOLDEN_CIRCLE[gc][el.dataset.field] = el.innerText;
-                        saveGC();
-                    }
-
-                    var prob = el.dataset.prob;
-                    if (prob) {
-                        PROBLEM_DATA[prob] = el.innerText;
-                        saveProb();
-                    }
-                });
-                
-                el.addEventListener('blur', function () {
-                    // Backup extra no blur
-                    saveTopics();
-                    saveGC();
-                    saveProb();
-                });
-            }
-        });
-
-        document.querySelectorAll('[data-topic][data-stat]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var idx = parseInt(el.dataset.topic);
-                var si = parseInt(el.dataset.stat);
-                var field = el.dataset.field;
-                if (!isNaN(idx) && TOPICS[idx] && TOPICS[idx].stats[si]) { TOPICS[idx].stats[si][field] = el.innerText; saveTopics(); }
-            });
-        });
-
-        document.querySelectorAll('[data-member][data-field]').forEach(function (el) {
-            el.addEventListener('blur', function () {
-                var idx = parseInt(el.dataset.member);
-                var field = el.dataset.field;
-                var team = getTeam();
-                if (team[idx]) { team[idx][field] = el.innerText; saveTeam(team); }
-            });
-        });
-
         ['hero-title', 'hero-subtitle'].forEach(function (id) {
             var el = document.getElementById(id);
             if (!el) return;
@@ -900,68 +834,116 @@
             if (saved) el.innerText = saved;
         });
 
-        // New editable handlers
-        document.querySelectorAll('[data-gc]').forEach(function(el) {
-            el.addEventListener('blur', function() {
-                var key = el.dataset.gc;
-                var field = el.dataset.field;
-                if (GOLDEN_CIRCLE[key]) { GOLDEN_CIRCLE[key][field] = el.innerText; saveGC(); }
-            });
-        });
-
-        document.querySelectorAll('[data-prob]').forEach(function(el) {
-            el.addEventListener('blur', function() {
-                var field = el.dataset.prob;
-                PROBLEM_DATA[field] = el.innerText;
-                saveProb();
-            });
-        });
-
-        document.querySelectorAll('[data-ins]').forEach(function(el) {
-            el.addEventListener('blur', function() {
-                var field = el.dataset.field;
-                INSIGHTS_DATA.quote[field] = el.innerText;
-                saveIns();
-            });
-        });
-
-        document.querySelectorAll('[data-ins-card]').forEach(function(el) {
-            el.addEventListener('blur', function() {
-                var idx = parseInt(el.dataset.insCard);
-                var field = el.dataset.field;
-                if (INSIGHTS_DATA.cards[idx]) { INSIGHTS_DATA.cards[idx][field] = el.innerText; saveIns(); }
-            });
-        });
-
-        document.querySelectorAll('[data-proc]').forEach(function(el) {
-            el.addEventListener('blur', function() {
-                var idx = parseInt(el.dataset.proc);
-                var field = el.dataset.field;
-                if (PROCESS_STEPS[idx]) { PROCESS_STEPS[idx][field] = el.innerText; saveProc(); }
-            });
-        });
-
-        document.querySelectorAll('[data-custom]').forEach(function(el) {
-            el.addEventListener('blur', function() {
-                var idx = parseInt(el.dataset.custom);
-                var field = el.dataset.field;
-                if (CUSTOM_SECTIONS[idx]) { CUSTOM_SECTIONS[idx][field] = el.innerText; saveCustom(); }
-            });
-        });
-
-        // Section Sorting
         initSectionSorting();
 
         var fileInput = document.getElementById('admin-file-input') || createFileInput();
         var targetTopic = -1, targetTile = -1;
 
-        document.querySelectorAll('.edit-image-btn').forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
+        // Utilizamos delegação de eventos no document.body para que novos elementos (gerados por renderAll) não percam os eventos
+        document.body.addEventListener('input', function(e) {
+            var el = e.target;
+            if (el.contentEditable === 'true' || el.tagName === 'INPUT') {
+                var field = el.dataset.field;
+                
+                // Topics Data
+                if (el.hasAttribute('data-topic') && field) {
+                    var idx = parseInt(el.dataset.topic);
+                    if (!isNaN(idx) && TOPICS[idx]) {
+                        TOPICS[idx][field] = (el.tagName === 'INPUT') ? el.value : el.innerText;
+                        saveTopics();
+                        if (field === 'qrLink') {
+                            var qrImg = document.getElementById('qr-img-' + idx);
+                            var url = el.value || (window.location.href.split('#')[0] + '#' + TOPICS[idx].id);
+                            if (qrImg) qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url) + '&color=00853F';
+                        }
+                    }
+                }
+                
+                // Golden Circle Data (input on title, text, keyword)
+                if (el.hasAttribute('data-gc') && field) {
+                    var gcKey = el.dataset.gc;
+                    if (GOLDEN_CIRCLE[gcKey]) {
+                        GOLDEN_CIRCLE[gcKey][field] = el.innerText;
+                        saveGC();
+                    }
+                }
+                
+                // Problem Data
+                if (el.hasAttribute('data-prob')) {
+                    var probField = el.dataset.prob;
+                    if (PROBLEM_DATA[probField] !== undefined) {
+                        PROBLEM_DATA[probField] = el.innerText;
+                        saveProb();
+                    } else if (probField === 'tag' || probField === 'title' || probField === 'text' || probField === 'missionTag' || probField === 'mission') {
+                        PROBLEM_DATA[probField] = el.innerText;
+                        saveProb();
+                    }
+                }
+
+                // Insights Quote
+                if (el.hasAttribute('data-ins') && field) {
+                    INSIGHTS_DATA.quote[field] = el.innerText;
+                    saveIns();
+                }
+
+                // Insights Cards
+                if (el.hasAttribute('data-ins-card') && field) {
+                    var insIdx = parseInt(el.dataset.insCard);
+                    if (!isNaN(insIdx) && INSIGHTS_DATA.cards[insIdx]) {
+                        INSIGHTS_DATA.cards[insIdx][field] = el.innerText;
+                        saveIns();
+                    }
+                }
+
+                // Creative Process
+                if (el.hasAttribute('data-proc') && field) {
+                    var procIdx = parseInt(el.dataset.proc);
+                    if (!isNaN(procIdx) && PROCESS_STEPS[procIdx]) {
+                        PROCESS_STEPS[procIdx][field] = el.innerText;
+                        saveProc();
+                    }
+                }
+
+                // Custom Sections
+                if (el.hasAttribute('data-custom') && field) {
+                    var cusIdx = parseInt(el.dataset.custom);
+                    if (!isNaN(cusIdx) && CUSTOM_SECTIONS[cusIdx]) {
+                        CUSTOM_SECTIONS[cusIdx][field] = el.innerText;
+                        saveCustom();
+                    }
+                }
+                
+                // Team Members
+                if (el.hasAttribute('data-member') && field) {
+                    var memIdx = parseInt(el.dataset.member);
+                    var team = getTeam();
+                    if (!isNaN(memIdx) && team[memIdx]) {
+                        team[memIdx][field] = el.innerText;
+                        saveTeam(team);
+                    }
+                }
+
+                // Topic Stats
+                if (el.hasAttribute('data-topic') && el.hasAttribute('data-stat') && field) {
+                    var tIdx = parseInt(el.dataset.topic);
+                    var stIdx = parseInt(el.dataset.stat);
+                    if (!isNaN(tIdx) && !isNaN(stIdx) && TOPICS[tIdx] && TOPICS[tIdx].stats[stIdx]) {
+                        TOPICS[tIdx].stats[stIdx][field] = el.innerText;
+                        saveTopics();
+                    }
+                }
+            }
+        });
+
+        // Delegação de evento para os botões de edição de imagem
+        document.body.addEventListener('click', function (e) {
+            var btn = e.target.closest('.edit-image-btn');
+            if (btn) {
                 e.stopPropagation();
                 targetTopic = btn.dataset.topic !== undefined ? parseInt(btn.dataset.topic) : -1;
                 targetTile = btn.dataset.tile !== undefined ? parseInt(btn.dataset.tile) : -1;
                 fileInput.click();
-            });
+            }
         });
 
         fileInput.addEventListener('change', function () {
@@ -978,21 +960,14 @@
                     var height = img.height;
 
                     if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
                     } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
                     }
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    // Comprimir para JPEG (para respeitar o limite de 1MB do Firestore)
                     var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
 
                     if (targetTopic !== -1) {
