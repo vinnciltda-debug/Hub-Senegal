@@ -179,8 +179,7 @@
         } catch(e) {}
 
         initTabs();
-        initSideNav();
-        initPresentationControls();
+        initTabs();
         initPresentationControls();
         initBackToTop();
         initScrollHint();
@@ -286,6 +285,11 @@
         renderRefs();
         renderTeam();
         if (typeof lucide !== 'undefined') lucide.createIcons();
+        
+        // Refresh slide segments and navigation after rendering
+        if (typeof refreshSlideControls === 'function') {
+            refreshSlideControls();
+        }
     }
     function saveTopics() { localStorage.setItem('sn3_topics', JSON.stringify(TOPICS)); }
     function saveTiles() { localStorage.setItem('sn3_tiles', JSON.stringify(MOODBOARD_TILES)); }
@@ -667,34 +671,11 @@
 
     function initPresentationControls() {
         var ctrl = document.getElementById('presentation-controls');
-        var indicator = document.getElementById('slide-number');
         var prevSm = document.getElementById('prev-slide-sm');
         var nextSm = document.getElementById('next-slide-sm');
 
-        slideElements = [
-            document.getElementById('hero'),
-            document.getElementById('section-team')
-        ].concat(Array.from(document.querySelectorAll('.topic-section'))).concat([
-            document.getElementById('section-golden-circle'),
-            document.getElementById('section-problem'),
-            document.getElementById('moodboard-section'),
-            document.getElementById('section-insights'),
-            document.getElementById('section-creative-process')
-        ]).filter(function(el) { return el !== null; });
-
-        // Create pagination dots
-        var pag = document.getElementById('slide-pagination');
-        if (pag) {
-            pag.innerHTML = '';
-            slideElements.forEach(function(_, i) {
-                var dot = document.createElement('div');
-                dot.className = 'pagination-dot';
-                dot.addEventListener('click', function() {
-                    slideElements[i].scrollIntoView({ behavior: 'smooth' });
-                });
-                pag.appendChild(dot);
-            });
-        }
+        // Initial population
+        refreshSlideControls();
 
         window.addEventListener('scroll', function () {
             var activeBtn = document.querySelector('.tab-btn.active');
@@ -710,6 +691,7 @@
             });
 
             currentSlideIndex = closest;
+            var indicator = document.getElementById('slide-number');
             if (indicator) indicator.textContent = (closest + 1) + ' / ' + slideElements.length;
 
             var show = window.scrollY > 200;
@@ -745,6 +727,47 @@
             if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (nextSm) nextSm.click(); }
             else if (e.key === 'ArrowLeft') { if (prevSm) prevSm.click(); }
         });
+    }
+
+    function refreshSlideControls() {
+        var indicator = document.getElementById('slide-number');
+        var pag = document.getElementById('slide-pagination');
+
+        // Re-calculate slide segments based on current DOM
+        slideElements = [
+            document.getElementById('hero'),
+            document.getElementById('section-team'),
+            document.getElementById('topics-container')
+        ].concat(Array.from(document.querySelectorAll('.topic-section'))).concat([
+            document.getElementById('section-golden-circle'),
+            document.getElementById('section-problem'),
+            document.getElementById('moodboard-section'),
+            document.getElementById('section-insights'),
+            document.getElementById('section-creative-process')
+        ]).filter(function(el) { 
+            // Filter nulls and hidden containers
+            return el !== null && (el.children.length > 0 || !el.id.includes('container')); 
+        });
+
+        // Re-generate pagination dots
+        if (pag) {
+            pag.innerHTML = '';
+            slideElements.forEach(function(_, i) {
+                var dot = document.createElement('div');
+                dot.className = 'pagination-dot';
+                dot.addEventListener('click', function() {
+                    slideElements[i].scrollIntoView({ behavior: 'smooth' });
+                });
+                pag.appendChild(dot);
+            });
+        }
+
+        if (indicator) {
+            indicator.textContent = (currentSlideIndex + 1) + ' / ' + slideElements.length;
+        }
+
+        // Also refresh side dots
+        initSideNav();
     }
 
     /* ═══════════════════════════════════
@@ -918,8 +941,7 @@
                     .filter(function(el) { return el.id; })
                     .map(function(el) { return el.id; });
                 saveOrder(order);
-                initSideNav(); // Refresh dot labels/order
-                initPresentationControls(); // Refresh slides
+                refreshSlideControls(); 
             }
         });
     }
