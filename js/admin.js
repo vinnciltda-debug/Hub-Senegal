@@ -59,6 +59,11 @@
         var resetBtn = document.getElementById('reset-data-btn');
 
         if (syncBtn) syncBtn.addEventListener('click', function () {
+            // Força a saída do campo atual para garantir que o texto editado foi salvo nas variáveis
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+
             if (window.SenegalApp && window.SenegalApp.CloudSync) {
                 syncBtn.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width:14px;height:14px;"></i> Publicando no Firebase...';
                 if (typeof lucide !== 'undefined') lucide.createIcons();
