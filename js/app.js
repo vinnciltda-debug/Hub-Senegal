@@ -14,7 +14,7 @@
             text: 'Senegal é marcado por uma estrutura etária predominantemente jovem, com apenas um quarto da população acima de 30 anos. A idade mediana é de aproximadamente 23,6 anos (dados de 2025). Com uma taxa de crescimento de 2,28% ao ano, a população urbana representa cerca de 48-50%, liderada pelo polo de Dakar e grandes centros como Touba e M\'bour.',
             stats: [{ value: '23,6', label: 'Idade Mediana' }, { value: '2,28%', label: 'Crescimento Anual' }, { value: '102', label: 'Hab/km²' }],
             image: 'assets/senegal_demographics_1774208781562.png',
-            pdfSource: 'parte a e e.pdf',
+            pdfSource: 'assets/pdfs/parte a e e.pdf',
             qrLink: ''
         },
         {
@@ -23,7 +23,7 @@
             text: 'Em 2023, o Senegal atingiu a marca de 18.077.573 habitantes. Globalmente, posiciona-se como o 69º país mais populoso. Para efeito de comparação, sua densidade demográfica de 91,68 hab/km² reflete uma ocupação territorial significativa, embora concentrada em polos urbanos em expansão acelerada.',
             stats: [{ value: '18.1M', label: 'População 2023' }, { value: '69º', label: 'Ranking IBGE' }, { value: '91,68', label: 'Densidade' }],
             image: 'assets/senegal_population_crowd_1774208799106.png',
-            pdfSource: 'parte b.pdf',
+            pdfSource: 'assets/pdfs/parte b.pdf',
             qrLink: ''
         },
         {
@@ -32,7 +32,7 @@
             text: 'A cultura senegalesa é definida pela "Teraanga" — generosidade de espírito e acolhimento. A língua Wolof domina o cotidiano, resistindo à imposição histórica do francês. Na música, o Mbalax funde Jazz, Soul e ritmos ancestrais. Dakar destaca-se como centro global de arte, abrigando a Bienal Dak\'Art e o imponente Museu das Civilizações Negras.',
             stats: [{ value: 'Wolof', label: 'Língua Nativa' }, { value: 'Mbalax', label: 'Ritmo Nacional' }, { value: "Dak'Art", label: 'Bienal de Arte' }],
             image: 'assets/senegal_culture_mbalax_1774208814214.png',
-            pdfSource: 'parte c e d.pdf',
+            pdfSource: 'assets/pdfs/parte c e d.pdf',
             qrLink: ''
         },
         {
@@ -41,7 +41,7 @@
             text: 'A sociedade é 95% muçulmana, vivendo sob um Estado Laico com alta tolerância religiosa. O esporte é uma paixão nacional inequívoca: da luta tradicional "Laamb", carregada de misticismo, à Seleção de Futebol (Leões de Teranga). Desafios como a desigualdade urbana e a precariedade de infraestrutura básica convivem com um forte senso de cuidado coletivo.',
             stats: [{ value: '95%', label: 'Muçulmanos' }, { value: 'Laamb', label: 'Luta Tradicional' }, { value: 'Teranga', label: 'Valores Sociais' }],
             image: 'assets/senegal_social_teranga_1774208829208.png',
-            pdfSource: 'parte c e d.pdf',
+            pdfSource: 'assets/pdfs/parte c e d.pdf',
             qrLink: ''
         },
         {
@@ -50,7 +50,7 @@
             text: 'Com o lançamento do satélite GAINDESAT-1A em 2024, o Senegal iniciou uma nova era tecnológica. O "New Deal Technologique" visa digitalizar 90% dos serviços públicos até 2034, transformando o país em um hub regional com forte foco em infraestrutura de dados, cibersegurança e fomento a mais de 500 startups de tecnologia.',
             stats: [{ value: 'GAINDESAT', label: 'Primeiro Satélite' }, { value: '90%', label: 'Digitalização' }, { value: '15%', label: 'PIB Digital' }],
             image: 'assets/senegal_technology_satellite_1774208879529.png',
-            pdfSource: 'parte a e e.pdf',
+            pdfSource: 'assets/pdfs/parte a e e.pdf',
             qrLink: ''
         },
         {
@@ -59,7 +59,7 @@
             text: 'O cenário ambiental apresenta contrastes entre o norte árido e o sul úmido. Enfrentando a desertificação e a perda de manguezais, o país destaca-se pelo programa de reflorestamento costeiro — um dos maiores do mundo. O Plano Senegal Emergente (PSE) reconhece a economia verde como motor essencial para o desenvolvimento sustentável.',
             stats: [{ value: '200M', label: 'Mudas de Mangue' }, { value: 'PSE', label: 'Visão Estratégica' }, { value: '46%', label: 'Solo Semiárido' }],
             image: 'assets/senegal_environment_mangroves_1774208904701.png',
-            pdfSource: 'parte f.pdf',
+            pdfSource: 'assets/pdfs/parte f.pdf',
             qrLink: ''
         }
     ];
@@ -84,10 +84,10 @@
     ];
 
     var PDF_FILES = [
-        { name: 'parte a e e.pdf', label: 'Tópicos A & E — Demografia e Tecnologia' },
-        { name: 'parte b.pdf', label: 'Tópico B — Tamanho da População' },
-        { name: 'parte c e d.pdf', label: 'Tópicos C & D — Cultura e Sociedade' },
-        { name: 'parte f.pdf', label: 'Tópico F — Aspectos Ambientais' }
+        { name: 'assets/pdfs/parte a e e.pdf', label: 'Tópicos A & E — Demografia e Tecnologia' },
+        { name: 'assets/pdfs/parte b.pdf', label: 'Tópico B — Tamanho da População' },
+        { name: 'assets/pdfs/parte c e d.pdf', label: 'Tópicos C & D — Cultura e Sociedade' },
+        { name: 'assets/pdfs/parte f.pdf', label: 'Tópico F — Aspectos Ambientais' }
     ];
 
     var DEFAULT_REFS = [
