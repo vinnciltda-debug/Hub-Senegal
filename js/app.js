@@ -733,21 +733,16 @@
         var indicator = document.getElementById('slide-number');
         var pag = document.getElementById('slide-pagination');
 
-        // Re-calculate slide segments based on current DOM
-        slideElements = [
-            document.getElementById('hero'),
-            document.getElementById('section-team'),
-            document.getElementById('topics-container')
-        ].concat(Array.from(document.querySelectorAll('.topic-section'))).concat([
-            document.getElementById('section-golden-circle'),
-            document.getElementById('section-problem'),
-            document.getElementById('moodboard-section'),
-            document.getElementById('section-insights'),
-            document.getElementById('section-creative-process')
-        ]).filter(function(el) { 
-            // Filter nulls and hidden containers
-            return el !== null && (el.children.length > 0 || !el.id.includes('container')); 
-        });
+        // Automatic discovery: Find all .pres-section elements and sort by their actual position
+        // This includes Hero, Team, Topics A-F, Golden Circle, Problem, Moodboard, Insights, Process.
+        slideElements = Array.from(document.querySelectorAll('.pres-section'))
+            .filter(function(el) { 
+                // Ignore empty containers (like topics-container)
+                return el.id !== 'topics-container' && el.offsetHeight > 50; 
+            })
+            .sort(function(a, b) {
+                return (a.offsetTop + a.offsetHeight/2) - (b.offsetTop + b.offsetHeight/2);
+            });
 
         // Re-generate pagination dots
         if (pag) {
