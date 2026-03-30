@@ -343,9 +343,9 @@
         });
     }
 
-    function getRefs() { try { var r = localStorage.getItem('sn3_refs'); return r ? JSON.parse(r) : DEFAULT_REFS.slice(); } catch (e) { return DEFAULT_REFS.slice(); } }
+    function getRefs() { if (!isAdmin) return DEFAULT_REFS; try { var r = localStorage.getItem('sn3_refs'); return r ? JSON.parse(r) : DEFAULT_REFS.slice(); } catch (e) { return DEFAULT_REFS.slice(); } }
     function saveRefs(refs) { localStorage.setItem('sn3_refs', JSON.stringify(refs)); }
-    function getTeam() { try { var t = localStorage.getItem('sn3_team'); return t ? JSON.parse(t) : DEFAULT_TEAM.slice(); } catch (e) { return DEFAULT_TEAM.slice(); } }
+    function getTeam() { if (!isAdmin) return DEFAULT_TEAM; try { var t = localStorage.getItem('sn3_team'); return t ? JSON.parse(t) : DEFAULT_TEAM.slice(); } catch (e) { return DEFAULT_TEAM.slice(); } }
     function saveTeam(team) { localStorage.setItem('sn3_team', JSON.stringify(team)); }
 
     /* ─── MOODBOARD COLLAGE ─── */
@@ -968,16 +968,45 @@
             if (!fileInput.files || !fileInput.files[0]) return;
             var reader = new FileReader();
             reader.onload = function (e) {
-                if (targetTopic !== -1) {
-                    TOPICS[targetTopic].image = e.target.result;
-                    var img = document.getElementById('img-topic-' + targetTopic);
-                    if (img) img.src = e.target.result;
-                    saveTopics();
-                } else if (targetTile !== -1) {
-                    MOODBOARD_TILES[targetTile].src = e.target.result;
-                    saveTiles();
-                }
-                fileInput.value = '';
+                var img = new Image();
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    var MAX_WIDTH = 1000;
+                    var MAX_HEIGHT = 1000;
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Comprimir para JPEG (para respeitar o limite de 1MB do Firestore)
+                    var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                    if (targetTopic !== -1) {
+                        TOPICS[targetTopic].image = dataUrl;
+                        var tImg = document.getElementById('img-topic-' + targetTopic);
+                        if (tImg) tImg.src = dataUrl;
+                        saveTopics();
+                    } else if (targetTile !== -1) {
+                        MOODBOARD_TILES[targetTile].src = dataUrl;
+                        saveTiles();
+                    }
+                    fileInput.value = '';
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(fileInput.files[0]);
         });
