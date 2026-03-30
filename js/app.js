@@ -164,19 +164,25 @@
     ];
 
     var CUSTOM_SECTIONS = [];
+    var HERO_DATA = { title: 'Senegal', subtitle: 'Projeto Acadêmico — Análise Multidisciplinar' };
+    var SECTION_ORDER = [];
 
     /* ═══════════════════════════════════
        INIT
        ═══════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', function () {
-        loadSavedData();
-        renderAll();
+        loadSavedData().then(() => {
+            renderAll();
 
-        // APPLY ORDER NOW THAT ELEMENTS ARE IN DOM
-        try {
-            var so = localStorage.getItem('sn3_order');
-            if (so) applySectionOrder(JSON.parse(so));
-        } catch(e) {}
+            // APPLY ORDER NOW THAT ELEMENTS ARE IN DOM
+            try {
+                var so = localStorage.getItem('sn3_order');
+                if (so) {
+                    SECTION_ORDER = JSON.parse(so);
+                    applySectionOrder(SECTION_ORDER);
+                }
+            } catch(e) {}
+        });
 
         initTabs();
         initSideNav();
@@ -240,7 +246,7 @@
     /* ═══════════════════════════════════
        PERSISTENCE
        ═══════════════════════════════════ */
-    function loadSavedData() {
+    async function loadSavedData() {
         // Load dynamically from Firebase with real-time listening
         if (window.SenegalApp && window.SenegalApp.CloudSync) {
             window.SenegalApp.CloudSync.subscribe(cloudData => {
@@ -252,9 +258,24 @@
                     if (cloudData.PROBLEM_DATA) PROBLEM_DATA = cloudData.PROBLEM_DATA;
                     if (cloudData.INSIGHTS_DATA) INSIGHTS_DATA = cloudData.INSIGHTS_DATA;
                     if (cloudData.PROCESS_STEPS) PROCESS_STEPS = cloudData.PROCESS_STEPS;
-                    if (cloudData.TEAM) DEFAULT_TEAM = cloudData.TEAM;
-                    if (cloudData.REFS) DEFAULT_REFS = cloudData.REFS;
+                    if (cloudData.TEAM) {
+                        DEFAULT_TEAM = cloudData.TEAM;
+                        localStorage.setItem('sn3_team', JSON.stringify(cloudData.TEAM));
+                    }
+                    if (cloudData.REFS) {
+                        DEFAULT_REFS = cloudData.REFS;
+                        localStorage.setItem('sn3_refs', JSON.stringify(cloudData.REFS));
+                    }
                     if (cloudData.CUSTOM_SECTIONS) CUSTOM_SECTIONS = cloudData.CUSTOM_SECTIONS;
+                    if (cloudData.HERO_DATA) {
+                        HERO_DATA = cloudData.HERO_DATA;
+                        localStorage.setItem('sn3_hero_data', JSON.stringify(cloudData.HERO_DATA));
+                    }
+                    if (cloudData.ORDER) {
+                        SECTION_ORDER = cloudData.ORDER;
+                        localStorage.setItem('sn3_order', JSON.stringify(cloudData.ORDER));
+                        applySectionOrder(SECTION_ORDER);
+                    }
                     
                     // Rerender exactly what changed instantly
                     renderAll();
@@ -263,6 +284,7 @@
         }
 
         // Local storage fallback (instant)
+        try { var ht = localStorage.getItem('sn3_hero_data'); if (ht) HERO_DATA = JSON.parse(ht); } catch(e) {}
         try { var t = localStorage.getItem('sn3_topics'); if (t) TOPICS = JSON.parse(t); } catch (e) {}
         try { var m = localStorage.getItem('sn3_tiles'); if (m) MOODBOARD_TILES = JSON.parse(m); } catch (e) {}
         try { var gc = localStorage.getItem('sn3_gc'); if (gc) GOLDEN_CIRCLE = JSON.parse(gc); } catch (e) {}
@@ -270,9 +292,11 @@
         try { var ins = localStorage.getItem('sn3_ins'); if (ins) INSIGHTS_DATA = JSON.parse(ins); } catch (e) {}
         try { var ps = localStorage.getItem('sn3_proc'); if (ps) PROCESS_STEPS = JSON.parse(ps); } catch (e) {}
         try { var cs = localStorage.getItem('sn3_custom'); if (cs) CUSTOM_SECTIONS = JSON.parse(cs); } catch (e) {}
+        try { var so = localStorage.getItem('sn3_order'); if (so) SECTION_ORDER = JSON.parse(so); } catch(e) {}
     }
 
     function renderAll() {
+        renderHero();
         renderTeamPresentation();
         renderTopics();
         renderGoldenCircle();
@@ -287,6 +311,15 @@
         renderTeam();
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
+
+    function renderHero() {
+        var title = document.getElementById('hero-title');
+        var sub = document.getElementById('hero-subtitle');
+        if (title && HERO_DATA.title) title.innerText = HERO_DATA.title;
+        if (sub && HERO_DATA.subtitle) sub.innerText = HERO_DATA.subtitle;
+    }
+
+    function saveHero() { localStorage.setItem('sn3_hero_data', JSON.stringify(HERO_DATA)); }
     function saveTopics() { localStorage.setItem('sn3_topics', JSON.stringify(TOPICS)); }
     function saveTiles() { localStorage.setItem('sn3_tiles', JSON.stringify(MOODBOARD_TILES)); }
     function saveGC() { localStorage.setItem('sn3_gc', JSON.stringify(GOLDEN_CIRCLE)); }
@@ -294,7 +327,10 @@
     function saveIns() { localStorage.setItem('sn3_ins', JSON.stringify(INSIGHTS_DATA)); }
     function saveProc() { localStorage.setItem('sn3_proc', JSON.stringify(PROCESS_STEPS)); }
     function saveCustom() { localStorage.setItem('sn3_custom', JSON.stringify(CUSTOM_SECTIONS)); }
-    function saveOrder(order) { localStorage.setItem('sn3_order', JSON.stringify(order)); }
+    function saveOrder(order) { 
+        SECTION_ORDER = order;
+        localStorage.setItem('sn3_order', JSON.stringify(order)); 
+    }
 
     function applySectionOrder(order) {
         var container = document.getElementById('panel-presentation');
@@ -817,9 +853,11 @@
         ['hero-title', 'hero-subtitle'].forEach(function (id) {
             var el = document.getElementById(id);
             if (!el) return;
-            el.addEventListener('blur', function () { localStorage.setItem('sn3_' + id, el.innerText); });
-            var saved = localStorage.getItem('sn3_' + id);
-            if (saved) el.innerText = saved;
+            el.addEventListener('blur', function () {
+                if (id === 'hero-title') HERO_DATA.title = el.innerText;
+                else HERO_DATA.subtitle = el.innerText;
+                saveHero();
+            });
         });
 
         // New editable handlers
@@ -1147,6 +1185,7 @@
 
     window.SenegalApp.collectCurrentState = function() {
         return {
+            HERO_DATA: HERO_DATA,
             TOPICS: TOPICS,
             MOODBOARD_TILES: MOODBOARD_TILES,
             GOLDEN_CIRCLE: GOLDEN_CIRCLE,
@@ -1155,7 +1194,8 @@
             PROCESS_STEPS: PROCESS_STEPS,
             TEAM: getTeam(),
             REFS: getRefs(),
-            CUSTOM_SECTIONS: CUSTOM_SECTIONS
+            CUSTOM_SECTIONS: CUSTOM_SECTIONS,
+            ORDER: SECTION_ORDER
         };
     };
 
