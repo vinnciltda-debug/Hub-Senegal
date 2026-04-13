@@ -387,13 +387,12 @@
     function getTeam() { if (!isAdmin) return DEFAULT_TEAM; try { var t = localStorage.getItem('sn3_team'); return t ? JSON.parse(t) : DEFAULT_TEAM.slice(); } catch (e) { return DEFAULT_TEAM.slice(); } }
     function saveTeam(team) { localStorage.setItem('sn3_team', JSON.stringify(team)); }
 
-    /* ─── QR CODES DATA (3D Models) ─── */
-    var QR_CODES_3D = [
-        { title: 'Monumento Renascença Africana', desc: 'Escaneie para visualizar o modelo 3D do icônico monumento de 49m em Dakar — símbolo do despertar africano.', url: 'https://sketchfab.com/3d-models/african-renaissance-monument' },
-        { title: 'Máscara Tradicional Senufo', desc: 'Explore em 3D a arte escultórica das máscaras cerimoniais senegalesas, utilizadas em rituais e danças.', url: 'https://sketchfab.com/3d-models/african-mask' },
-        { title: 'Djembe — Tambor Africano', desc: 'Visualize o modelo 3D do Djembe, instrumento fundamental na música Mbalax e nas cerimônias tradicionais.', url: 'https://sketchfab.com/3d-models/djembe-drum' },
-        { title: 'Mesquita de Touba', desc: 'Explore a arquitetura da Grande Mesquita de Touba — o coração espiritual do Mouridismo senegalês.', url: 'https://sketchfab.com/3d-models/mosque-touba' },
-        { title: 'Baobá — Árvore da Vida', desc: 'Descubra em 3D o Baobá, árvore milenar sagrada que simboliza a resistência e sabedoria africana.', url: 'https://sketchfab.com/3d-models/baobab-tree' }
+    /* ─── LOCAL 3D MODELS ─── */
+    var GLB_MODELS = [
+        { title: 'Chapéu Tradicional Tengane', desc: 'Artefato cultural senegalês rico em detalhes e simbolismo.', src: 'african_cultural_hat_tengane.glb' },
+        { title: 'Barco Tradicional', desc: 'Embarcação típica utilizada na pesca e transporte costeiro.', src: 'boat.glb' },
+        { title: 'Peixe Grelhado (Thieboudienne)', desc: 'Representação 3D da culinária senegalesa.', src: 'grilled+fish+dish+3d+model.glb' },
+        { title: 'Edifício Moderno', desc: 'Arquitetura contemporânea em expansão nos centros urbanos.', src: 'round+modern+building+3d+model.glb' }
     ];
 
     /* ─── MOODBOARD COLLAGE ─── */
@@ -431,34 +430,39 @@
         });
 
 
-        // ─── QR CODES 3D ───
-        var qrContainer = document.getElementById('moodboard-qrcodes');
-        if (qrContainer) renderMoodboardQRCodes(qrContainer);
+        // ─── 3D VIEWERS ───
+        var threeDContainer = document.getElementById('three-d-viewer-container');
+        if (threeDContainer) render3DViewer(threeDContainer);
 
         if (typeof AOS !== 'undefined') AOS.refresh();
     }
 
 
-    /* ─── MOODBOARD: QR CODES 3D ─── */
-    function renderMoodboardQRCodes(container) {
-        var qrGrid = '<div class="qr-grid-moodboard">';
-        QR_CODES_3D.forEach(function(qr, i) {
-            var qrImgUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(qr.url) + '&color=00853F';
-            qrGrid +=
-                '<div class="qr-card-3d" data-aos="zoom-in" data-aos-delay="' + (i * 100) + '">' +
-                    '<div class="qr-card-3d__code">' +
-                        '<img src="' + qrImgUrl + '" alt="QR ' + esc(qr.title) + '" loading="lazy" />' +
-                    '</div>' +
-                    '<div class="qr-card-3d__info">' +
-                        '<div class="qr-card-3d__badge">🔮 Modelo 3D</div>' +
-                        '<h4 class="qr-card-3d__title">' + esc(qr.title) + '</h4>' +
-                        '<p class="qr-card-3d__desc">' + esc(qr.desc) + '</p>' +
-                    '</div>' +
-                '</div>';
-        });
-        qrGrid += '</div>';
+    /* ─── 3D SECTION: QR CENTER ONLY ─── */
+    function render3DViewer(container) {
+        if (!container) return;
+        
+        var qrImgUrl = 'adobe-express-qr-code (2).svg';
 
-        container.innerHTML = qrGrid;
+        var html = 
+            '<div class="viewer-3d-layout viewer-3d-layout--v2">' +
+                '<!-- Central QR Code Only -->' +
+                '<div class="qr-featured-container" data-aos="zoom-in">' +
+                    '<div class="qr-card-large">' +
+                        '<div class="qr-card-large__code">' +
+                            '<img src="' + qrImgUrl + '" alt="QR Code Hub Senegal" />' +
+                        '</div>' +
+                        '<div class="qr-card-large__info">' +
+                            '<div class="qr-card-large__badge">🔮 Hub Senegal 3D</div>' +
+                            '<h3 class="qr-card-large__title">Acesse no Celular</h3>' +
+                            '<p class="qr-card-large__desc">Escaneie para explorar o universo visual do Senegal e interagir com dados imersivos diretamente do seu dispositivo móvel.</p>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        
+        container.innerHTML = html;
+        if (typeof AOS !== 'undefined') AOS.refresh();
     }
 
     /* ─── TEAM PRESENTATION (Tab 1) ─── */

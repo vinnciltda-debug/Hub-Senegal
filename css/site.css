@@ -1742,145 +1742,143 @@
 
 /* ═══════════════════════════════════
    MOODBOARD: QR CODES 3D
+/* ═══════════════════════════════════
+   3D VIEWER LAYOUT
    ═══════════════════════════════════ */
 
-.moodboard-qr-section {
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-xl);
-}
-
-.qr-grid-moodboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-.qr-card-3d {
-  background: linear-gradient(135deg, rgba(6, 12, 6, 0.9), rgba(0, 40, 20, 0.4));
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 133, 63, 0.25);
-  border-radius: var(--radius-xl);
-  padding: var(--space-xl);
-  text-align: center;
+.viewer-3d-layout--v2 {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  transition: all 0.5s var(--ease-out);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.qr-card-3d::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 133, 63, 0.06) 0%, transparent 60%);
-  animation: rotate-slow 15s linear infinite;
-  pointer-events: none;
-}
-
-.qr-card-3d:hover {
-  transform: translateY(-8px);
-  border-color: rgba(0, 133, 63, 0.6);
-  box-shadow:
-    0 25px 50px rgba(0,0,0,0.5),
-    0 0 40px rgba(0,133,63,0.2);
-}
-
-.qr-card-3d__code {
-  width: 140px;
-  height: 140px;
-  background: #fff;
-  border-radius: var(--radius-lg);
-  padding: 10px;
-  margin: 0 auto var(--space-lg);
-  box-shadow: 0 0 30px rgba(0, 133, 63, 0.3);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* Central Featured QR */
+.qr-featured-container {
   position: relative;
-  z-index: 2;
-  border: 3px solid var(--sn-green);
+  z-index: 5;
+  width: 100%;
+  max-width: 500px;
+  padding: var(--space-md);
 }
 
-.qr-card-3d:hover .qr-card-3d__code {
-  transform: scale(1.08) rotate(-2deg);
-  box-shadow: 0 0 50px rgba(0, 133, 63, 0.5);
+.qr-card-large {
+  background: linear-gradient(135deg, rgba(10, 20, 10, 0.85), rgba(0, 40, 20, 0.5));
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(0, 133, 63, 0.4);
+  border-radius: var(--radius-2xl, 32px);
+  padding: var(--space-xl);
+  text-align: center;
+  box-shadow: 
+    0 30px 60px rgba(0,0,0,0.6),
+    0 0 40px rgba(0, 133, 63, 0.2);
+  transition: all 0.5s var(--ease-out);
 }
 
-/* Scanning line */
-.qr-card-3d__code::after {
+.qr-card-large:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: var(--sn-green);
+  box-shadow: 
+    0 40px 80px rgba(0,0,0,0.7),
+    0 0 60px rgba(0, 133, 63, 0.4);
+}
+
+.qr-card-large__code {
+  width: 220px;
+  height: 220px;
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 15px;
+  margin: 0 auto var(--space-xl);
+  position: relative;
+  border: 5px solid var(--sn-green);
+  box-shadow: 0 0 40px rgba(0, 133, 63, 0.5);
+}
+
+.qr-card-large__code::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   background: var(--sn-green);
-  box-shadow: 0 0 12px var(--sn-green);
-  z-index: 3;
-  animation: scan 3s linear infinite;
+  box-shadow: 0 0 15px var(--sn-green);
+  animation: scan-large 4s linear infinite;
 }
 
-.qr-card-3d__code img {
+@keyframes scan-large {
+  0% { top: 15px; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: calc(100% - 18px); opacity: 0; }
+}
+
+.qr-card-large__code img {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.qr-card-3d__info {
-  position: relative;
-  z-index: 2;
-}
-
-.qr-card-3d__badge {
+.qr-card-large__badge {
   display: inline-block;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: var(--sn-green);
-  padding: 4px 14px;
+  padding: 6px 18px;
   border-radius: var(--radius-full);
-  background: rgba(0, 133, 63, 0.12);
-  border: 1px solid rgba(0, 133, 63, 0.2);
-  margin-bottom: var(--space-sm);
-  text-shadow: 0 0 8px rgba(0,133,63,0.3);
+  background: rgba(0, 133, 63, 0.15);
+  margin-bottom: var(--space-md);
+  border: 1px solid rgba(0, 133, 63, 0.3);
 }
 
-.qr-card-3d__title {
+.qr-card-large__title {
   font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: var(--space-xs, 6px);
-  color: var(--text-primary);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: var(--space-sm);
 }
 
-.qr-card-3d__desc {
-  font-size: 0.8rem;
+.qr-card-large__desc {
+  font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0;
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0 auto;
 }
+
+@media (max-width: 576px) {
+  .qr-card-large {
+    padding: var(--space-lg);
+  }
+  .qr-card-large__code {
+    width: 180px;
+    height: 180px;
+  }
+  .qr-card-large__title {
+    font-size: 1.4rem;
+  }
+}
+
+
 
 @media (max-width: 768px) {
-  .motivator-cards-grid {
-    grid-template-columns: 1fr;
+  .viewer-3d-featured model-viewer {
+    height: 350px !important;
   }
-  .qr-grid-moodboard {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
-  }
-  .qr-card-3d {
-    padding: var(--space-md);
-  }
-  .qr-card-3d__code {
-    width: 100px;
-    height: 100px;
+  .carousel-item-3d {
+    flex: 0 0 90px;
+    height: 90px;
   }
 }
+
 
 /* ═══════════════════════════════════
    TOPICS (A-F) TEXT SIZING
