@@ -11,7 +11,7 @@
         {
             id: 'topic-a', letter: 'A', tag: 'Dados Demográficos',
             title: 'Perfil de um País Jovem e em Crescimento',
-            text: 'Senegal é marcado por uma estrutura etária predominantemente jovem, com apenas um quarto da população acima de 30 anos. A idade mediana é de aproximadamente 23,6 anos (dados de 2025). Com uma taxa de crescimento de 2,28% ao ano, a população urbana representa cerca de 48-50%, liderada pelo polo de Dakar e grandes centros como Touba e M\'bour.',
+            text: 'Senegal é marcado por uma estrutura etária predominantemente jovem, com apenas um quarto da população acima de 30 anos. A idade mediana é de aproximadamente 23,6 anos (dados de 2025). Com uma taxa de crescimento de 2,28% ao ano, a população urbana representa cerca de 48-50%, liderada pelo polo de Dakar e grandes centros como Touba e M\'bour. Este dinamismo demográfico representa o "bônus demográfico" do país, sendo a base essencial para o crescimento do PIB futuro e exigindo políticas públicas focadas em educação técnica e ciber-alfabetização.',
             stats: [{ value: '23,6', label: 'Idade Mediana' }, { value: '2,28%', label: 'Crescimento Anual' }, { value: '102', label: 'Hab/km²' }],
             image: 'assets/senegal_demographics_1774208781562.png',
             pdfSource: 'assets/pdfs/parte a e e.pdf',
@@ -20,7 +20,7 @@
         {
             id: 'topic-b', letter: 'B', tag: 'Tamanho da População',
             title: 'Uma Nação de 18 Milhões de Almas',
-            text: 'Em 2023, o Senegal atingiu a marca de 18.077.573 habitantes. Globalmente, posiciona-se como o 69º país mais populoso. Para efeito de comparação, sua densidade demográfica de 91,68 hab/km² reflete uma ocupação territorial significativa, embora concentrada em polos urbanos em expansão acelerada.',
+            text: 'Em 2023, o Senegal atingiu a marca de 18.077.573 habitantes. Globalmente, posiciona-se como o 69º país mais populoso. Para efeito de comparação, sua densidade demográfica de 91,68 hab/km² reflete uma ocupação territorial significativa, embora concentrada em polos urbanos em expansão acelerada. Esta concentração urbana em Dakar e cidades satélites cria um ecossistema de alta conectividade social, facilitando a disseminação de serviços digitais e inovações financeiras mobile.',
             stats: [{ value: '18.1M', label: 'População 2023' }, { value: '69º', label: 'Ranking IBGE' }, { value: '91,68', label: 'Densidade' }],
             image: 'assets/senegal_population_crowd_1774208799106.png',
             pdfSource: 'assets/pdfs/parte b.pdf',
@@ -29,7 +29,7 @@
         {
             id: 'topic-c', letter: 'C', tag: 'Aspectos Culturais',
             title: 'Terra da Teraanga e da Négritude',
-            text: 'A cultura senegalesa é definida pela "Teraanga" — generosidade de espírito e acolhimento. A língua Wolof domina o cotidiano, resistindo à imposição histórica do francês. Na música, o Mbalax funde Jazz, Soul e ritmos ancestrais. Dakar destaca-se como centro global de arte, abrigando a Bienal Dak\'Art e o imponente Museu das Civilizações Negras.',
+            text: 'A cultura senegalesa é definida pela "Teraanga" — generosidade de espírito e acolhimento. A língua Wolof domina o cotidiano, resistindo à imposição histórica do francês e atuando como um unificador étnico potente. Na música, o Mbalax funde Jazz, Soul e ritmos ancestrais sabar, servindo como crônica social. Dakar destaca-se como centro global de arte, abrigando a Bienal Dak\'Art e o Museu das Civilizações Negras, que operam como faróis da Négritude contemporânea e da dignidade da herança africana.',
             stats: [{ value: 'Wolof', label: 'Língua Nativa' }, { value: 'Mbalax', label: 'Ritmo Nacional' }, { value: "Dak'Art", label: 'Bienal de Arte' }],
             image: 'assets/senegal_culture_mbalax_1774208814214.png',
             pdfSource: 'assets/pdfs/parte c e d.pdf',
@@ -38,7 +38,7 @@
         {
             id: 'topic-d', letter: 'D', tag: 'Aspectos Sociais',
             title: 'Tradição, Fé e Paixão pelo Esporte',
-            text: 'A sociedade é 95% muçulmana, vivendo sob um Estado Laico com alta tolerância religiosa. O esporte é uma paixão nacional inequívoca: da luta tradicional "Laamb", carregada de misticismo, à Seleção de Futebol (Leões de Teranga). Desafios como a desigualdade urbana e a precariedade de infraestrutura básica convivem com um forte senso de cuidado coletivo.',
+            text: 'A sociedade é 95% muçulmana, vivendo sob um Estado Laico com alta tolerância religiosa. O esporte é uma paixão nacional inequívoca: da luta tradicional "Laamb", carregada de misticismo e tradição esotérica, à Seleção de Futebol (Leões de Teranga). Desafios como a desigualdade urbana e a precariedade de infraestrutura convivem com um forte senso de cuidado coletivo ("Ndimbeul"), que serve como uma rede de segurança social orgânica e resiliente.',
             stats: [{ value: '95%', label: 'Muçulmanos' }, { value: 'Laamb', label: 'Luta Tradicional' }, { value: 'Teranga', label: 'Valores Sociais' }],
             image: 'assets/senegal_social_teranga_1774208829208.png',
             pdfSource: 'assets/pdfs/parte c e d.pdf',
@@ -47,7 +47,7 @@
         {
             id: 'topic-e', letter: 'E', tag: 'Aspectos Tecnológicos',
             title: 'Horizon 2034: A Soberania Digital',
-            text: 'Com o lançamento do satélite GAINDESAT-1A em 2024, o Senegal iniciou uma nova era tecnológica. O "New Deal Technologique" visa digitalizar 90% dos serviços públicos até 2034, transformando o país em um hub regional com forte foco em infraestrutura de dados, cibersegurança e fomento a mais de 500 startups de tecnologia.',
+            text: 'Com o lançamento do satélite GAINDESAT-1A em 2024, o Senegal iniciou uma nova era tecnológica de soberania espacial. O "New Deal Technologique" visa digitalizar 90% dos serviços públicos até 2034, transformando o país em um hub regional de TI. Este movimento não é apenas técnico, mas político: busca reduzir a dependência de infraestruturas estrangeiras e fomentar um ecossistema nativo para startups e talentos locais em IA e cibersegurança.',
             stats: [{ value: 'GAINDESAT', label: 'Primeiro Satélite' }, { value: '90%', label: 'Digitalização' }, { value: '15%', label: 'PIB Digital' }],
             image: 'assets/senegal_technology_satellite_1774208879529.png',
             pdfSource: 'assets/pdfs/parte a e e.pdf',
@@ -56,7 +56,7 @@
         {
             id: 'topic-f', letter: 'F', tag: 'Aspectos Ambientais',
             title: 'Economia Verde no Plano Senegal Emergente',
-            text: 'O cenário ambiental apresenta contrastes entre o norte árido e o sul úmido. Enfrentando a desertificação e a perda de manguezais, o país destaca-se pelo programa de reflorestamento costeiro — um dos maiores do mundo. O Plano Senegal Emergente (PSE) reconhece a economia verde como motor essencial para o desenvolvimento sustentável.',
+            text: 'O cenário ambiental apresenta contrastes entre o norte árido e o sul úmido. Enfrentando a desertificação através da Grande Muralha Verde e a perda de manguezais, o país destaca-se pelo maior programa de reflorestamento costeiro do mundo. O Plano Senegal Emergente (PSE) reconhece a economia verde como motor essencial, integrando a proteção dos ecossistemas de Casamansa à segurança alimentar e resiliência climática nacional.',
             stats: [{ value: '200M', label: 'Mudas de Mangue' }, { value: 'PSE', label: 'Visão Estratégica' }, { value: '46%', label: 'Solo Semiárido' }],
             image: 'assets/senegal_environment_mangroves_1774208904701.png',
             pdfSource: 'assets/pdfs/parte f.pdf',
@@ -66,25 +66,16 @@
 
     /* ─── MOODBOARD TILES ─── */
     var MOODBOARD_TILES = [
-        { src: 'assets/african_future_1776055694398.png', tag: 'Identidade e Négritude', label: 'Juventude e energia do futuro', size: 'lg', topic: 'a' },
-        { src: 'assets/dakar_market_1776055480119.png', tag: 'Cultura como Motor', label: 'Multidão em Dakar', size: 'sm', topic: 'b' },
-        { src: 'assets/laamb_wrestling_1776055517088.png', tag: 'Esporte como Expressão', label: 'Luta Tradicional Laamb', size: 'md', topic: 'd' },
-        { src: 'assets/baobab_sunset_1776055973939.png', tag: 'Sustentabilidade Cultural', label: 'Resistência e Natureza', size: 'sm', topic: 'f' },
-        { src: 'https://loremflickr.com/800/1200/africa,music,culture?random=5', tag: 'Cultura como Motor', label: 'Ritmo vibrante do Mbalax', size: 'lg', topic: 'c' },
-        { src: 'https://loremflickr.com/1000/800/art,senegal?random=6', tag: 'Cultura como Motor', label: 'Cores africanas', size: 'md', topic: 'c' },
-        { src: 'https://loremflickr.com/1000/800/monument,dakar?random=7', tag: 'Sustentabilidade Cultural', label: 'Renascença Africana', size: 'md', topic: 'c' },
-        { src: 'https://loremflickr.com/800/1000/africa,nature?random=8', tag: 'Sustentabilidade Cultural', label: 'Paisagem Natural', size: 'md', topic: 'f' },
-        { src: 'https://loremflickr.com/1000/800/senegal,tradition?random=9', tag: 'Esporte como Expressão', label: 'Teraanga: A alma do Senegal', size: 'md', topic: 'd' },
-        { src: 'https://loremflickr.com/800/1000/africa,faith?random=10', tag: 'Sustentabilidade Cultural', label: 'Respeito e Tradição', size: 'lg', topic: 'd' },
-        { src: 'https://loremflickr.com/800/800/soccer,senegal?random=11', tag: 'Esporte como Expressão', label: 'Paixão pelo Futebol', size: 'sm', topic: 'd' },
-        { src: 'https://loremflickr.com/800/800/sports,africa?random=12', tag: 'Esporte como Expressão', label: 'Movimento e Garra', size: 'sm', topic: 'd' },
-        { src: 'https://loremflickr.com/800/1000/technology,africa?random=13', tag: 'Tecnologia com Raízes', label: 'Inovação e Crescimento', size: 'lg', topic: 'e' },
-        { src: 'https://loremflickr.com/1000/800/africa,innovation?random=14', tag: 'Tecnologia com Raízes', label: 'Horizonte 2034', size: 'md', topic: 'e' },
-        { src: 'https://loremflickr.com/800/800/digital,senegal?random=15', tag: 'Tecnologia com Raízes', label: 'Conexão Digital', size: 'sm', topic: 'e' },
-        { src: 'https://loremflickr.com/800/1000/mangroves,africa?random=16', tag: 'Sustentabilidade Cultural', label: 'Restauração de Manguezais', size: 'lg', topic: 'f' },
-        { src: 'https://loremflickr.com/1000/800/senegal,landscape?random=17', tag: 'Identidade e Négritude', label: 'Ecossistemas Preservados', size: 'md', topic: 'f' },
-        { src: 'https://loremflickr.com/1000/800/africa,animals?random=18', tag: 'Sustentabilidade Cultural', label: 'Biodiversidade', size: 'md', topic: 'f' },
-        { src: 'https://loremflickr.com/800/800/baobab,senegal?random=19', tag: 'Cultura como Motor', label: 'Eternidade e Resistência', size: 'sm', topic: 'f' }
+        { src: 'assets/senegal_demographics_1774208781562.png', tag: 'Demografia', label: 'Transição Demográfica: o perfil de uma nação jovem que impulsiona o desenvolvimento econômico.', size: 'lg', topic: 'a' },
+        { src: 'assets/dakar_market_1776055480119.png', tag: 'Economia', label: 'Dinâmica de Mercado em Dakar: a efervescência do comércio local como base da subsistência urbana.', size: 'sm', topic: 'b' },
+        { src: 'assets/senegal_population_crowd_1774208799106.png', tag: 'População', label: 'Densidade e Urbanização: os desafios do crescimento populacional concentrado nos grandes polos.', size: 'md', topic: 'b' },
+        { src: 'assets/senegal_culture_mbalax_1774208814214.png', tag: 'Cultura', label: 'Identidade Cultural: a preservação de ritmos e tradições que unificam as diversas etnias senegalesas.', size: 'lg', topic: 'c' },
+        { src: 'assets/senegal_social_teranga_1774208829208.png', tag: 'Sociedade', label: 'Espírito de Teraanga: a base social da hospitalidade e do cuidado mútuo na comunidade.', size: 'md', topic: 'd' },
+        { src: 'assets/laamb_wrestling_1776055517088.png', tag: 'Esporte', label: 'Luta Laamb: mais que um esporte, uma manifestação cultural que envolve misticismo e honra.', size: 'md', topic: 'd' },
+        { src: 'assets/senegal_technology_satellite_1774208879529.png', tag: 'Tecnologia', label: 'Soberania Espacial: o GAINDESAT-1A marcando a entrada do Senegal na era da exploração de dados via satélite.', size: 'lg', topic: 'e' },
+        { src: 'assets/senegal_environment_mangroves_1774208904701.png', tag: 'Ambiente', label: 'Preservação de Manguezais: ações de reflorestamento vitais para a proteção da costa contra a erosão.', size: 'lg', topic: 'f' },
+        { src: 'assets/baobab_sunset_1776055973939.png', tag: 'Natureza', label: 'Símbolo de Resiliência: o Baobá como guardião da história e da biodiversidade do Sahel.', size: 'md', topic: 'f' },
+        { src: 'assets/african_future_1776055694398.png', tag: 'Futuro', label: 'Horizonte Senegal: a visão de um continente que conecta tecnologia e tradição para prosperar.', size: 'md', topic: 'a' }
     ];
 
     var PDF_FILES = [
@@ -439,9 +430,6 @@
             container.appendChild(el);
         });
 
-        // ─── TAGS & MOTIVADORES ───
-        var tagsContainer = document.getElementById('moodboard-tags');
-        if (tagsContainer) renderMoodboardTags(tagsContainer);
 
         // ─── QR CODES 3D ───
         var qrContainer = document.getElementById('moodboard-qrcodes');
@@ -450,29 +438,6 @@
         if (typeof AOS !== 'undefined') AOS.refresh();
     }
 
-    /* ─── MOODBOARD: TAGS & MOTIVADORES ─── */
-    function renderMoodboardTags(container) {
-        var tagsTitle = '<div class="moodboard-subsection-header" data-aos="fade-up">' +
-            '<h3 class="moodboard-subsection-title">Tags & Motivadores</h3>' +
-            '<p class="moodboard-subsection-desc">Os pilares criativos que guiam nossa narrativa sobre o Senegal</p>' +
-            '</div>';
-
-        var cardsHtml = '<div class="motivator-cards-grid">';
-        INSIGHTS_DATA.cards.forEach(function(card, i) {
-            cardsHtml +=
-                '<div class="motivator-card" data-aos="fade-up" data-aos-delay="' + (i * 80) + '">' +
-                    (card.image ? '<div class="motivator-card__image"><img src="' + card.image + '" alt="' + esc(card.title) + '" loading="lazy" /></div>' : '') +
-                    '<div class="motivator-card__body">' +
-                        '<div class="motivator-card__icon">' + card.icon + '</div>' +
-                        '<h4 class="motivator-card__title">' + esc(card.title) + '</h4>' +
-                        '<p class="motivator-card__text">' + esc(card.text) + '</p>' +
-                    '</div>' +
-                '</div>';
-        });
-        cardsHtml += '</div>';
-
-        container.innerHTML = tagsTitle + cardsHtml;
-    }
 
     /* ─── MOODBOARD: QR CODES 3D ─── */
     function renderMoodboardQRCodes(container) {
@@ -778,10 +743,10 @@
         nav.innerHTML = '';
         var sections = ['hero', 'section-team']
             .concat(TOPICS.map(function (t) { return t.id; }))
-            .concat(['section-golden-circle', 'section-problem', 'moodboard-section', 'section-insights', 'section-creative-process']);
+            .concat(['section-golden-circle', 'section-problem', 'moodboard-section', 'section-3d-models', 'section-insights', 'section-creative-process', 'section-download']);
         var labels = ['Início', 'Equipe']
             .concat(TOPICS.map(function (t) { return t.letter + '. ' + t.tag; }))
-            .concat(['Metodologia', 'Problema', 'Moodboard', 'Insights', 'Processo']);
+            .concat(['Metodologia', 'Problema', 'Moodboard', 'Modelos 3D', 'Insights', 'Processo', 'Download']);
         sections.forEach(function (id, idx) {
             var dot = document.createElement('a');
             dot.href = '#' + id;
@@ -834,10 +799,16 @@
                         tagText = topicTag.textContent;
                     } else if (ptTitle) {
                         tagText = ptTitle.textContent;
-                    } else if (el.id === 'section-hero') {
+                    } else if (el.id === 'hero' || el.id === 'section-hero') {
                         tagText = 'Capa';
-                    } else if (el.id === 'team-section') {
+                    } else if (el.id === 'section-team' || el.id === 'team-section') {
                         tagText = 'Equipe';
+                    } else if (el.id === 'moodboard-section') {
+                        tagText = 'Moodboard';
+                    } else if (el.id === 'section-3d-models') {
+                        tagText = 'Modelos 3D';
+                    } else if (el.id === 'section-download') {
+                        tagText = 'Download PDF';
                     }
                 }
                 var text = (closest + 1) + ' / ' + slideElements.length;
@@ -861,15 +832,17 @@
             });
         }, { passive: true });
 
-        if (nextSm) {
-            nextSm.addEventListener('click', function () {
+        if (nextSm || nextArr) {
+            var nBtn = nextSm || nextArr;
+            nBtn.addEventListener('click', function () {
                 if (currentSlideIndex < slideElements.length - 1)
                     slideElements[currentSlideIndex + 1].scrollIntoView({ behavior: 'smooth' });
             });
         }
 
-        if (prevSm) {
-            prevSm.addEventListener('click', function () {
+        if (prevSm || prevArr) {
+            var pBtn = prevSm || prevArr;
+            pBtn.addEventListener('click', function () {
                 if (currentSlideIndex > 0)
                     slideElements[currentSlideIndex - 1].scrollIntoView({ behavior: 'smooth' });
             });
@@ -879,8 +852,15 @@
             var activeBtn = document.querySelector('.tab-btn.active');
             if (!activeBtn || activeBtn.dataset.tab !== 'presentation') return;
             if (e.target.contentEditable === 'true' || e.target.tagName === 'INPUT') return;
-            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (nextSm) nextSm.click(); }
-            else if (e.key === 'ArrowLeft') { if (prevSm) prevSm.click(); }
+            if (e.key === 'ArrowRight' || e.key === ' ') { 
+                e.preventDefault(); 
+                var nBtn = nextSm || nextArr;
+                if (nBtn) nBtn.click(); 
+            }
+            else if (e.key === 'ArrowLeft') { 
+                var pBtn = prevSm || prevArr;
+                if (pBtn) pBtn.click(); 
+            }
         });
     }
 
@@ -893,7 +873,7 @@
         slideElements = Array.from(document.querySelectorAll('.pres-section'))
             .filter(function(el) { 
                 // Ignore empty containers (like topics-container)
-                return el.id !== 'topics-container' && el.offsetHeight > 50; 
+                return el.id !== 'topics-container' && el.offsetHeight > 10; 
             })
             .sort(function(a, b) {
                 return (a.offsetTop + a.offsetHeight/2) - (b.offsetTop + b.offsetHeight/2);
