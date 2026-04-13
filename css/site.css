@@ -1600,3 +1600,357 @@
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.8) !important;
   z-index: 9999;
 }
+
+/* ═══════════════════════════════════
+   MOODBOARD: TAGS & MOTIVADORES
+   ═══════════════════════════════════ */
+
+.moodboard-subsection-header {
+  text-align: center;
+  margin: var(--space-2xl) 0 var(--space-xl);
+  position: relative;
+}
+
+.moodboard-subsection-header::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--glass-border), transparent);
+  z-index: 0;
+}
+
+.moodboard-subsection-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--sn-green), var(--sn-yellow) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: var(--space-sm);
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 0 var(--space-lg);
+  background-color: var(--bg-deep);
+}
+
+.moodboard-subsection-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ─── Motivator Cards ─── */
+.moodboard-tags-section {
+  margin-top: var(--space-xl);
+}
+
+.motivator-cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.motivator-card {
+  flex: 1 1 300px;
+  max-width: 350px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.5s var(--ease-out);
+  position: relative;
+}
+
+.motivator-card:hover {
+  border-color: var(--sn-green);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4), 0 0 30px rgba(0,133,63,0.15);
+}
+
+.motivator-card__image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+
+.motivator-card__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(6,10,6,0.9));
+  pointer-events: none;
+}
+
+.motivator-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.motivator-card:hover .motivator-card__image img {
+  transform: scale(1.1);
+}
+
+.motivator-card__body {
+  padding: var(--space-lg);
+}
+
+.motivator-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: rgba(0,133,63,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: var(--space-md);
+  transition: all 0.4s var(--ease-out);
+}
+
+.motivator-card:hover .motivator-card__icon {
+  background: rgba(0,133,63,0.25);
+  transform: scale(1.1);
+}
+
+.motivator-card__title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
+}
+
+.motivator-card__text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════
+   MOODBOARD: QR CODES 3D
+   ═══════════════════════════════════ */
+
+.moodboard-qr-section {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.qr-grid-moodboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.qr-card-3d {
+  background: linear-gradient(135deg, rgba(6, 12, 6, 0.9), rgba(0, 40, 20, 0.4));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 133, 63, 0.25);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s var(--ease-out);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.qr-card-3d::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 133, 63, 0.06) 0%, transparent 60%);
+  animation: rotate-slow 15s linear infinite;
+  pointer-events: none;
+}
+
+.qr-card-3d:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0, 133, 63, 0.6);
+  box-shadow:
+    0 25px 50px rgba(0,0,0,0.5),
+    0 0 40px rgba(0,133,63,0.2);
+}
+
+.qr-card-3d__code {
+  width: 140px;
+  height: 140px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 10px;
+  margin: 0 auto var(--space-lg);
+  box-shadow: 0 0 30px rgba(0, 133, 63, 0.3);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  z-index: 2;
+  border: 3px solid var(--sn-green);
+}
+
+.qr-card-3d:hover .qr-card-3d__code {
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 0 50px rgba(0, 133, 63, 0.5);
+}
+
+/* Scanning line */
+.qr-card-3d__code::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--sn-green);
+  box-shadow: 0 0 12px var(--sn-green);
+  z-index: 3;
+  animation: scan 3s linear infinite;
+}
+
+.qr-card-3d__code img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qr-card-3d__info {
+  position: relative;
+  z-index: 2;
+}
+
+.qr-card-3d__badge {
+  display: inline-block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--sn-green);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 133, 63, 0.12);
+  border: 1px solid rgba(0, 133, 63, 0.2);
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 0 8px rgba(0,133,63,0.3);
+}
+
+.qr-card-3d__title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: var(--space-xs, 6px);
+  color: var(--text-primary);
+}
+
+.qr-card-3d__desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .motivator-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .qr-grid-moodboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+  .qr-card-3d {
+    padding: var(--space-md);
+  }
+  .qr-card-3d__code {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ═══════════════════════════════════
+   TOPICS (A-F) TEXT SIZING
+   ═══════════════════════════════════ */
+.topic-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: var(--space-md);
+  color: var(--text-primary);
+}
+
+.topic-text {
+  font-size: 1.35rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+  max-width: 700px;
+}
+
+.topic-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: var(--space-xl);
+}
+
+.topic-stats {
+  margin-top: var(--space-md);
+}
+
+/* ═══════════════════════════════════
+   PAGINATION TOOLTIPS
+   ═══════════════════════════════════ */
+.pagination-dot {
+  position: relative;
+}
+
+.pagination-dot::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  border: 1px solid var(--sn-green);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 10px rgba(0, 133, 63, 0.2);
+  z-index: 1000;
+}
+
+.pagination-dot:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 480px) {
+  .qr-grid-moodboard {
+    grid-template-columns: 1fr;
+  }
+}
